@@ -1,7 +1,6 @@
 const app = document.querySelector("#app");
-// console.log("app", app);
 
-/*
+/** 
 문제1 
   100이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는 프로그램을 작성하 세요.(정렬을 사용하면 안됩니다)
 */
@@ -82,4 +81,87 @@ function solution_3(students) {
   return Math.ceil(students / 12);
 }
 
-console.log("anser : ", solution_3(13));
+// console.log("anser : ", solution_3(13));
+
+/**
+ *자연수 N이 입력되면 1부터 N까지의 합을 출력하는 프로그램을 작성하세요.
+▣ 입력설명
+첫 번째 줄에 20이하의 자연수 N이 입력된다..
+▣ 출력설명
+첫 번째 줄에 1부터 N까지의 합을 출력한다.
+ */
+
+function solution_4_my(n) {
+  let anser = 0;
+  for (let index = 0; index < n; index++) {
+    anser += index;
+  }
+  return anser;
+}
+
+// console.log("anser_4 : ", solution_4_my(5));
+
+/**
+ * 7개의 수가 주어지면 그 숫자 중 가장 작은 수를 출력하는 프로그램을 작성하세요.
+ * 최솟값 구하기
+ *▣ 입력예제 1
+5 3 7 11 2 15 17
+ */
+
+function solution_5_my() {
+  const agrsList = Object.values(arguments);
+  const minValue = agrsList.reduce((prev, curr) => (prev < curr ? prev : curr));
+  return minValue;
+}
+
+function solution_5(arr) {
+  // 초기 최소값에 가장큰 정수값을 할당해 놓는다.
+  let min = Number.MAX_SAFE_INTEGER;
+  for (let index = 0; index < arr.length; index++) {
+    if (arr[index] < min) min = arr[index];
+  }
+  return min;
+}
+
+function solution_5_1(arr) {
+  // const anser = Math.min(...arr);
+  const anser = Math.min.apply(null, arr);
+  return anser;
+}
+
+// console.log("anser_5 : ", solution_5_my(5, 3, 7, 11, 2, 15, 17));
+// const arr = [5, 3, 7, 11, 2, 15, 17];
+// console.log("anser_5_1 : ", solution_5_1(arr));
+
+/**
+ * 7개의 자연수가 주어질 때,
+ * 이들 중 홀수인 자연수들을 모두 골라 그 합을 구하고,
+ * 고른 홀수들 중 최소값을 찾는 프로그램을 작성하세요.
+ */
+
+function solution_6_my(arr) {
+  let sumOddNumbers, minOddNumber;
+  const oddNumbers = arr.filter((number) => number % 2 === 1);
+
+  sumOddNumbers = oddNumbers.reduce((prev, curr) => prev + curr, 0);
+  minOddNumber = Math.min(...oddNumbers);
+
+  return [sumOddNumbers, minOddNumber];
+}
+
+function solution_6(arr) {
+  let answer = [];
+  let sum = 0,
+    min = Number.MAX_SAFE_INTEGER;
+
+  for (const number of arr) {
+    if (number % 2 === 1) {
+      sum += number;
+      if (number < min) min = number;
+    }
+  }
+  return [sum, min];
+}
+
+const arr = [12, 77, 38, 41, 53, 92, 85];
+console.log("solution_6_my", solution_6(arr));
