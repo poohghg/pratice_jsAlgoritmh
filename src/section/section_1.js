@@ -163,5 +163,80 @@ function solution_6(arr) {
   return [sum, min];
 }
 
-const arr = [12, 77, 38, 41, 53, 92, 85];
-console.log("solution_6_my", solution_6(arr));
+// const arr = [12, 77, 38, 41, 53, 92, 85];
+// console.log("solution_6_my", solution_6(arr));
+
+/**
+ * 서울시는 6월 1일부터 교통 혼잡을 막기 위해서 자동차 10부제를 시행한다. 
+ * 자동차 10부제는 자동차 번호의 일의 자리 숫자와 날짜의 일의 자리 숫자가 일치하면 해당 자동차의 운행을 금 지하는 것이다. 
+ * 예를 들어, 자동차 번호의 일의 자리 숫자가 7이면 7일, 17일, 27일에 운행하 지 못한다. 
+ * 또한, 자동차 번호의 일의 자리 숫자가 0이면 10일, 20일, 30일에 운행하지 못한 다.
+여러분들은 일일 경찰관이 되어 10부제를 위반하는 자동차의 대수를 세는 봉사활동을 하려고 한다. 
+날짜의 일의 자리 숫자가 주어지고 7대의 자동차 번호의 끝 두 자리 수가 주어졌을 때 위반하는 자동차의 대수를 출력하는 프로그램을 작성하세요.
+ */
+
+function solution_7_my(day, arrayNums) {
+  // 10으로 나누면 나머지는 마지막자리.
+  const totalNums = arrayNums.filter((num) => day === num % 10);
+  return totalNums.length;
+}
+
+function solution_7(day, arrayNums) {
+  let anser = 0;
+  for (let num of arrayNums) {
+    if (num % 10 === day) anser++;
+  }
+  return anser;
+}
+
+// 3 25 23 11 47 53 17 33
+// console.log("solution_7_my", solution_7(3, [25, 23, 11, 47, 53, 17, 33]));
+
+/**
+▣ 입력설명
+아홉 개의 줄에 걸쳐 난쟁이들의 키가 주어진다. 주어지는 키는 100을 넘지 않는 자연수이며, 아홉 난쟁이의 키는 모두 다르며, 가능한 정답이 여러 가지인 경우에는 아무거나 출력한다.
+▣ 출력설명
+입력된 순서대로 일곱 난쟁이의 키를 출력한다.
+ */
+
+function solution_8_my(...arr) {
+  // const arr;
+  // 총합을 더한후 두숫자를뽑아 총합에서 두합을 뺀다.
+  // splic 특정인덱스 제거
+  const totalSum = arr.reduce((acc, curr) => acc + curr, 0);
+  const len = arr.length;
+  let filterArr = null;
+  // let tempArr = [...arr];
+
+  arr.forEach((num, index) => {
+    const tempArr = arr.slice(index + 1, len);
+    if (filterArr) return;
+    tempArr.forEach((tempNUm, jindex) => {
+      if (totalSum - num - tempNUm === 100) {
+        filterArr = { index, jindex: index + 1 + jindex };
+      }
+    });
+  });
+
+  if (filterArr) {
+    const { index, jindex } = filterArr;
+    arr.splice(jindex, 1);
+    arr.splice(index, 1);
+  }
+  return arr;
+}
+
+function solution_8(...arr) {
+  const totalSum = arr.reduce((acc, curr) => acc + curr, 0);
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (totalSum - arr[i] - arr[j] === 100) {
+        arr.splice(j, 1);
+        arr.splice(i, 1);
+      }
+    }
+  }
+  return arr;
+}
+
+console.log("solution_8", solution_8_my(20, 7, 23, 19, 10, 15, 25, 8, 13));
