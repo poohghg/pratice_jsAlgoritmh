@@ -239,4 +239,108 @@ function solution_8(...arr) {
   return arr;
 }
 
-console.log("solution_8", solution_8_my(20, 7, 23, 19, 10, 15, 25, 8, 13));
+// console.log("solution_8", solution_8_my(20, 7, 23, 19, 10, 15, 25, 8, 13));
+
+/**
+한 개의 문자열을 입력받고, 특정 문자를 입력받아 해당 특정문자가 입력받은 문자열에 몇 개 존재하는지 알아내는 프로그램을 작성하세요.
+문자열의 길이는 100을 넘지 않습니다.
+ */
+function solution_9_my(inputString, searchString = "A") {
+  const arr = inputString.split("");
+  for (let index = 0; index < arr.length; index++) {
+    if (arr[index] === searchString) arr[index] = "#";
+  }
+  return arr.join();
+  // console.log(arr.join(""));
+}
+
+function solution_9(str, searchString) {
+  console.log(searchString);
+  return str.replace(/A/g, "#");
+}
+
+// console.log("solution_9", solution_9("BANANA", "B"));
+
+/**
+ * 한 개의 문자열을 입력받고, 
+ * 특정 문자를 입력받아 해당 특정문자가 입력받은 문자열에 몇 개 존재하는지 알아내는 프로그램을 작성하세요.
+    문자열의 길이는 100을 넘지 않습니다.
+ */
+
+function solution_10_my(inputString, searchString = "A") {
+  let cnt = 0;
+  inputString.split("").forEach((v) => {
+    if (v === searchString) cnt++;
+  });
+  return cnt;
+}
+
+function solution_10(str, searchString) {
+  // 찾고자하는 값으로 배열을 나눠 값을 구한다.
+  // console.log(String(str).split(searchString));
+  return String(str).split(searchString).length - 1;
+}
+
+// console.log("solution_10", solution_10("COMPUTERPROGRAMMING", "R"));
+
+/**
+ * 대문자로 통일
+ 대문자와 소문자가 같이 존재하는 문자열을 입력받아 대문자로 모두 통일하여 문자열을 출력 하는 프로그램을 작성하세요.
+ */
+
+function solution_11_my(str) {
+  const arr = str.split("");
+  return arr
+    .map((char, index) => {
+      if (char === String(char).toUpperCase()) return char;
+      return char.toUpperCase();
+    })
+    .join("");
+}
+
+function solution_11(str) {
+  return str.toUpperCase();
+}
+
+// console.log("solution_11_my", solution_11("ItisTimeToStudy"));
+
+/**
+ 한 개의 문자열을 입력받아 해당 문자열에 알파벳 대문자가 몇 개 있는지 알아내는 프로그램 을 작성하세요.
+ */
+
+function solution_12_my(str) {
+  let cnt = 0;
+  // in 이면 index
+  for (const x of str) {
+    // if (x === x.toUpperCase()) cnt++;
+    let num = String(x).charCodeAt();
+    // charCodeAt 65~90은 대문자이다.
+    if (num >= 65 && num <= 90) cnt++;
+  }
+  return cnt;
+}
+
+// console.log("solution_12_my", solution_12_my("KoreaTimeGood"));
+
+/**
+첫 줄에 자연수 N이 주어진다.(3<=N<=30)
+두 번째 줄부터 N개의 문자열이 주어진다. 문자열의 길이는 100을 넘지 않습니다. 각 문자열의 길이는 서로 다릅니다.
+첫 줄에 가장 긴 문자열을 출력한다.
+ */
+
+function solution_13_my(arr) {
+  let answer = "",
+    max = Number.MIN_SAFE_INTEGER;
+
+  arr.forEach((str) => {
+    const curStrLen = str.length;
+    if (curStrLen > max) {
+      max = curStrLen;
+      answer = str;
+    }
+  });
+  return answer;
+}
+
+const strArr = ["teacher", "time", "student", "beautiful", "good"];
+console.log("solution_13_my : ", solution_13_my(strArr));
