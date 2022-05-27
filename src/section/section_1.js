@@ -331,7 +331,6 @@ function solution_12_my(str) {
 function solution_13_my(arr) {
   let answer = "",
     max = Number.MIN_SAFE_INTEGER;
-
   arr.forEach((str) => {
     const curStrLen = str.length;
     if (curStrLen > max) {
@@ -342,5 +341,60 @@ function solution_13_my(arr) {
   return answer;
 }
 
-const strArr = ["teacher", "time", "student", "beautiful", "good"];
-console.log("solution_13_my : ", solution_13_my(strArr));
+// const strArr = ["teacher", "time", "student", "beautiful", "good"];
+// console.log("solution_13_my : ", solution_13_my(strArr));
+
+/**
+ 소문자로 된 단어(문자열)가 입력되면 그 단어의 가운데 문자를 출력하는 프로그램을 작성하세 요. 
+ 단 단어의 길이가 짝수일 경우 가운데 2개의 문자를 출력합니다.
+ */
+
+function solution_14_my(str) {
+  const strLen = str.length;
+  const middleIndex = parseInt(str.length / 2, 10);
+  if (strLen % 2 === 0) {
+    return `${str[middleIndex - 1]}${str[middleIndex]}`;
+  }
+  return str[middleIndex];
+}
+
+function solution_14(str) {
+  const strLen = str.length;
+  const middleIndex = Math.floor(strLen / 2);
+
+  if (strLen % 2 === 0)
+    return String(str).substring(middleIndex - 1, middleIndex + 1);
+  return String(str).substring(middleIndex, middleIndex + 1);
+}
+
+// console.log("solution_14_my : ", solution_14_my("teust"));
+
+/**
+소문자로 된 한개의 문자열이 입력되면 중복된 문자를 제거하고 
+출력하는 프로그램을 작성하 세요.
+제거된 문자열의 각 문자는 원래 문자열의 순서를 유지합니다.
+ */
+
+function solution_15_my(str) {
+  const overlapArrays = [];
+  for (const x of str) {
+    if (!overlapArrays.some((innerV) => innerV === x)) overlapArrays.push(x);
+  }
+  return overlapArrays.join("");
+}
+
+function solution_15(str) {
+  // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf
+  // indexOf를 통한 중복제거
+  let answer = "";
+  for (let index = 0; index < str.length; index++) {
+    // indexOf는 주어진 문자열에서 특정 문자의 첫번째 위치를 반환한다.
+    // 반환된 순서와 현재 index 순서와 같다면. 중복된 문자가 아니다.
+    if (String(str).indexOf(str[index]) === index) {
+      answer += str[index];
+    }
+  }
+  return answer;
+}
+
+console.log("solution_15 : ", solution_15("ksekksetss"));
