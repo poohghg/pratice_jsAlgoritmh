@@ -397,4 +397,36 @@ function solution_15(str) {
   return answer;
 }
 
-console.log("solution_15 : ", solution_15("ksekksetss"));
+// console.log("solution_15 : ", solution_15("ksekksetss"));
+
+/**
+ N개의 문자열이 입력되면 중복된 문자열은 제거하고 출력하는 프로그램을 작성하세요. 
+ 출력하는 문자열은 원래의 입력순서를 유지합니다.
+ */
+
+function solution_16_my(arr) {
+  const overlapArrays = [];
+  arr.forEach((str) => {
+    const _str = String(str).trim();
+    // 참고: 빈 배열에서 호출하면 무조건 false를 반환합니다.
+    if (!overlapArrays.some((overlapStr) => overlapStr === _str)) {
+      overlapArrays.push(_str);
+    }
+  });
+  return overlapArrays.join("\n");
+}
+
+function solution_16_my2(arr) {
+  let answer = "";
+  for (const x of arr) {
+    if (answer.indexOf(x) === -1) answer += `${x}\n`;
+  }
+  return answer;
+}
+
+function solution_16(arr) {
+  return arr.filter((str, index) => arr.indexOf(str) === index);
+}
+
+const arr = ["good", "time", "good", "time", "student"];
+console.log("solution_16", solution_16(arr));
