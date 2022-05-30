@@ -1,5 +1,4 @@
-const app = document.querySelector("#app");
-
+// const app = document.querySelector("#app");
 /** 
 문제1 
   100이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는 프로그램을 작성하 세요.(정렬을 사용하면 안됩니다)
@@ -202,7 +201,7 @@ function solution_7(day, arrayNums) {
 function solution_8_my(...arr) {
   // const arr;
   // 총합을 더한후 두숫자를뽑아 총합에서 두합을 뺀다.
-  // splic 특정인덱스 제거
+  // splic 특정인덱스 제거 || 추가
   const totalSum = arr.reduce((acc, curr) => acc + curr, 0);
   const len = arr.length;
   let filterArr = null;
@@ -367,7 +366,7 @@ function solution_14(str) {
   return String(str).substring(middleIndex, middleIndex + 1);
 }
 
-// console.log("solution_14_my : ", solution_14_my("teust"));
+// console.log("solution_14_my : ", solution_14_my("test"));
 
 /**
 소문자로 된 한개의 문자열이 입력되면 중복된 문자를 제거하고 
