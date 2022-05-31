@@ -114,23 +114,105 @@ function solution_4_my(len, arr) {
  */
 
 function solution_5(arr) {
-  let answer = [],
-    ranking = 1;
+  const arrLen = arr.length;
+  let answer = Array.from({ length: arrLen }, () => 1);
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < arr.length; j++) {
       // 나보다 큰점수가 있을경우.
-      if (arr[j] > arr[i]) ranking++;
+      if (arr[j] > arr[i]) answer[i]++;
     }
-    answer.push(ranking);
-    ranking = 1;
   }
   return answer;
-  // console.log(sortArray);
 }
 
 function solution_5_my(arr) {
   return arr.map((score) => arr.filter((v) => v > score).length + 1);
 }
 
-const arr = [87, 89, 92, 100, 99, 99, 76];
-console.log("solution_4_my", solution_5_my(arr));
+// const arr = [87, 89, 92, 100, 99, 99, 76];
+// console.log("solution_5", solution_5(arr));
+
+/**
+ 문제6 
+N*N의 격자판이 주어지면 각 행의 합, 각 열의 합, 두 대각선의 합 중 가 장 큰 합을 출력합 니다.
+ */
+
+function solution_6_my(len, arr) {
+  let max = Number.MIN_SAFE_INTEGER;
+  let rowSum = 0;
+  let colSum = 0;
+  let diagonalSum = 0;
+  let reverseDiagonalSum = 0;
+
+  function comparisonNum(leftNum, rigthNum) {
+    if (leftNum > rigthNum) return leftNum;
+    return rigthNum;
+  }
+
+  for (let i = 0; i < len; i++) {
+    rowSum = colSum = 0;
+    diagonalSum += arr[i][i];
+    reverseDiagonalSum += arr[i][len - 1 - i];
+    for (let j = 0; j < len; j++) {
+      rowSum += arr[i][j];
+      colSum += arr[j][i];
+    }
+    const curMax = comparisonNum(rowSum, colSum);
+    max = comparisonNum(curMax, max);
+    // MAth.max를 사용하면 더 편함.
+    // max = Math.max(rowSum, colSum, max);
+  }
+
+  const curMax = comparisonNum(diagonalSum, reverseDiagonalSum);
+  max = comparisonNum(curMax, max);
+
+  return max;
+}
+
+// const arr = [
+//   [10, 13, 10, 12, 15],
+//   [12, 39, 30, 23, 11],
+//   [11, 25, 50, 53, 15],
+//   [19, 27, 29, 37, 27],
+//   [19, 13, 30, 13, 19]
+// ];
+
+// console.log("solution_6_my", solution_6_my(5, arr));
+/**
+지도 정보가 N*N 격자판에 주어집니다. 각 격자에는 그 지역의 높이가 쓰여있습니다. 
+각 격자 판의 숫자 중 자신의 상하좌우 숫자보다 큰 숫자는 봉우리 지역입니다. 
+봉우리 지역이 몇 개 있는 지 알아내는 프로그램을 작성하세요.
+격자의 가장자리는 0으로 초기화 되었다고 가정한다.
+ */
+
+function solution_7_my(arr) {
+  let answer = 0;
+  const d = [-1, 0, 1, 0];
+  const dLen = d.length;
+
+  for (let x = 0; x < arr.length; x++) {
+    for (let y = 0; y < arr.length; y++) {
+      const curValue = arr[x][y];
+      let flage = true;
+      d.forEach((dValue, index) => {
+        let nx = Number(x + dValue);
+        let ny = Number(y + d[dLen - 1 - index]);
+        if (arr?.[nx]?.[ny] >= curValue) {
+          flage = false;
+          return false;
+        }
+      });
+      if (flage) answer++;
+    }
+  }
+  console.log(answer);
+}
+
+const arr = [
+  [5, 3, 7, 2, 3],
+  [3, 7, 1, 6, 1],
+  [7, 2, 5, 3, 4],
+  [4, 3, 6, 4, 1],
+  [8, 7, 3, 5, 2]
+];
+console.log("solution_7_my", solution_7_my(arr));
