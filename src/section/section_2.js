@@ -187,6 +187,7 @@ function solution_6_my(len, arr) {
 
 function solution_7_my(arr) {
   let answer = 0;
+  // d 방향 격좌자표에서 움직이는 값.
   const d = [-1, 0, 1, 0];
   const dLen = d.length;
 
