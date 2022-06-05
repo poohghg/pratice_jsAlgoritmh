@@ -290,7 +290,7 @@ function solution_10(str, searchString) {
 function solution_11_my(str) {
   const arr = str.split("");
   return arr
-    .map((char, index) => {
+    .map((char) => {
       if (char === String(char).toUpperCase()) return char;
       return char.toUpperCase();
     })
