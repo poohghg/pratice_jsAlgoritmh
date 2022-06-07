@@ -29,19 +29,19 @@ function solution_2_my() {
   // (a, b) => a - b 오름차순
   // (a, b) => b - a 내림차순
   const args = Object.values(arguments).sort((a, b) => b - a);
-  console.log("args", args);
+  console.log('args', args);
 
   const maxValue = args[0];
   const lastValues = args[1] + args[2];
 
-  if (lastValues >= maxValue) return "YES";
-  return "NO";
+  if (lastValues >= maxValue) return 'YES';
+  return 'NO';
 }
 
 // console.log("anser : ", solution_2_my(13, 33, 17));
 
 function solution_2(a, b, c) {
-  let anser = "NO",
+  let anser = 'NO',
     max;
   let sum = a + b + c;
   if (a > b) {
@@ -50,7 +50,7 @@ function solution_2(a, b, c) {
     max = b;
   }
   if (c > max) max = c;
-  if (sum - max >= max) anser = "YES";
+  if (sum - max >= max) anser = 'YES';
   return anser;
 }
 
@@ -166,10 +166,10 @@ function solution_6(arr) {
 // console.log("solution_6_my", solution_6(arr));
 
 /**
- * 서울시는 6월 1일부터 교통 혼잡을 막기 위해서 자동차 10부제를 시행한다. 
- * 자동차 10부제는 자동차 번호의 일의 자리 숫자와 날짜의 일의 자리 숫자가 일치하면 해당 자동차의 운행을 금 지하는 것이다. 
- * 예를 들어, 자동차 번호의 일의 자리 숫자가 7이면 7일, 17일, 27일에 운행하 지 못한다. 
- * 또한, 자동차 번호의 일의 자리 숫자가 0이면 10일, 20일, 30일에 운행하지 못한 다.
+서울시는 6월 1일부터 교통 혼잡을 막기 위해서 자동차 10부제를 시행한다. 
+자동차 10부제는 자동차 번호의 일의 자리 숫자와 날짜의 일의 자리 숫자가 일치하면 해당 자동차의 운행을 금 지하는 것이다. 
+예를 들어, 자동차 번호의 일의 자리 숫자가 7이면 7일, 17일, 27일에 운행하 지 못한다. 
+또한, 자동차 번호의 일의 자리 숫자가 0이면 10일, 20일, 30일에 운행하지 못한 다.
 여러분들은 일일 경찰관이 되어 10부제를 위반하는 자동차의 대수를 세는 봉사활동을 하려고 한다. 
 날짜의 일의 자리 숫자가 주어지고 7대의 자동차 번호의 끝 두 자리 수가 주어졌을 때 위반하는 자동차의 대수를 출력하는 프로그램을 작성하세요.
  */
@@ -244,10 +244,10 @@ function solution_8(...arr) {
 한 개의 문자열을 입력받고, 특정 문자를 입력받아 해당 특정문자가 입력받은 문자열에 몇 개 존재하는지 알아내는 프로그램을 작성하세요.
 문자열의 길이는 100을 넘지 않습니다.
  */
-function solution_9_my(inputString, searchString = "A") {
-  const arr = inputString.split("");
+function solution_9_my(inputString, searchString = 'A') {
+  const arr = inputString.split('');
   for (let index = 0; index < arr.length; index++) {
-    if (arr[index] === searchString) arr[index] = "#";
+    if (arr[index] === searchString) arr[index] = '#';
   }
   return arr.join();
   // console.log(arr.join(""));
@@ -255,7 +255,7 @@ function solution_9_my(inputString, searchString = "A") {
 
 function solution_9(str, searchString) {
   console.log(searchString);
-  return str.replace(/A/g, "#");
+  return str.replace(/A/g, '#');
 }
 
 // console.log("solution_9", solution_9("BANANA", "B"));
@@ -266,9 +266,9 @@ function solution_9(str, searchString) {
     문자열의 길이는 100을 넘지 않습니다.
  */
 
-function solution_10_my(inputString, searchString = "A") {
+function solution_10_my(inputString, searchString = 'A') {
   let cnt = 0;
-  inputString.split("").forEach((v) => {
+  inputString.split('').forEach((v) => {
     if (v === searchString) cnt++;
   });
   return cnt;
@@ -288,13 +288,13 @@ function solution_10(str, searchString) {
  */
 
 function solution_11_my(str) {
-  const arr = str.split("");
+  const arr = str.split('');
   return arr
     .map((char) => {
       if (char === String(char).toUpperCase()) return char;
       return char.toUpperCase();
     })
-    .join("");
+    .join('');
 }
 
 function solution_11(str) {
@@ -328,7 +328,7 @@ function solution_12_my(str) {
  */
 
 function solution_13_my(arr) {
-  let answer = "",
+  let answer = '',
     max = Number.MIN_SAFE_INTEGER;
   arr.forEach((str) => {
     const curStrLen = str.length;
@@ -379,13 +379,13 @@ function solution_15_my(str) {
   for (const x of str) {
     if (!overlapArrays.some((innerV) => innerV === x)) overlapArrays.push(x);
   }
-  return overlapArrays.join("");
+  return overlapArrays.join('');
 }
 
 function solution_15(str) {
   // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf
   // indexOf를 통한 중복제거
-  let answer = "";
+  let answer = '';
   for (let index = 0; index < str.length; index++) {
     // indexOf는 주어진 문자열에서 특정 문자의 첫번째 위치를 반환한다.
     // 반환된 순서와 현재 index 순서와 같다면. 중복된 문자가 아니다.
@@ -412,11 +412,11 @@ function solution_16_my(arr) {
       overlapArrays.push(_str);
     }
   });
-  return overlapArrays.join("\n");
+  return overlapArrays.join('\n');
 }
 
 function solution_16_my2(arr) {
-  let answer = "";
+  let answer = '';
   for (const x of arr) {
     if (answer.indexOf(x) === -1) answer += `${x}\n`;
   }
@@ -427,5 +427,5 @@ function solution_16(arr) {
   return arr.filter((str, index) => arr.indexOf(str) === index);
 }
 
-const arr = ["good", "time", "good", "time", "student"];
-console.log("solution_16", solution_16(arr));
+const arr = ['good', 'time', 'good', 'time', 'student'];
+console.log('solution_16', solution_16(arr));
