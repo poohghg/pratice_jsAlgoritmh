@@ -181,10 +181,10 @@ function solution_3(test) {
 
 /**
  문제4.
-선생님은 올해 졸업하는 반 학생들에게 졸업선물을 주려고 합니다.
-학생들에게 인터넷 쇼핑몰에서 각자 원하는 상품을 골라 그 상품의 가격과 배송비를 제출하라 고 했습니다. 선생님이 가지고 있는 예산은 한정되어 있습니다.
-현재 예산으로 최대 몇 명의 학생에게 선물을 사줄 수 있는지 구하는 프로그램을 작성하세요. 
-선생님은 상품 하나를 50% 할인해서(반 가격) 살 수 있는 쿠폰을 가지고 있습니다. 배송비는 할인에 포함되지 않습니다.
+  선생님은 올해 졸업하는 반 학생들에게 졸업선물을 주려고 합니다.
+  학생들에게 인터넷 쇼핑몰에서 각자 원하는 상품을 골라 그 상품의 가격과 배송비를 제출하라 고 했습니다. 선생님이 가지고 있는 예산은 한정되어 있습니다.
+  현재 예산으로 최대 몇 명의 학생에게 선물을 사줄 수 있는지 구하는 프로그램을 작성하세요. 
+  선생님은 상품 하나를 50% 할인해서(반 가격) 살 수 있는 쿠폰을 가지고 있습니다. 배송비는 할인에 포함되지 않습니다.
  */
 
 // 경우의수가 전부일때 완전탐색을 한다.
@@ -209,7 +209,7 @@ function solution_4_my(n, m, pl) {
       }
     }
   }
-  console.log(answer);
+  return answer;
 }
 
 const payList = [
@@ -219,4 +219,63 @@ const payList = [
   [4, 5],
   [10, 3],
 ];
-console.log('solution_1_my', solution_4_my(5, 28, payList));
+// console.log('solution_1_my', solution_4_my(5, 28, payList));
+
+/**
+ k번째 큰수
+ 문제 5
+ 현수는 1부터 100사이의 자연수가 적힌 N장의 카드를 가지고 있습니다. 같은 숫자의 카드가 여러장 있을 수 있습니다. 현수는 이 중 3장을 뽑아 각 카드에 적힌 수를 합한 값을 기록하려 고 합니다. 3장을 뽑을 수 있는 모든 경우를 기록합니다. 기록한 값 중 K번째로 큰 수를 출력 하는 프로그램을 작성하세요.
+만약 큰 수부터 만들어진 수가 25 25 23 23 22 20 19......이고 K값이 3이라면 K번째 큰 값 은 22입니다.
+ */
+
+function solution_5_my(n, m, arr) {
+  let answer = 0;
+  let totalArr = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      for (let k = j + 1; k < n; k++) {
+        const sum = arr[i] + arr[j] + arr[k];
+        totalArr.push(sum);
+      }
+    }
+  }
+  // 10c3 -> 120
+  console.log(totalArr.length);
+  let max = Number.MIN_SAFE_INTEGER;
+  let cnt = 0;
+  totalArr
+    .sort((a, b) => b - a)
+    .forEach((v, index) => {
+      if (max !== v) {
+        cnt++;
+        max = v;
+      }
+      if (cnt === m) {
+        answer = v;
+        return false;
+      }
+    });
+
+  return answer;
+}
+
+function solution_5(n, m, arr) {
+  let answer = 0;
+  let totalArr = new Set();
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      for (let k = j + 1; k < n; k++) {
+        const sum = arr[i] + arr[j] + arr[k];
+        totalArr.add(sum);
+      }
+    }
+  }
+
+  answer = Array.from(totalArr).sort((a, b) => b - a)[m - 1];
+  return answer;
+}
+
+console.log(
+  'solution_5_my',
+  solution_5(10, 3, [13, 15, 34, 23, 45, 65, 33, 11, 26, 42]),
+);

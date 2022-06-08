@@ -58,20 +58,20 @@ function solution_2_my(...arr) {
 function solution_3_my(len, _A, _B) {
   let answer = [];
   function calRockPaperScissors(a_number, b_number) {
-    if (a_number === b_number) return "D";
+    if (a_number === b_number) return 'D';
     if (
       (a_number === 1 && b_number === 2) ||
       (a_number === 2 && b_number === 3) ||
       (a_number === 3 && b_number === 1)
     )
-      return "B";
-    return "A";
+      return 'B';
+    return 'A';
   }
 
   for (let index = 0; index < len; index++) {
     answer.push(calRockPaperScissors(_A[index], _B[index]));
   }
-  return answer.join("\n");
+  return answer.join('\n');
 }
 
 // const A = [2, 3, 3, 1, 3];
@@ -117,6 +117,7 @@ function solution_5(arr) {
   const arrLen = arr.length;
   let answer = Array.from({ length: arrLen }, () => 1);
   for (let i = 0; i < arr.length; i++) {
+    // 현재 점수
     for (let j = 0; j < arr.length; j++) {
       // 나보다 큰점수가 있을경우.
       if (arr[j] > arr[i]) answer[i]++;
@@ -214,6 +215,6 @@ const arr = [
   [3, 7, 1, 6, 1],
   [7, 2, 5, 3, 4],
   [4, 3, 6, 4, 1],
-  [8, 7, 3, 5, 2]
+  [8, 7, 3, 5, 2],
 ];
-console.log("solution_7_my", solution_7_my(arr));
+console.log('solution_7_my', solution_7_my(arr));
