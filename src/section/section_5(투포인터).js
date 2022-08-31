@@ -153,25 +153,101 @@ function solution_6(arr) {
       maxInfo[1] = cnt;
     }
   }
+  //
   return maxInfo;
 }
 
-console.log(
-  solution_6([
-    'B',
-    'A',
-    'C',
-    'B',
-    'A',
-    'C',
-    'C',
-    'A',
-    'C',
-    'C',
-    'B',
-    'D',
-    'E',
-    'D',
-    'E',
-  ]),
-);
+// console.log(
+//   solution_6([
+//     'B',
+//     'A',
+//     'C',
+//     'B',
+//     'A',
+//     'C',
+//     'C',
+//     'A',
+//     'C',
+//     'C',
+//     'B',
+//     'D',
+//     'E',
+//     'D',
+//     'E',
+//   ]),
+// );
+
+/**
+ * 아나그램
+ * 길이가 같은 두 개의 단어가 주어지면 두 단어가 아나그램인지 판별하는 프로그램을 작성하세 요. 아나그램 판별시 대소문자가 구분됩니다.
+ */
+
+function solution_7(str1, str2) {
+  if (str1.length !== str2.length) return false;
+  const strObj = new Map();
+  for (const x of str1) {
+    if (strObj.has(x)) {
+      strObj.set(x, strObj.get(x) + 1);
+    } else {
+      strObj.set(x, 1);
+    }
+  }
+  for (const x of str2) {
+    const element = strObj.get(x);
+    // 0또는 없을경우
+    if (!element) return false;
+    strObj.set(x, element - 1);
+  }
+  console.log(strObj);
+  return true;
+}
+// console.log(solution_7('AbaAeCey', 'baeeACAyy'));
+
+/**
+ * S문자열에서 T문자열과 아나그램이 되는 S의 부분문자열의 개수를 구하는 프로그램을 작성하 세요.
+ * 아나그램 판별시 대소문자가 구분됩니다. 부분문자열은 연속된 문자열이어야 합니다.
+ */
+function solution_8(str, subStr) {
+  let answer = 0;
+  let pointer = 0;
+  // 유동
+  const strObj = {};
+  // 고정
+  const subStrObj = {};
+  const subStrLen = subStr.length;
+
+  const isSame = (obj1, obj2) => {
+    for (const x in obj1) {
+      if (!obj2[x]) return false;
+      if (obj1[x] !== obj2[x]) return false;
+    }
+    return true;
+  };
+
+  for (let i = 0; i < subStrLen; i++) {
+    const element = subStr[i];
+    subStrObj[element] = (subStrObj[element] || 0) + 1;
+  }
+
+  for (let i = 0; i < subStrLen; i++) {
+    const element = str[i];
+    strObj[element] = (strObj[element] || 0) + 1;
+  }
+
+  if (isSame(strObj, subStrObj)) answer++;
+  for (let i = subStrLen; i < str.length; i++) {
+    const curElement = str[i];
+    const pointElement = str[pointer];
+    strObj[curElement] = (strObj[curElement] || 0) + 1;
+
+    if (strObj[pointElement] > 1) {
+      strObj[pointElement] -= 1;
+    } else delete strObj[pointElement];
+    pointer++;
+
+    if (isSame(strObj, subStrObj)) answer++;
+  }
+  return answer;
+}
+
+console.log(solution_8('bacaAacbac', 'ac'));
