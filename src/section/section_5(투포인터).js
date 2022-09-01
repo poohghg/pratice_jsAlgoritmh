@@ -237,12 +237,12 @@ function solution_8(str, subStr) {
   if (isSame(strObj, subStrObj)) answer++;
   for (let i = subStrLen; i < str.length; i++) {
     const curElement = str[i];
-    const pointElement = str[pointer];
+    const pointrElement = str[pointer];
     strObj[curElement] = (strObj[curElement] || 0) + 1;
 
-    if (strObj[pointElement] > 1) {
-      strObj[pointElement] -= 1;
-    } else delete strObj[pointElement];
+    if (strObj[pointrElement] > 1) {
+      strObj[pointrElement] -= 1;
+    } else delete strObj[pointrElement];
     pointer++;
 
     if (isSame(strObj, subStrObj)) answer++;
