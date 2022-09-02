@@ -88,3 +88,28 @@ function solution_2(str) {
   return answer;
 }
 // console.log(solution_2('(A(BC)D)EF(G(H)(IJ)K)LM(N)(123))()123'));
+
+function solution_3(arr, moves) {
+  let answer = 0;
+  const accumulateArr = [];
+  // for (const x of moves) {
+  //   const index = x - 1;
+  //   const curArr = arr[index];
+  //   const element = curArr.pop();
+  //   accumulateArr.push(element);
+  // }
+  // console.log(accumulateArr);
+  console.log(arr[4][0]);
+}
+console.log(
+  solution_3(
+    [
+      [0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 3],
+      [0, 2, 5, 0, 1],
+      [4, 2, 4, 4, 2],
+      [3, 5, 1, 3, 1],
+    ],
+    [1, 5, 3, 5, 1, 2, 1, 4],
+  ),
+);
