@@ -181,7 +181,6 @@ function solution_4(str) {
 function solution_5(s) {
   const stack = new Stack();
   let answer = 0;
-
   for (let i = 0; i < s.length; i++) {
     const element = s[i];
     if (element === '(') {
