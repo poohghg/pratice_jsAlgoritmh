@@ -49,6 +49,17 @@ class Stack {
     this.#size--;
     return popNode.val;
   }
+
+  get(index) {
+    if (index >= this.#size || isNaN(index)) return;
+    let cnt = 0;
+    let node = this.#first;
+    while (true) {
+      if (cnt === index) return node.val;
+      node = node.next;
+      cnt++;
+    }
+  }
 }
 // const stack = new Stack();
 
@@ -91,25 +102,98 @@ function solution_2(str) {
 
 function solution_3(arr, moves) {
   let answer = 0;
-  const accumulateArr = [];
-  // for (const x of moves) {
-  //   const index = x - 1;
-  //   const curArr = arr[index];
-  //   const element = curArr.pop();
-  //   accumulateArr.push(element);
-  // }
-  // console.log(accumulateArr);
-  console.log(arr[4][0]);
+  const stack = new Stack();
+  for (const pos of moves) {
+    const col = pos - 1;
+    for (let i = 0; i < arr.length; i++) {
+      const element = arr[i][col];
+      if (element === 0) continue;
+      else {
+        if (element === stack.get(0)) {
+          stack.pop();
+          answer += 2;
+        } else {
+          stack.push(element);
+        }
+        arr[i][col] = 0;
+        break;
+      }
+    }
+  }
+  return answer;
 }
-console.log(
-  solution_3(
-    [
-      [0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 3],
-      [0, 2, 5, 0, 1],
-      [4, 2, 4, 4, 2],
-      [3, 5, 1, 3, 1],
-    ],
-    [1, 5, 3, 5, 1, 2, 1, 4],
-  ),
-);
+// console.log(
+//   solution_3(
+//     [
+//       [0, 0, 0, 0, 0],
+//       [0, 0, 1, 0, 3],
+//       [0, 2, 5, 0, 1],
+//       [4, 2, 4, 4, 2],
+//       [3, 5, 1, 3, 1],
+//     ],
+//     [1, 5, 3, 5, 1, 2, 1, 4],
+//   ),
+// );
+
+/**
+ * 후위표기법
+ * 연산자를 만나면 앞두수를 연산한다.
+ * https://velog.io/@bn-tw/%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EB%B2%95Postfix-expression-%EA%B3%84%EC%82%B0%EB%B2%95
+ * 후위연산식이 주어지면 연산한 결과를 출력하는 프로그램을 작성하세요.
+ * 만약 3*(5+2)-9 을 후위연산식으로 표현하면 352+*9- 로 표현되며 그 결과는 12입니다.
+ */
+function solution_4(str) {
+  const stack = new Stack();
+  let lt, rt, temp;
+  for (let i = 0; i < str.length; i++) {
+    const element = str[i];
+    if (!isNaN(element)) stack.push(Number(element));
+    else {
+      rt = stack.pop();
+      lt = stack.pop();
+      switch (element) {
+        case '+':
+          temp = lt + rt;
+          break;
+        case '-':
+          temp = lt - rt;
+          break;
+        case '*':
+          temp = lt * rt;
+          break;
+        case ' /':
+          temp = lt / rt;
+          break;
+        default:
+          break;
+      }
+      stack.push(Number(temp));
+    }
+  }
+  return stack.pop();
+}
+
+// console.log(solution_4('352+*9-'));
+
+/**
+ * 쇠파이프 절단문제
+ */
+function solution_5(s) {
+  const stack = new Stack();
+  let answer = 0;
+
+  for (let i = 0; i < s.length; i++) {
+    const element = s[i];
+    if (element === '(') {
+      stack.push(element);
+    } else {
+      stack.pop();
+      // 레이저일 경우
+      if (s[i - 1] === '(') answer += stack.size;
+      // 마지막 조각
+      else answer += 1;
+    }
+  }
+  return answer;
+}
+console.log(solution_5('()(((()())(())()))(())'));
