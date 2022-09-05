@@ -195,4 +195,46 @@ function solution_5(s) {
   }
   return answer;
 }
-console.log(solution_5('()(((()())(())()))(())'));
+// console.log(solution_5('()(((()())(())()))(())'));
+/**
+ * 큐 순회
+ * @returns
+ */
+function solution_6(n, k) {
+  const s = Array.from({ length: n }).map((_, index) => index + 1);
+  // let cnt = 1;
+  while (true) {
+    for (let i = 1; i < k; i++) {
+      s.push(s.shift());
+    }
+    s.shift();
+    if (s.length === 1) return s[0];
+
+    // const element = s.shift();
+    // if (cnt === k) {
+    //   cnt = 1;
+    // } else {
+    //   s.push(element);
+    //   cnt++;
+    // }
+  }
+}
+// console.log(solution_6(8, 3));
+
+/**
+ * 수업섥계문제
+ */
+
+function solution_7(sub, str) {
+  const subArr = Array.from(sub);
+  for (let i = 0; i < str.length; i++) {
+    const element = str[i];
+    if (subArr.includes(element)) {
+      if (element !== subArr.shift()) return false;
+      if (subArr.length === 0) return true;
+    }
+  }
+  return false;
+}
+console.log(solution_7('CBA', 'CABA'));
+// console.log(solution_7('CBA', 'CBDBGAE'));
