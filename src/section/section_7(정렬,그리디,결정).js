@@ -136,5 +136,122 @@ function specialmergeSort(arr) {
   }
   return sort(arr);
 }
+// console.log(specialmergeSort([1, 2, 3, -3, -2, 5, 6, -6]));
 
-console.log(specialmergeSort([1, 2, 3, -3, -2, 5, 6, -6, 100, -10, 0]));
+/**
+ * N개의 평면상의 좌표(x, y)가 주어지면 모든 좌표를 오름차순으로 정렬하는 프로그램을 작성하 세요.
+ * 정렬기준은 먼저 x값의 의해서 정렬하고, x값이 같을 경우 y값에 의해 정렬합니다
+ */
+
+function solution_1(arr) {
+  arr.sort((a, b) => {
+    if (a[0] === b[0]) return a[1] - b[1];
+    return a[0] - b[0];
+  });
+  return arr;
+}
+// console.log(
+//   solution_1([
+//     [2, 7],
+//     [1, 3],
+//     [1, 2],
+//     [2, 5],
+//     [3, 6],
+//   ]),
+// );
+
+/**
+ * Least Recently Used
+ */
+function solution_2(s, n, move = [1, 2, 3, 2, 6, 2, 3, 5, 7]) {
+  const memory = Array.from({ length: s }).map(() => 0);
+  for (const x of move) {
+    const index = memory.indexOf(x);
+    if (index != -1) {
+      const element = memory[index];
+      for (let i = index - 1; i >= 0; i--) {
+        memory[i + 1] = memory[i];
+      }
+      memory[0] = element;
+    } else {
+      memory.pop();
+      memory.unshift(x);
+    }
+    console.log(memory);
+  }
+  return memory;
+}
+// console.log(solution_2(5, 9));s
+
+/**
+ * 배열내 장렬에서 잘못된 index찾기
+ */
+function solution_3(n, arr = [120, 125, 152, 130, 135, 135, 143, 127, 160]) {
+  let answer = [];
+  const oriArr = [...arr].sort((a, b) => a - b);
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] !== oriArr[i]) answer.push(i + 1);
+  }
+  return answer.join(' ');
+}
+// console.log(solution_3());
+
+function solution_4(
+  arr = [
+    [1, 4],
+    [2, 3],
+    [3, 5],
+    [4, 6],
+    [5, 7],
+    // [2, 2],
+  ],
+) {
+  arr.sort((a, b) => {
+    if (a[0] === b[0]) return a[1] - b[1];
+    return a[0] - b[0];
+  });
+  let max = 0;
+  console.log(arr);
+  for (let i = 0; i < arr.length - 1; i++) {
+    let cnt = 1;
+    let endTime = arr[i][1];
+    let j = i + 1;
+    while (j < arr.length) {
+      if (endTime <= arr[j][0]) {
+        // console.log('i', i, arr[j][0]);
+        endTime = arr[j][1];
+        cnt++;
+      }
+      j++;
+    }
+    max = Math.max(max, cnt);
+  }
+  return max;
+}
+/**
+ * 탐욕알고리즘
+ */
+function solution_4_1(arr) {
+  arr.sort((a, b) => {
+    if (a[1] === b[1]) return a[0] - b[0];
+    return a[1] - b[1];
+  });
+
+  let answer = 0;
+  let endTime = 0;
+  for (const x of arr) {
+    if (endTime <= x[0]) {
+      endTime = x[1];
+      answer++;
+    }
+  }
+  return answer;
+}
+
+console.log(
+  solution_4_1([
+    [3, 3],
+    [1, 3],
+    [5, 7],
+  ]),
+);
