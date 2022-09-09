@@ -247,11 +247,93 @@ function solution_4_1(arr) {
   }
   return answer;
 }
+// console.log(
+//   solution_4_1([
+//     [3, 3],
+//     [1, 3],
+//     [5, 7],
+//   ]),
+// );
 
-console.log(
-  solution_4_1([
-    [3, 3],
-    [1, 3],
-    [5, 7],
-  ]),
-);
+function solution_5(arr) {
+  let answer = Number.MIN_SAFE_INTEGER;
+  let cnt = 0;
+  const tiemLine = [];
+  for (const x of arr) {
+    tiemLine.push([x[0], 's']);
+    tiemLine.push([x[1], 'e']);
+  }
+  tiemLine.sort((a, b) => {
+    if (a[0] === b[0]) return a[1].charCodeAt() - b[1].charCodeAt();
+    return a[0] - b[0];
+  });
+
+  for (const x of tiemLine) {
+    const timeMark = x[1];
+    if (timeMark === 's') cnt++;
+    else cnt--;
+    answer = Math.max(answer, cnt);
+  }
+  return answer;
+}
+
+// console.log(
+//   solution_5([
+//     [14, 18],
+//     [12, 15],
+//     [15, 20],
+//     [20, 30],
+//     [5, 14],
+//   ]),
+// );
+
+/**
+ * 임의의 N개의 숫자가 입력으로 주어집니다. N개의 수를 오름차순으로 정렬한 다음 N개의 수 중
+ * 한 개의 수인 M이 주어지면 이분검색으로 M이 정렬된 상태에서 몇 번째에 있는지
+ * 구하는 프로그램을 작성하세요. 단 중복값은 존재하지 않습니다.
+ */
+function solution_6(arr, m) {
+  arr.sort((a, b) => a - b);
+
+  let answer;
+  let lt = 0;
+  let rt = arr.length - 1;
+  let middle, curValue;
+
+  console.log(arr);
+  while (lt <= rt) {
+    middle = Math.floor((lt + rt) / 2);
+    curValue = arr[middle];
+    if (curValue === m) return middle;
+    else if (curValue > m) rt = middle - 1;
+    else lt = middle + 1;
+  }
+  // return middle;
+}
+// console.log(solution_6([23, 87, 65, 12, 57, 32, 99, 81], 32));
+
+// 결정알고리즘
+function solution_7(m, arr) {
+  let lt = arr[arr.length - 1];
+  let rt = arr.reduce((curr, prev) => curr + prev, 0);
+  let middle, answer;
+
+  while (lt <= rt) {
+    middle = Math.floor((lt + rt) / 2);
+    let cnt = 1;
+    let sum = 0;
+    for (const x of arr) {
+      if (sum + x > middle) {
+        cnt++;
+        sum = x;
+      } else sum += x;
+    }
+
+    if (cnt <= m) {
+      answer = middle;
+      rt = middle - 1;
+    } else lt = middle + 1;
+  }
+  return answer;
+}
+console.log(solution_7(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
