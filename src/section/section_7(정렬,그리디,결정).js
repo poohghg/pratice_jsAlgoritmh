@@ -300,7 +300,6 @@ function solution_6(arr, m) {
   let rt = arr.length - 1;
   let middle, curValue;
 
-  console.log(arr);
   while (lt <= rt) {
     middle = Math.floor((lt + rt) / 2);
     curValue = arr[middle];
@@ -336,4 +335,35 @@ function solution_7(m, arr) {
   }
   return answer;
 }
-console.log(solution_7(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+// console.log(solution_7(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+
+/**
+ * C마리의 말을 N개의 마구간에 배치했을 때 가장 가까운 두 말의 거리가 최대가 되는 그 최대 값을 출력하는 프로그램을 작성하세요.
+ * 첫 줄에 자연수 N(3<=N<=200,000)과 C(2<=C<=N)이 공백을 사이에 두고 주어집니다.
+ * 둘째 줄에 마구간의 좌표 xi(0<=xi<=1,000,000,000)가 차례로 주어집니다.
+ */
+function solution_8(c, arr) {
+  arr.sort((a, b) => a - b);
+  let lt = 1;
+  let rt = Math.max(...arr);
+  let answer, middle;
+  while (lt <= rt) {
+    middle = Math.floor((lt + rt) / 2);
+    let cnt = 1;
+    let curX;
+    for (const x of arr) {
+      if (curX == null) curX = x;
+      if (x - curX >= middle) {
+        cnt++;
+        curX = x;
+      }
+    }
+    console.log('cnt', cnt, 'm', middle);
+    if (cnt >= c) {
+      answer = middle;
+      lt = middle + 1;
+    } else rt = middle - 1;
+  }
+  return answer;
+}
+console.log(solution_8(3, [1, 2, 8, 4, 9]));
