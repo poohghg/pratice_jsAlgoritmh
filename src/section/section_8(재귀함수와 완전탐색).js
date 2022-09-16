@@ -1,3 +1,4 @@
+// https://coding-factory.tistory.com/606
 class Node {
   left = null;
   rigth = null;
@@ -233,23 +234,82 @@ function solution_6(n, m, arr) {
  */
 function solution_7(n, m) {
   const answer = [];
-  let oriArr = [];
-  const tmp = Array.from({ length: n }).map((_, i) => i + 1);
-  for (let i = 0; i < m; i++) {
-    oriArr.push(tmp);
-  }
+  const oriArr = Array.from({ length: n }).map((_, i) => i + 1);
+  //  1   2   3
+  // 123 123 123
   function travers(L, arr) {
     if (L === m) return answer.push(arr);
-    //  1   2   3
-    // 123 123 123
-    for (let i = 0; i < oriArr[L].length; i++) {
-      travers(L + 1, arr.concat(oriArr[L][i]));
+    for (let i = 0; i < oriArr.length; i++) {
+      travers(L + 1, arr.concat(oriArr[i]));
     }
   }
   travers(0, []);
   console.log(answer.join('\n'));
   console.log(answer.length);
 }
-console.log(solution_7(3, 2));
-// const arr = [];
-// console.log(arr.push(5));
+// console.log(solution_7(3, 2));
+
+/**
+ * 다음과 같이 여러 단위의 동전들이 주어져 있을때 거스름돈을 가장 적은 수의 동전으로 교환 해주려면 어떻게 주면 되는가?
+ * 각 단위의 동전은 무한정 쓸 수 있다.
+ */
+function solution_8(n, k, m) {
+  let min = Number.MAX_SAFE_INTEGER;
+  function travers(L, sum) {
+    if (L > min) return;
+    if (sum >= m) {
+      if (sum === m) {
+        min = Math.min(min, L);
+      }
+      return;
+    }
+    for (const x of k) {
+      travers(L + 1, sum + x);
+    }
+  }
+  travers(0, 0);
+  return min;
+}
+// console.log(solution_8(3, [1, 2, 5], 15));
+
+/**
+ * 순열문제
+ * 10이하의 N개의 자연수가 주어지면
+ * 이 중 M개를 뽑아 일렬로 나열하는 방법을 모두 출력합 니다.
+ */
+function solution_9(n, m, arr) {
+  const answer = [];
+  const ch = Array.from({ length: n }).map(() => 0);
+  const tmp = Array.from({ length: m }).map(() => 0);
+  function travers(L) {
+    if (L === m) return answer.push([...tmp]);
+    for (let i = 0; i < arr.length; i++) {
+      if (ch[i] === 0) {
+        ch[i] = 1;
+        tmp[L] = arr[i];
+        travers(L + 1);
+        ch[i] = 0;
+      }
+    }
+  }
+  travers(0);
+  console.log(answer);
+}
+// console.log(solution_9(3, 2, [3, 6, 9]));
+function solution_10(n) {
+  if (n === 1) return 1;
+  return n * solution_10(n - 1);
+}
+// console.log(solution_10(3));
+/**
+ * 조합
+ * nCr = n!/(n-r)!r!
+ * 4C3 =? 4! / 1!3!
+ * 24/6
+ */
+function combination(n, r) {
+  if (n === r || r === 0) return 1;
+  // 뽑히는 경우와 뽑히지 않는경우를 더한다.
+  return combination(n - 1, r - 1) + combination(n - 1, r);
+}
+console.log(combination(5, 3));
