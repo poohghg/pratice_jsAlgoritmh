@@ -295,7 +295,8 @@ function solution_9(n, m, arr) {
   travers(0);
   console.log(answer);
 }
-// console.log(solution_9(3, 2, [3, 6, 9]));
+// console.log(solution_9(3, 3, [3, 6, 9]));
+
 function solution_10(n) {
   if (n === 1) return 1;
   return n * solution_10(n - 1);
@@ -304,12 +305,121 @@ function solution_10(n) {
 /**
  * 조합
  * nCr = n!/(n-r)!r!
- * 4C3 =? 4! / 1!3!
+ * 4C3 => 4! / 1!3!
  * 24/6
  */
+
 function combination(n, r) {
   if (n === r || r === 0) return 1;
   // 뽑히는 경우와 뽑히지 않는경우를 더한다.
   return combination(n - 1, r - 1) + combination(n - 1, r);
 }
-console.log(combination(5, 3));
+// console.log(combination(5, 3));
+/**
+ * N개의 정수가 주어지면 그 숫자들 중 K개를 뽑는 조합의 합이
+ * 임의의 정수 M의 배수인 개수 는 몇 개가 있는지 출력하는 프로그램을 작성하세요.
+ */
+
+// 123  3c2
+//  6/2
+// 12 13 23
+function solution_11(n, k, arr, m) {
+  // const ch = Array.from({ length: n }).map(() => 0);
+  let answer = [];
+  const tmp = Array.from({ length: k });
+  function travers(L, index) {
+    if (L === k) {
+      if (tmp.reduce((a, b) => a + b, 0) % m === 0) answer.push(tmp.slice());
+      return;
+    }
+    for (let i = index; i < arr.length; i++) {
+      tmp[L] = arr[i];
+      travers(L + 1, i + 1);
+    }
+  }
+  travers(0, 0);
+  return answer;
+}
+// console.log(solution_11(5, 3, [2, 4, 5, 8, 12], 6));
+
+/**
+ * 가장 윗줄에 1부터 N까지의 숫자가 한 개씩 적혀 있다. 
+ * 그리고 둘째 줄부터 차례대로 파스칼 의 삼각형처럼 위의 두개를 더한 값이 저장되게 된다. 
+ * 예를 들어 N이 4 이고 가장 윗 줄에 3 1 2 4 가 있다고 했을 때, 다음과 같은 삼각형이 그려진다.
+  3 1 2 4 
+   4 3 6 
+    7 9  
+    16
+ */
+function solution_12(n, f) {
+  // 4c2
+  function makeCombiArr(arr) {
+    function combination(N, R) {
+      if (N === R || R === 0) return 1;
+      return combination(N - 1, R - 1) + combination(N - 1, R);
+    }
+    for (let i = 0; i < n; i++) {
+      arr[i] = combination(n - 1, i);
+    }
+    return arr;
+  }
+
+  // console.log(combiArr);
+  const combiArr = makeCombiArr(Array.from({ length: n }).fill(0));
+  // 체크배열
+  const ch = Array.from({ length: n }).fill(0);
+  // 사용배열
+  const tmp = Array.from({ length: n }).fill(0);
+  // 입력값
+  const arr = Array.from({ length: n }).map((_, i) => i + 1);
+  let flage = false;
+  // 1,2,3,4
+  console.log('combiArr', combiArr);
+  function travers(L) {
+    // if (flage) return;
+    if (L === n) {
+      let sum = 0;
+      for (let i = 0; i < tmp.length; i++) {
+        sum += tmp[i] * combiArr[i];
+      }
+      if (sum === f) flage = tree;
+      return;
+    }
+    for (let i = 0; i < arr.length; i++) {
+      if (ch[i] === 0 && !flage) {
+        ch[i] = 1;
+        tmp[L] = arr[i];
+        travers(L + 1);
+        ch[i] = 0;
+      }
+    }
+  }
+  travers(0);
+  return tmp;
+}
+// console.log(solution_12(4, 16));
+/**
+ * 조합구하기
+ * 1부터 N까지번호가적힌구슬이있습니다.
+ * 이중 M개를 뽑는 방법의수를 출력하는프로그램을 작성하세요.
+ */
+function solution_13(n, m) {
+  const answer = [];
+  const tmp = Array.from({ length: m }).fill(0);
+  const arr = Array.from({ length: n }).map((_, i) => i + 1);
+  // console.log(arr);
+  function travers(L, s) {
+    if (L === m) {
+      console.log(tmp);
+      answer.push(tmp.slice());
+      return;
+    }
+    for (let i = s; i < n; i++) {
+      tmp[L] = arr[i];
+      travers(L + 1, i + 1);
+    }
+  }
+  travers(0, 0);
+  console.log(answer);
+}
+console.log(solution_13(4, 2));
