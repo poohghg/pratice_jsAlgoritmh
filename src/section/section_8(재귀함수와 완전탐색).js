@@ -319,7 +319,6 @@ function combination(n, r) {
  * N개의 정수가 주어지면 그 숫자들 중 K개를 뽑는 조합의 합이
  * 임의의 정수 M의 배수인 개수 는 몇 개가 있는지 출력하는 프로그램을 작성하세요.
  */
-
 // 123  3c2
 //  6/2
 // 12 13 23
@@ -328,6 +327,7 @@ function solution_11(n, k, arr, m) {
   let answer = [];
   const tmp = Array.from({ length: k });
   function travers(L, index) {
+    console.log(tmp);
     if (L === k) {
       if (tmp.reduce((a, b) => a + b, 0) % m === 0) answer.push(tmp.slice());
       return;
@@ -400,26 +400,24 @@ function solution_12(n, f) {
 // console.log(solution_12(4, 16));
 /**
  * 조합구하기
- * 1부터 N까지번호가적힌구슬이있습니다.
+ * 1부터 N까지 번호가 적힌 구슬이 있습니다.
  * 이중 M개를 뽑는 방법의수를 출력하는프로그램을 작성하세요.
  */
 function solution_13(n, m) {
   const answer = [];
-  const tmp = Array.from({ length: m }).fill(0);
-  const arr = Array.from({ length: n }).map((_, i) => i + 1);
-  // console.log(arr);
+  const tmp = [];
   function travers(L, s) {
     if (L === m) {
       console.log(tmp);
       answer.push(tmp.slice());
       return;
     }
-    for (let i = s; i < n; i++) {
-      tmp[L] = arr[i];
+    for (let i = s; i <= n; i++) {
+      tmp[L] = i;
       travers(L + 1, i + 1);
     }
   }
-  travers(0, 0);
+  travers(0, 1);
   console.log(answer);
 }
 console.log(solution_13(4, 2));
