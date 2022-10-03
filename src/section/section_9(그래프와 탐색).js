@@ -1,3 +1,30 @@
+class PriorityQueue {
+  #value = [];
+
+  get value() {
+    return this.#value;
+  }
+
+  #sort() {
+    this.#value.sort((a, b) => a.priority - b.priority);
+  }
+
+  enqueue(val, priority) {
+    if (val == null || isNaN(priority)) return;
+    const prevNode = this.#value.find((element) => element.val === val);
+    if (prevNode) {
+      prevNode.priority = priority;
+    } else {
+      this.value.push({ val, priority });
+    }
+    this.#sort();
+  }
+
+  dequeue() {
+    return this.#value.shift();
+  }
+}
+
 /**
  * 버텍스: 노드
  * 엣지: 간선(노드사이의 연걸선)
@@ -12,10 +39,10 @@ class Grape {
     if (!this.list[vertex]) this.list[vertex] = [];
   }
 
-  addEdge(vertex1, vertex2) {
+  addEdge(vertex1, vertex2, weigth = 0) {
     if (!this.list[vertex1] || !this.list[vertex2]) return;
-    const setV1 = new Set(this.list[vertex1].concat(vertex2));
-    const setV2 = new Set(this.list[vertex2].concat(vertex1));
+    const setV1 = new Set(this.list[vertex1].concat({ node: vertex2, weigth }));
+    const setV2 = new Set(this.list[vertex2].concat({ node: vertex1, weigth }));
 
     this.list[vertex1] = Array.from(setV1);
     this.list[vertex2] = Array.from(setV2);
@@ -23,14 +50,18 @@ class Grape {
 
   removeEdge(vertex1, vertex2) {
     if (!this.list[vertex1] || !this.list[vertex2]) return;
-    this.list[vertex1] = this.list[vertex1].filter((v) => v !== vertex2);
-    this.list[vertex2] = this.list[vertex2].filter((v) => v !== vertex1);
+    this.list[vertex1] = this.list[vertex1].filter(
+      ({ node }) => node !== vertex2,
+    );
+    this.list[vertex2] = this.list[vertex2].filter(
+      ({ node }) => node !== vertex1,
+    );
   }
 
   removeVertex(vertex) {
     if (!this.list[vertex]) return;
     this.list[vertex].forEach((edge) => {
-      this.removeEdge(vertex, edge);
+      this.removeEdge(vertex, edge.node);
     });
     delete this.list[vertex];
   }
@@ -44,11 +75,10 @@ class Grape {
       result.push(vertex);
       visited[vertex] = true;
       for (const neighbor of t.list[vertex]) {
-        if (!visited[neighbor]) travers(neighbor);
+        if (!visited[neighbor.node]) travers(neighbor.node);
       }
     }
     travers(start);
-    // travers.call(Grape, start);
     return result;
   }
   // 넓이 우선탐색
@@ -64,12 +94,60 @@ class Grape {
       if (!visited[currVertex]) {
         visited[currVertex] = true;
         for (const neighbor of this.list[currVertex]) {
-          queue.push(neighbor);
+          queue.push(neighbor.node);
         }
       }
       // currVertex.forEach
     }
     return Object.keys(visited);
+  }
+
+  Dijkstra(start, end) {
+    if (!this.list[start] || !this.list[end]) return;
+
+    // 방문해야할 리스트를 우선순위큐로 만들어 다음에 방문해야할 노드를 탐색
+    const nodes = new PriorityQueue();
+    // 시작점부터의 각노드의 거리를 표기한다.
+    const distances = {};
+    // 해당노드가 전 방문노드를 체크
+    const previous = {};
+
+    for (const vertex in this.list) {
+      if (start === vertex) {
+        nodes.enqueue(start, 0);
+        distances[start] = 0;
+      } else {
+        nodes.enqueue(vertex, Infinity);
+        distances[vertex] = Infinity;
+      }
+      previous[vertex] = null;
+    }
+
+    let shortest;
+    let curDistance;
+    while (nodes.value.length) {
+      shortest = nodes.dequeue().val;
+      if (shortest === end) {
+        const path = [shortest];
+        while (shortest !== start) {
+          path.unshift(previous[shortest]);
+          shortest = previous[shortest];
+        }
+        return { path, distance: distances[end] };
+      }
+      if (distances[shortest] !== Infinity) {
+        for (const { node, weigth } of this.list[shortest]) {
+          // console.log('node', node, 'weigth', weigth);
+          curDistance = distances[shortest] + weigth;
+          if (distances[node] > curDistance) {
+            distances[node] = curDistance;
+            previous[node] = shortest;
+            nodes.enqueue(node, curDistance);
+          }
+        }
+      }
+    }
+    return;
   }
 }
 
@@ -87,15 +165,17 @@ g.addVertex('C');
 g.addVertex('D');
 g.addVertex('E');
 g.addVertex('F');
-g.addEdge('A', 'B');
-g.addEdge('A', 'C');
-g.addEdge('B', 'D');
-g.addEdge('C', 'E');
-g.addEdge('D', 'E');
-g.addEdge('D', 'F');
-g.addEdge('E', 'F');
+g.addEdge('A', 'B', 3);
+g.addEdge('A', 'C', 4);
+g.addEdge('B', 'D', 5);
+g.addEdge('C', 'E', 3);
+g.addEdge('D', 'E', 2);
+g.addEdge('D', 'F', 1);
+g.addEdge('E', 'F', 2);
 // console.log(g.DFS('A'));
-console.log(g.BFS('A'));
+// console.log(g.BFS('A'));
+// console.log(g.list);
+console.log(g.Dijkstra('A', 'F'));
 // const t = Array.from(Array(5), () => Array(5).fill(0));
 // console.log(t);
 
@@ -253,10 +333,10 @@ function solution_4(s, e) {
   // let answer = 0;
   const moves = [-1, 1, 5];
   const distance = Array.from({ length: 10001 });
-
-  distance[s] = 0;
   const visited = { s: true };
   const queue = [s];
+
+  distance[s] = 0;
 
   let currValue;
   let newDistance;
@@ -283,7 +363,7 @@ function solution_4(s, e) {
  * 각 섬은 1로 표시되어 상하좌 우와 대각선으로 연결되어 있으며, 0은 바다입니다.
  * 섬나라 아일랜드에 몇 개의 섬이 있는지 구하는 프로그램을 작성하세요.
  */
-// BFS
+// DFS
 function solution_5(n, arr) {
   let answer = 0;
   const dx = [-1, 0, 1, 0, -1, 1, 1, -1];
@@ -314,7 +394,7 @@ function solution_5(n, arr) {
   return answer;
 }
 
-// DFS
+// BFS
 function solution_6(n, arr) {
   let answer = 0;
   const dx = [-1, 0, 1, 0, -1, 1, 1, -1];
@@ -344,14 +424,72 @@ function solution_6(n, arr) {
   return answer;
 }
 
+// console.log(
+//   solution_6(7, [
+//     [1, 1, 0, 0, 0, 1, 0],
+//     [0, 1, 1, 0, 1, 1, 0],
+//     [0, 1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 1, 0, 1, 1],
+//     [1, 1, 0, 1, 1, 0, 0],
+//     [1, 0, 0, 0, 1, 0, 0],
+//     [1, 0, 1, 0, 1, 0, 0],
+//   ]),
+// );
+
+function solution7(n, edge) {
+  let answer = 0;
+  const list = {};
+  const distance = { 1: 0 };
+  const q = [1];
+  // const visited = { 1: true };
+
+  for (const [v1, v2] of edge) {
+    if (!list[v1]) list[v1] = [];
+    if (!list[v2]) list[v2] = [];
+    list[v1].push(v2);
+    list[v2].push(v1);
+  }
+
+  for (const x in list) {
+    if (x === '1') distance[x] = 0;
+    else distance[x] = Infinity;
+  }
+
+  let curNode;
+  while (q.length) {
+    curNode = q.shift();
+    for (const x of list[curNode]) {
+      if (distance[x] > distance[curNode] + 1) {
+        distance[x] = distance[curNode] + 1;
+        q.push(x);
+      }
+    }
+  }
+  const values = Object.values(distance);
+  const max = Math.max(...values);
+  values.forEach((v) => {
+    if (v === max) answer++;
+  });
+  return answer;
+}
+
 console.log(
-  solution_6(7, [
-    [1, 1, 0, 0, 0, 1, 0],
-    [0, 1, 1, 0, 1, 1, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 1, 1],
-    [1, 1, 0, 1, 1, 0, 0],
-    [1, 0, 0, 0, 1, 0, 0],
-    [1, 0, 1, 0, 1, 0, 0],
+  solution7(6, [
+    [3, 6],
+    [4, 3],
+    [3, 2],
+    [1, 3],
+    [1, 2],
+    [2, 4],
+    [5, 2],
   ]),
 );
+
+function fibo(n, memo = {}) {
+  if (n <= 2) return 1;
+  if (memo[n]) return memo[n];
+  const res = fibo(n - 1, memo) + fibo(n - 2, memo);
+  memo[n] = res;
+  return res;
+}
+console.log('test', fibo(3));
