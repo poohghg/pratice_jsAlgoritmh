@@ -149,14 +149,69 @@ function solution_5(score) {
   }
   return answer;
 }
+// console.log(
+//   solution_5([
+//     [80, 70],
+//     [70, 80],
+//     [30, 50],
+//     [90, 100],
+//     [100, 90],
+//     [100, 100],
+//     [10, 30],
+//   ]),
+// );
+
+/**
+ * 캐쉬
+ * LRU
+ */
+function solution_6(cacheSize, cities) {
+  let answer = 0;
+  const cache = new Set();
+  for (let city of cities) {
+    if (!cacheSize) return 5 * cities.length;
+    city = city.toLowerCase();
+    if (cache.has(city)) {
+      cache.delete(city);
+      answer += 1;
+    } else {
+      if (cache.size === cacheSize) cache.delete(cache.values().next().value);
+      answer += 5;
+    }
+    cache.add(city);
+  }
+  return answer;
+}
+// console.log(
+//   solution_6(3, [
+//     'Jeju',
+//     'Pangyo',
+//     'Seoul',
+//     'NewYork',
+//     'LA',
+//     'Jeju',
+//     'Pangyo',
+//     'Seoul',
+//     'NewYork',
+//     'LA',
+//   ]),
+// );
+
+function solution_7(array, commands) {
+  const answer = [];
+  for (let [s, e, k] of commands) {
+    let tmp = array.slice(s - 1, e).sort((a, b) => a - b)[k - 1];
+    answer.push(tmp);
+  }
+  return answer;
+}
 console.log(
-  solution_5([
-    [80, 70],
-    [70, 80],
-    [30, 50],
-    [90, 100],
-    [100, 90],
-    [100, 100],
-    [10, 30],
-  ]),
+  solution_7(
+    [1, 5, 2, 6, 3, 7, 4],
+    [
+      [2, 5, 3],
+      [4, 4, 1],
+      [1, 7, 3],
+    ],
+  ),
 );
