@@ -205,13 +205,91 @@ function solution_7(array, commands) {
   }
   return answer;
 }
-console.log(
-  solution_7(
-    [1, 5, 2, 6, 3, 7, 4],
-    [
-      [2, 5, 3],
-      [4, 4, 1],
-      [1, 7, 3],
-    ],
-  ),
-);
+// console.log(
+//   solution_7(
+//     [1, 5, 2, 6, 3, 7, 4],
+//     [
+//       [2, 5, 3],
+//       [4, 4, 1],
+//       [1, 7, 3],
+//     ],
+//   ),
+// );
+/**
+ * 자연수 n이 주어졌을 때, n의 다음 큰 숫자는 다음과 같이 정의 합니다.
+ * 조건 1. n의 다음 큰 숫자는 n보다 큰 자연수 입니다.
+ * 조건 2. n의 다음 큰 숫자와 n은 2진수로 변환했을 때 1의 갯수가 같습니다.
+ * 조건 3. n의 다음 큰 숫자는 조건 1, 2를 만족하는 수 중 가장 작은 수 입니다.
+ */
+function solution_8(n) {
+  const binaryCnt = Array.from(n.toString(2)).filter((v) => v === '1').length;
+  let tmp;
+  while (true) {
+    n++;
+    tmp = Array.from(n.toString(2)).filter((v) => v === '1').length;
+    if (binaryCnt === tmp) return n;
+  }
+}
+// console.log(solution_8(15));
+// 포켓몬 해쉬
+function solution_8(nums) {
+  const getMaxCnt = Math.floor(nums.length / 2);
+  const size = new Set(nums).size;
+  return getMaxCnt > size ? size : getMaxCnt;
+}
+// console.log(solution_8([3, 1, 2, 3]));
+
+// 피로도
+function solution_9(k, dungeons) {
+  let max = 0;
+  const ch = Array.from({ length: dungeons.length }).fill(0);
+  function DFS(l, k) {
+    max = Math.max(max, l);
+    for (let i = 0; i < dungeons.length; i++) {
+      const [limitedNum, exhaustion] = dungeons[i];
+      if (ch[i] === 0 && k >= limitedNum) {
+        ch[i] = 1;
+        DFS(l + 1, k - exhaustion);
+        ch[i] = 0;
+      }
+    }
+  }
+  DFS(0, k);
+  return max;
+}
+// console.log(
+//   solution_9(80, [
+//     [80, 20],
+//     [50, 40],
+//     [30, 10],
+//   ]),
+// );
+
+// 같은 숫자는 싫어
+function solution_10(arr) {
+  const answer = [];
+  let last = '';
+  for (let i = 0; i < arr.length; i++) {
+    if (last !== arr[i]) {
+      answer.push(arr[i]);
+      last = arr[i];
+    }
+  }
+  return answer;
+}
+
+// 두 개 뽑아서 더하기
+function solution_11(numbers) {
+  const answer = new Set();
+  function DFS(l, s, sum) {
+    if (l === 2) {
+      answer.add(sum);
+    }
+    for (let i = s; i < numbers.length; i++) {
+      DFS(l + 1, i + 1, sum + numbers[i]);
+    }
+  }
+  DFS(0, 0, 0);
+  return Array.from(answer).sorat((a, b) => a - b);
+}
+console.log(solution_11([2, 1, 3, 4, 1]));
