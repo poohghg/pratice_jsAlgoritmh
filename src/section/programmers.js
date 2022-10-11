@@ -280,16 +280,87 @@ function solution_10(arr) {
 
 // 두 개 뽑아서 더하기
 function solution_11(numbers) {
-  const answer = new Set();
-  function DFS(l, s, sum) {
-    if (l === 2) {
-      answer.add(sum);
-    }
-    for (let i = s; i < numbers.length; i++) {
-      DFS(l + 1, i + 1, sum + numbers[i]);
+  let answer = new Set();
+  for (let i = 0; i < numbers.length - 1; i++) {
+    for (let j = i + 1; j < numbers.length; j++) {
+      answer.add(numbers[i] + numbers[j]);
     }
   }
-  DFS(0, 0, 0);
-  return Array.from(answer).sorat((a, b) => a - b);
+  return Array.from(answer).sort((a, b) => a - b);
 }
-console.log(solution_11([2, 1, 3, 4, 1]));
+// console.log(solution_11([2, 1, 3, 4, 1]));
+
+// 시저 암호
+function solution_12(s, n) {
+  function checkalphabet(num) {
+    let tmp = num + n;
+    if ('a'.charCodeAt() <= num && num <= 'z'.charCodeAt()) {
+      if (tmp > 'z'.charCodeAt()) {
+        tmp = tmp - 'z'.charCodeAt() + 'a'.charCodeAt() - 1;
+      }
+    } else if ('A'.charCodeAt() <= num && num <= 'Z'.charCodeAt()) {
+      if (tmp > 'Z'.charCodeAt()) {
+        tmp = tmp - 'Z'.charCodeAt() + 'A'.charCodeAt() - 1;
+      }
+    }
+    return String.fromCharCode(tmp);
+  }
+  let answer = '';
+  for (let i = 0; i < s.length; i++) {
+    if (s[i].charCodeAt() === 32) {
+      answer += ' ';
+    } else {
+      answer += checkalphabet(s[i].charCodeAt());
+    }
+  }
+  return answer;
+}
+// console.log(solution_12('a B z', 4));
+
+// 예산
+function solution_13(d, budget) {
+  let answer = 0;
+  d.sort((a, b) => a - b);
+  for (const m of d) {
+    console.log(m);
+    if (budget < m) break;
+    answer += 1;
+    budget -= m;
+  }
+  return answer;
+}
+// console.log(solution_13([1, 3, 2, 5, 4], 9));
+// 카펫
+function solution_14(brown, yellow) {
+  let sum = brown + yellow;
+  for (let h = 3; h <= sum; h++) {
+    if (sum % h === 0) {
+      let w = sum / h;
+      if (h > w) return;
+      if ((w - 2) * (h - 2) === yellow) return [w, h];
+    }
+  }
+}
+// console.log(solution_14(24, 9));
+
+// 최소직사각형
+function solution_15(sizes) {
+  let answer = [0, 0];
+  //  큰 순서로 정렬
+  const sorted = sizes.map(([w, h]) => (h > w ? [h, w] : [w, h]));
+  for (const [w, h] of sorted) {
+    if (w > answer[0]) answer[0] = w;
+    if (h > answer[1]) answer[1] = h;
+  }
+  return answer[0] * answer[1];
+}
+
+console.log(
+  solution_15([
+    [10, 7],
+    [12, 3],
+    [8, 15],
+    [14, 7],
+    [5, 15],
+  ]),
+);
