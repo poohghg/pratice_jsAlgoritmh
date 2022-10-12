@@ -136,6 +136,8 @@ function solution_4(clothes) {
 //     ['green_turban', 'headgear'],
 //   ]),
 // );
+
+// 순위
 function solution_5(score) {
   const answer = Array.from({ length: score.length }).fill(1);
   let sum;
@@ -149,6 +151,28 @@ function solution_5(score) {
   }
   return answer;
 }
+
+// 문자열 내 마음대로 정렬하기
+// 이 함수가 리턴하는 값이 0보다 작을 경우, a가 b보다 앞에 오도록 정렬하고,
+// 이 함수가 리턴하는 값이 0보다 클 경우, b가 a보다 앞에 오도록 정렬합니다.
+function solution_5_1(strings, n) {
+  return strings.sort((a, b) => {
+    if (a.charCodeAt(n) === b.charCodeAt(n)) {
+      return a > b ? 1 : -1;
+      // return b - a;
+    }
+    return a.charCodeAt(n) - b.charCodeAt(n);
+  });
+}
+
+// 내적
+function solution_5_2(a, b) {
+  return a.reduce((prev, curr, idx) => prev + curr * b[idx], 0);
+}
+
+console.log(solution_5_2([1, 2, 3, 4], [-3, -1, 0, 2]));
+
+// console.log(solution_5_1(['abce', 'abcd', 'cdx'], 2));
 // console.log(
 //   solution_5([
 //     [80, 70],
@@ -354,13 +378,24 @@ function solution_15(sizes) {
   }
   return answer[0] * answer[1];
 }
-
-console.log(
-  solution_15([
-    [10, 7],
-    [12, 3],
-    [8, 15],
-    [14, 7],
-    [5, 15],
-  ]),
-);
+// console.log(
+//   solution_15([
+//     [10, 7],
+//     [12, 3],
+//     [8, 15],
+//     [14, 7],
+//     [5, 15],
+//   ]),
+// );
+// 가운데 숫자가져오기
+function solution_15(s) {
+  let answer = '';
+  const len = Math.floor(s.length / 2);
+  if (s.length % 2 === 0) {
+    answer = s[len - 1] + s[len];
+  } else {
+    answer = s[len];
+  }
+  return answer;
+}
+// console.log(solution_15('qwer'));
