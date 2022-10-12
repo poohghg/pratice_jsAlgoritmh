@@ -399,3 +399,94 @@ function solution_15(s) {
   return answer;
 }
 // console.log(solution_15('qwer'));
+
+function solution_16(arr) {
+  const min = Math.min(...arr);
+  const minIndex = arr.findIndex((v) => v === min);
+  arr.splice(minIndex, 1);
+  return arr.length !== 0 ? arr : [-1];
+}
+
+// console.log(solution([4, 3, 2, 1]));
+
+// 이상한 문자 만들기
+function solution_17(s) {
+  let answer = '';
+  let cnt = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === ' ') {
+      cnt = 0;
+      answer += ' ';
+    } else {
+      cnt++;
+      cnt % 2 !== 0
+        ? (answer += s[i].toUpperCase())
+        : (answer += s[i].toLowerCase());
+    }
+  }
+  return answer;
+}
+// console.log(solution_17('try hello world'));
+
+/**
+ * 짝지어 제하
+ * 짝지어 제거하기는, 알파벳 소문자로 이루어진 문자열을 가지고 시작합니다.
+ * 먼저 문자열에서 같은 알파벳이 2개 붙어 있는 짝을 찾습니다.
+ * 그다음, 그 둘을 제거한 뒤, 앞뒤로 문자열을 이어 붙입니다.
+ * 이 과정을 반복해서 문자열을 모두 제거한다면 짝지어 제거하기가 종료됩니다.
+ * 문자열 S가 주어졌을 때, 짝지어 제거하기를 성공적으로 수행할 수 있는지 반환하는 함수를 완성해 주세요.
+ * 성공적으로 수행할 수 있으면 1을, 아닐 경우 0을 리턴해주면 됩니다.
+ */
+
+function solution_18(s) {
+  if (s.length % 2 !== 0) return 0;
+  const stack = [];
+  for (let i = 0; i < s.length; i++) {
+    if (stack[stack.length - 1] === s[i]) stack.pop();
+    else stack.push(s[i]);
+  }
+  return stack.length === 0 ? 1 : 0;
+}
+// console.log(solution_18('baabaa'));
+
+// 비밀지도
+function solution_19(n, arr1, arr2) {
+  const answer = Array.from({ length: n }).fill('');
+  for (let i = 0; i < n; i++) {
+    const tmp1 = arr1[i].toString(2).split('');
+    const tmp2 = arr2[i].toString(2).split('');
+    const tmpArr = [];
+
+    while (tmpArr.length !== n) {
+      const x1 = tmp1.pop();
+      const x2 = tmp2.pop();
+      if (x1 === '1' || x2 === '1') tmpArr.push('#');
+      else tmpArr.push(' ');
+    }
+    answer[i] = tmpArr.reverse().join('');
+  }
+  return answer;
+}
+// console.log(solution_19(6, [46, 33, 33, 22, 31, 50], [27, 56, 19, 14, 14, 10]));
+
+// 숫자 문자열과 영단어
+function solution_20(s) {
+  if (s.length === 0) return;
+  const stringToNum = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  for (let i = 0; i < 10; i++) {
+    s = s.split(stringToNum[i]).join(i);
+  }
+  return parseInt(s, 10);
+}
+// console.log(solution_20('one4seveneight'));
