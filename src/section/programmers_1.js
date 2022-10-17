@@ -120,3 +120,95 @@ function solution_6(numbers) {
   }
   return answer;
 }
+
+function solution_7(id_list, report, k) {
+  // let reports = [...new Set(report)].map((a) => {
+  //   return a.split(' ');
+  // });
+  // console.log(reports);
+
+  const reportedList = {};
+  for (const info of report) {
+    const [reporter, respondent] = info.split(' ');
+    if (!reportedList[respondent]) reportedList[respondent] = [];
+    if (reportedList[respondent].indexOf(reporter) === -1)
+      reportedList[respondent].push(reporter);
+  }
+
+  const reportHistory = Object.values(reportedList).reduce((prev, curr) => {
+    if (curr.length >= k) return prev.concat(...curr);
+    return prev;
+  }, []);
+
+  return id_list.map(
+    (id) => reportHistory.filter((reporter) => reporter === id).length,
+  );
+}
+// console.log(
+//   solution_7(
+//     ['con', 'ryan'],
+//     ['ryan con', 'ryan con', 'ryan con', 'ryan con'],
+//     3,
+//   ),
+// );
+
+// 연속 부분 수열 합의 개수
+function solution_8(elements) {
+  if (!elements.length) return;
+  const lastSum = elements.reduce((a, b) => a + b);
+  const answer = new Set([lastSum]);
+
+  let l = 1;
+  while (l < elements.length) {
+    for (let i = 0; i < elements.length; i++) {
+      let tmp = elements[i];
+      let j = 1;
+      let idx = i + j;
+      while (j !== l) {
+        if (idx >= elements.length) idx = idx - elements.length;
+        tmp += elements[idx];
+        j++;
+        idx++;
+      }
+      answer.add(tmp);
+    }
+    l++;
+  }
+  return answer.size;
+}
+
+// console.log(solution_8([7, 9, 1, 1, 4]));
+function solution_9(n, times) {
+  times.sort((a, b) => a - b);
+  let left = 1;
+  let right = n * Math.max(...times);
+  let answer = right;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    let count = 0;
+    for (const time of times) count += Math.floor(mid / time);
+    if (count >= n) {
+      answer = Math.min(answer, mid);
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+  return answer;
+}
+// console.log(solution_9(6, [7, 10]));
+// function solution_10(target) {
+//   let cnt = 0;
+//   let centerCnt = 0;
+//   // const answer = Array.from({ length: 2 }).fill(0);
+//   const score = Array.from({ length: 20 }).map((_, i) => i + 1);
+//   const dobuleScore = score.map((v) => v * 3);
+//   console.log(dobuleScore);
+
+//   // while (target > 0) {
+//   //   cnt++;
+//   // }
+
+//   return [cnt, centerCnt];
+// }
+// console.log(solution_10(21));
