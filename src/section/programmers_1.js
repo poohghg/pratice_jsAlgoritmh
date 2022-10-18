@@ -212,3 +212,101 @@ function solution_9(n, times) {
 //   return [cnt, centerCnt];
 // }
 // console.log(solution_10(21));
+
+// 스타 수열
+function solution_11(a) {
+  let max = 0;
+  const total = [];
+  function DFS(l, tmp) {
+    if (tmp.length % 2 === 0) {
+      const checkArr = [tmp[0], tmp[1]];
+      for (let i = 0; i < tmp.length; i = i + 2) {
+        if (
+          tmp[i] === tmp[i + 1] ||
+          (checkArr.indexOf(tmp[i]) === -1 &&
+            checkArr.indexOf(tmp[i + 1]) === -1)
+        )
+          return;
+      }
+    }
+    if (l === a.length) {
+      if (tmp.length % 2 === 0) max = Math.max(max, tmp.length);
+      // total.push(tmp.slice());
+      return;
+    }
+    DFS(l + 1, tmp.concat(a[l]));
+    DFS(l + 1, tmp);
+  }
+  DFS(0, []);
+  return max;
+}
+
+// 스타 수열
+function solution_11_1(a) {
+  const aObj = a.reduce((prev, curr) => {
+    prev[curr] = ++prev[curr] || 1;
+    return prev;
+  }, {});
+  const sorted = Object.entries(aObj).sort((a, b) => b[1] - a[1]);
+
+  let max = 0;
+  for (let i = 0; i < sorted.length; i++) {
+    let [key, value] = sorted[i];
+    let cnt = 0;
+    for (let j = 0; j < a.length - 1; j++) {
+      if (!value) break;
+      if (a[j] === a[j + 1]) continue;
+      if (a[j] !== +key && a[j + 1] !== +key) continue;
+      cnt += 2;
+      value--;
+      // 짝수
+      j++;
+    }
+    if (cnt > max) max = cnt;
+    else break;
+  }
+  return max;
+}
+
+// console.log(solution_11_1([0, 3, 3, 0, 7, 2, 0, 2, 2, 0]));
+
+function solution_12(n, wires) {
+  const list = {};
+
+  function addVetex(vertex1, vertex2) {
+    if (!list[vertex1]) list[vertex1] = [];
+    if (!list[vertex2]) list[vertex2] = [];
+    list[vertex1].push(vertex2);
+    list[vertex2].push(vertex1);
+  }
+
+  function removeVetex(vertex1, vertex2) {
+    list[vertex1] = list[vertex1].filter((vertex) => vertex !== vertex2);
+    list[vertex2] = list[vertex2].filter((vertex) => vertex !== vertex1);
+  }
+
+  for (const [vertex1, vertex2] of wires) {
+    addVetex(vertex1, vertex2);
+  }
+
+  const init = { ...list };
+  // console.log(init);
+  console.log(list);
+  removeVetex(1, 3);
+  console.log(list);
+  // addVetex(1, 3);
+  // console.log(list);
+}
+
+console.log(
+  solution_12(9, [
+    [1, 3],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [4, 6],
+    [4, 7],
+    [7, 8],
+    [7, 9],
+  ]),
+);
