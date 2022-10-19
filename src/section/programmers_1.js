@@ -271,42 +271,107 @@ function solution_11_1(a) {
 // console.log(solution_11_1([0, 3, 3, 0, 7, 2, 0, 2, 2, 0]));
 
 function solution_12(n, wires) {
+  // 현재노드에서 끊어진 노드를 제외하고 방문한 노드의 수를 리턴한다.
+  function BFS(root, e) {
+    const visited = { [root]: true };
+    const q = [root];
+    let curNode;
+    // let count = 0;
+    while (q.length !== 0) {
+      curNode = q.shift();
+      list[curNode].forEach((next) => {
+        if (!visited[next] && next !== e) {
+          q.push(next);
+          visited[next] = true;
+        }
+      });
+    }
+    console.log(root, visited);
+    return Object.keys(visited).length;
+  }
+
   const list = {};
 
-  function addVetex(vertex1, vertex2) {
+  for (const [vertex1, vertex2] of wires) {
     if (!list[vertex1]) list[vertex1] = [];
     if (!list[vertex2]) list[vertex2] = [];
     list[vertex1].push(vertex2);
     list[vertex2].push(vertex1);
   }
-
-  function removeVetex(vertex1, vertex2) {
-    list[vertex1] = list[vertex1].filter((vertex) => vertex !== vertex2);
-    list[vertex2] = list[vertex2].filter((vertex) => vertex !== vertex1);
+  // const init = { ...list };
+  let answer = Number.MAX_SAFE_INTEGER;
+  for (const wire of wires) {
+    const count = BFS(wire[0], wire[1]) - BFS(wire[1], wire[0]);
+    answer = Math.min(answer, Math.abs(count));
   }
-
-  for (const [vertex1, vertex2] of wires) {
-    addVetex(vertex1, vertex2);
-  }
-
-  const init = { ...list };
-  // console.log(init);
-  console.log(list);
-  removeVetex(1, 3);
-  console.log(list);
-  // addVetex(1, 3);
-  // console.log(list);
+  return answer;
 }
+// console.log(
+//   solution_12(7, [
+//     [1, 2],
+//     [2, 3],
+//   ]),
+// );
 
+// 공 이동 시뮬레이션
+function solution_13(n, m, x, y, queries) {
+  const grid = [n, m];
+  let cnt = 0;
+
+  let gridArr = [];
+  // [];
+  const answer = Array.from({ length: n }).map((_, i) =>
+    Array.from({ length: m }).map((_, j) => {
+      gridArr.push([i, j]);
+      return 0;
+    }),
+  );
+
+  console.log('gridArr', gridArr);
+  // console.log(answer);
+  // console.log(gridArr);
+  // for (const [command, dx] of queries) {
+  //   const tmp = new Set();
+  //   for (let start of gridArr) {
+  //     start = start.split('').map((v) => Number(v));
+  //     switch (command) {
+  //       case 0:
+  //         start[1] -= dx;
+  //         if (start[1] < 0) start[1] = 0;
+  //         break;
+  //       case 1:
+  //         start[1] += dx;
+  //         if (start[1] > grid[1]) start[1] = grid[1];
+  //         break;
+  //       case 2:
+  //         start[0] -= dx;
+  //         if (start[0] < 0) start[0] = 0;
+  //         break;
+  //       case 3:
+  //         start[0] += dx;
+  //         if (start[0] > grid[0]) start[0] = grid[0];
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //     answer[start[0]][start[1]] = 1;
+  //     tmp.add(start.join(''));
+  //   }
+  //   gridArr = Array.from(tmp);
+  // }
+  // console.log(gridArr);
+  return cnt;
+}
 console.log(
-  solution_12(9, [
-    [1, 3],
+  solution_13(2, 5, 0, 0, [
+    [3, 1],
+    [2, 2],
+    [1, 1],
     [2, 3],
-    [3, 4],
-    [4, 5],
-    [4, 6],
-    [4, 7],
-    [7, 8],
-    [7, 9],
+    [0, 1],
+    [2, 1],
   ]),
 );
+// const arr = ['1,2', '1,2', '1,2', '1,2', '1,3'];
+// const a = new Set(arr);
+// console.log(a.keys());
