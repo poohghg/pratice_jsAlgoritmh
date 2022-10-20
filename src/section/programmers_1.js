@@ -217,6 +217,7 @@ function solution_9(n, times) {
 function solution_11(a) {
   let max = 0;
   const total = [];
+
   function DFS(l, tmp) {
     if (tmp.length % 2 === 0) {
       const checkArr = [tmp[0], tmp[1]];
@@ -237,6 +238,7 @@ function solution_11(a) {
     DFS(l + 1, tmp.concat(a[l]));
     DFS(l + 1, tmp);
   }
+
   DFS(0, []);
   return max;
 }
@@ -314,64 +316,179 @@ function solution_12(n, wires) {
 // );
 
 // 공 이동 시뮬레이션
+// 추후 도전
 function solution_13(n, m, x, y, queries) {
-  const grid = [n, m];
+  // const grid = [n, m];
+  // let cnt = 0;
+  // let gridArr = [];
+  // const answer = Array.from({ length: n }).map((_, i) =>
+  //   Array.from({ length: m }).map((_, j) => {
+  //     // gridArr.push([i, j]);
+  //     return 1;
+  //   }),
+  // );
+  // console.log('answer', answer);
+  // // console.log(answer);
+  // // console.log(gridArr);
+  // // for (const [command, dx] of queries) {
+  // //   // const tmp = new Set();
+  // //   for (const start of gridArr) {
+  // //     // start = start.split('').map((v) => Number(v));
+  // //     const slice = start.slice();
+  // //     switch (command) {
+  // //       case 0:
+  // //         start[1] -= dx;
+  // //         if (start[1] < 0) start[1] = 0;
+  // //         break;
+  // //       case 1:
+  // //         start[1] += dx;
+  // //         if (start[1] >= grid[1]) start[1] = grid[1] - 1;
+  // //         break;
+  // //       case 2:
+  // //         start[0] -= dx;
+  // //         if (start[0] < 0) start[0] = 0;
+  // //         break;
+  // //       case 3:
+  // //         start[0] += dx;
+  // //         if (start[0] >= grid[0]) start[0] = grid[0] - 1;
+  // //         break;
+  // //       default:
+  // //         break;
+  // //     }
+  // //     // answer[start[0]][start[1]] = 1;
+  // //     // tmp.add(start);
+  // //     // console.log('answer', start, answer);
+  // //     // console.log('s', start);
+  // //     answer[start[0]][start[1]] += 1;
+  // //     // 원본을 빼고
+  // //     answer[slice[0]][slice[1]] -= 1;
+  // //   }
+  // //   // gridArr = Array.from(tmp);
+  // // }
+  // // console.log(answer);
+  // // console.log('gridArr', gridArr);
+  // return cnt;
+}
+// console.log(
+//   solution_13(2, 5, 0, 0, [
+//     [3, 1],
+//     [2, 2],
+//     [1, 1],
+//     [2, 3],
+//     [0, 1],
+//     [2, 1],
+//   ]),
+// );
+
+// 거리두기 확인하기
+function solution_14(places) {
+  const dx = [-1, 0, 1, 0];
+  const dy = [0, 1, 0, -1];
+  const answer = [];
   let cnt = 0;
 
-  let gridArr = [];
-  // [];
-  const answer = Array.from({ length: n }).map((_, i) =>
-    Array.from({ length: m }).map((_, j) => {
-      gridArr.push([i, j]);
-      return 0;
-    }),
+  // const BFS = () => {};
+  for (const room of places) {
+    let flage = 1;
+    for (let i = 0; i < 5; i++) {
+      if (flage === 0) break;
+      for (let j = 0; j < 5; j++) {
+        if (flage === 0) break;
+        if (room[i][j] === 'P') {
+          const visited = Array.from(Array(5), () => Array(5).fill(0));
+          const q = [[i, j, 0]];
+          visited[i][j] = 1;
+          while (q.length) {
+            if (cnt == 1 && i === 0 && j === 0) {
+              console.log('q', q);
+            }
+            const [x, y, l] = q.shift();
+            if (l >= 2) break;
+            for (let k = 0; k < dx.length; k++) {
+              let [nx, ny] = [x + dx[k], y + dy[k]];
+              if (
+                nx < 0 ||
+                nx >= 5 ||
+                ny < 0 ||
+                ny >= 5 ||
+                visited[nx][ny] === 1
+              )
+                continue;
+              if (room[nx][ny] === 'P') {
+                flage = 0;
+                break;
+              }
+              visited[nx][ny] = 1;
+              if (room[nx][ny] === 'O') q.push([nx, ny, l + 1]);
+            }
+            if (flage === 0) break;
+          }
+        }
+      }
+    }
+    cnt++;
+    answer.push(flage);
+  }
+  return answer;
+}
+// console.log(
+//   solution_14([
+//     ['POOOP', 'OXXOX', 'OPXPX', 'OOXOX', 'POXXP'],
+//     ['POOPX', 'OXPXP', 'PXXXO', 'OXXXO', 'OOOPP'],
+//     ['PXOPX', 'OXOXP', 'OXPOX', 'OXXOP', 'PXPOX'],
+//     ['OOOXX', 'XOOOX', 'OOOXX', 'OXOOX', 'OOOOO'],
+//     ['PXPXP', 'XPXPX', 'PXPXP', 'XPXPX', 'PXPXP'],
+//   ]),
+// );
+
+//모두 0으로 만들기
+function solution_15(a, edges) {
+  if (a.reduce((a, b) => a + b) % 2 !== 0) return -1;
+  const list = {};
+  const [max, maxIdx] = a.reduce(
+    (prev, curr, idx) => {
+      const prevValue = Math.abs(prev[0]);
+      curr = Math.abs(curr);
+      return curr > prevValue ? [curr, idx] : prev;
+    },
+    [0, -1],
   );
 
-  console.log('gridArr', gridArr);
-  // console.log(answer);
-  // console.log(gridArr);
-  // for (const [command, dx] of queries) {
-  //   const tmp = new Set();
-  //   for (let start of gridArr) {
-  //     start = start.split('').map((v) => Number(v));
-  //     switch (command) {
-  //       case 0:
-  //         start[1] -= dx;
-  //         if (start[1] < 0) start[1] = 0;
-  //         break;
-  //       case 1:
-  //         start[1] += dx;
-  //         if (start[1] > grid[1]) start[1] = grid[1];
-  //         break;
-  //       case 2:
-  //         start[0] -= dx;
-  //         if (start[0] < 0) start[0] = 0;
-  //         break;
-  //       case 3:
-  //         start[0] += dx;
-  //         if (start[0] > grid[0]) start[0] = grid[0];
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //     answer[start[0]][start[1]] = 1;
-  //     tmp.add(start.join(''));
-  //   }
-  //   gridArr = Array.from(tmp);
-  // }
-  // console.log(gridArr);
+  for (const [vertex1, vertex2] of edges) {
+    if (!list[vertex1]) list[vertex1] = [];
+    if (!list[vertex2]) list[vertex2] = [];
+    list[vertex1].push(vertex2);
+    list[vertex2].push(vertex1);
+  }
+
+  const visited = { [maxIdx]: true };
+  let cnt = -list[maxIdx].reduce(
+    (prev, curr) => Math.abs(a[prev]) + Math.abs(a[curr]),
+  );
+  let sum = 0;
+  function DFS(root) {
+    list[root].forEach((next) => {
+      if (!visited[next]) {
+        visited[next] = true;
+        DFS(next);
+        cnt += Math.abs(a[next]);
+        sum += a[next];
+      }
+    });
+  }
+  DFS(maxIdx);
+  cnt += Math.abs(max);
   return cnt;
 }
+
 console.log(
-  solution_13(2, 5, 0, 0, [
-    [3, 1],
-    [2, 2],
-    [1, 1],
-    [2, 3],
-    [0, 1],
-    [2, 1],
-  ]),
+  solution_15(
+    [-5, 0, 4, 0, 1],
+    [
+      [0, 1],
+      [3, 4],
+      [2, 3],
+      [0, 3],
+    ],
+  ),
 );
-// const arr = ['1,2', '1,2', '1,2', '1,2', '1,3'];
-// const a = new Set(arr);
-// console.log(a.keys());
