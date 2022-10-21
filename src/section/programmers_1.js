@@ -481,14 +481,64 @@ function solution_15(a, edges) {
   return cnt;
 }
 
-console.log(
-  solution_15(
-    [-5, 0, 4, 0, 1],
-    [
-      [0, 1],
-      [3, 4],
-      [2, 3],
-      [0, 3],
-    ],
-  ),
-);
+// console.log(
+//   solution_15(
+//     [-5, 0, 4, 0, 1],
+//     [
+//       [0, 1],
+//       [3, 4],
+//       [2, 3],
+//       [0, 3],
+//     ],
+//   ),
+// );
+
+// 괄호 변환
+function solution_15(p) {
+  if (!p) return '';
+  const isCheck = (s) => {
+    const stack = [];
+    for (const x of s) {
+      if (x === '(') stack.push('(');
+      else {
+        if (!stack.length) return false;
+        stack.pop();
+      }
+    }
+    return stack.length === 0 ? true : false;
+  };
+
+  let answer = '';
+  let count = 0;
+  for (let i = 0; i < p.length; i++) {
+    p[i] === '(' ? count++ : count--;
+    // 균형잡힌 괄호 문자열인지 체크
+    if (count === 0) {
+      // 올바른 괄호 문자열이라면
+      if (isCheck(p.slice(0, i + 1))) {
+        answer = p.slice(0, i + 1) + solution_15(p.slice(i + 1));
+        return answer;
+      } else {
+        // v처리
+        answer = '(' + solution_15(p.slice(i + 1)) + ')';
+        for (let j = 1; j < i; j++) {
+          if (p[j] === '(') answer += ')';
+          else answer += '(';
+        }
+        return answer;
+      }
+    }
+  }
+}
+// console.log(solution_15('))(((())(())'));
+
+// 부족한 금액 계산하기
+function solution_16(price, money, count) {
+  let answer = 0;
+  for (let i = 1; i <= count; i++) {
+    answer += price * i;
+  }
+  return answer > money ? answer - money : 0;
+}
+
+console.log(solution_16(3, 20, 4));
