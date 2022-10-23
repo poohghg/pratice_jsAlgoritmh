@@ -540,5 +540,52 @@ function solution_16(price, money, count) {
   }
   return answer > money ? answer - money : 0;
 }
+// console.log(solution_16(3, 20, 4));
 
-console.log(solution_16(3, 20, 4));
+// 콜라 문제
+function solution_17(a, b, n) {
+  let answer = 0;
+  while (a <= n) {
+    let res = n % a;
+    n = Math.floor(n / a) * b;
+    answer += n;
+    n += res;
+  }
+  return answer;
+}
+// console.log(solution_17(3, 2, 20));
+
+// 롤케이크 자르기
+function solution_17(topping) {
+  // const getSetSize = (arr) => new Set(arr).size;
+
+  const leftObj = topping.slice(0, 1).reduce((prev, curr) => {
+    prev[curr] = (prev[curr] || 0) + 1;
+    return prev;
+  }, {});
+  const rightObj = topping.slice(1).reduce((prev, curr) => {
+    prev[curr] = (prev[curr] || 0) + 1;
+    return prev;
+  }, {});
+  let cnt = 0;
+
+  let lk = 1;
+  let rk = Object.keys(rightObj).length;
+
+  for (let i = 1; i < topping.length - 1; i++) {
+    if (lk === rk) cnt++;
+    if (lk > rk) break;
+    const element = topping[i];
+    if (!leftObj[element]) {
+      leftObj[element] = 1;
+      lk++;
+    }
+    if (rightObj[element]) {
+      --rightObj[element];
+      if (rightObj[element] === 0) rk--;
+    }
+  }
+  return cnt;
+}
+
+console.log(solution_17([1, 2, 1, 3, 1, 4, 1, 2]));

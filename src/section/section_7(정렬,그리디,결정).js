@@ -358,7 +358,7 @@ function solution_8(c, arr) {
         curX = x;
       }
     }
-    console.log('cnt', cnt, 'm', middle);
+    // console.log('cnt', cnt, 'm', middle);
     if (cnt >= c) {
       answer = middle;
       lt = middle + 1;
