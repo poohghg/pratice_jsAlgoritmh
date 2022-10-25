@@ -108,6 +108,7 @@ class Grape {
     // 방문해야할 리스트를 우선순위큐로 만들어 다음에 방문해야할 노드를 탐색
     const nodes = new PriorityQueue();
     // 시작점부터의 각노드의 거리를 표기한다.
+    // nodes.
     const distances = {};
     // 해당노드가 전 방문노드를 체크
     const previous = {};
@@ -312,6 +313,8 @@ function solution_3(info, start = [1, 1], end = [7, 7]) {
   travers(startX - 1, startY - 1);
   console.log(answer);
 }
+
+function solution_3_1(params) {}
 // console.log(
 //   solution_3([
 //     [0, 0, 0, 0, 0, 0, 0],

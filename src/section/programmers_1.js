@@ -567,25 +567,171 @@ function solution_17(topping) {
     prev[curr] = (prev[curr] || 0) + 1;
     return prev;
   }, {});
-  let cnt = 0;
 
+  let cnt = 0;
   let lk = 1;
   let rk = Object.keys(rightObj).length;
 
   for (let i = 1; i < topping.length - 1; i++) {
     if (lk === rk) cnt++;
-    if (lk > rk) break;
+    else if (lk > rk) break;
+
     const element = topping[i];
     if (!leftObj[element]) {
       leftObj[element] = 1;
       lk++;
     }
-    if (rightObj[element]) {
-      --rightObj[element];
-      if (rightObj[element] === 0) rk--;
+    if (rightObj[element]) --rightObj[element];
+    if (rightObj[element] === 0) {
+      delete rightObj[element];
+      rk--;
     }
   }
   return cnt;
 }
 
-console.log(solution_17([1, 2, 1, 3, 1, 4, 1, 2]));
+// console.log(solution_17([1, 2, 1, 3, 1, 4, 1, 2]));
+
+// 삼총사
+function solution_18(number) {
+  // const ch = [...number].fill(0);
+  let cnt = 0;
+  function DFS(l, s, sum) {
+    if (l === 3) {
+      if (sum === 0) cnt++;
+      return;
+    }
+    for (let i = s; i < number.length; i++) DFS(l + 1, i + 1, sum + number[i]);
+  }
+  DFS(0, 0, 0);
+  return cnt;
+}
+// console.log(solution_18([-2, 3, 0, 2, -5]));
+
+// 격자판문제 다시풀어보기
+/**
+ * 7*7 격자판 미로를 탈출하는 경로의 가지수를 출력하는 프로그램을 작성하세요. 출발점은 격 자의 (1, 1) 좌표이고,
+ * 탈출 도착점은 (7, 7)좌표이다. 격자판의 1은 벽이고, 0은 통로이다. 격 자판의 움직임은 상하좌우로만 움직인다. 미로가 다음과 같다면
+ * 위의 지도에서 출발점에서 도착점까지 갈 수 있는 방법의 수는 8가지이다.
+ */
+function solution_19(arr) {
+  // const visited = Array.from(Array(7), () => Array(7).fill(0));
+  const moves = [
+    [0, 1],
+    [0, -1],
+    [-1, 0],
+    [1, 0],
+  ];
+
+  let cnt = 0;
+  function DFS(x, y) {
+    // console.log(x, y);
+
+    arr[x][y] = 1;
+    if (x === 6 && y === 6) {
+      cnt++;
+      return;
+    }
+    for (let [px, py] of moves) {
+      px = x + px;
+      py = y + py;
+      if (px < 0 || py < 0 || px > 6 || py > 6) continue;
+      if (arr[px][py] === 0) {
+        DFS(px, py);
+        arr[px][py] = 0;
+      }
+    }
+  }
+  DFS(0, 0);
+
+  return cnt;
+}
+// console.log(
+//   solution_19([
+//     [0, 0, 0, 0, 0, 0, 0],
+//     [0, 1, 1, 1, 1, 1, 0],
+//     [0, 0, 0, 1, 0, 0, 0],
+//     [1, 1, 0, 1, 0, 1, 1],
+//     [1, 1, 0, 0, 0, 0, 1],
+//     [1, 1, 0, 1, 1, 0, 0],
+//     [1, 0, 0, 0, 0, 0, 0],
+//   ]),
+// );
+
+// 택배상자
+function solution20(order) {
+  // 보조 컨테이너는 스택구조
+  // let answer = 0;
+  let orderIdx = 0;
+  const stack = [];
+  for (let i = 1; i <= order.length; i++) {
+    if (i === order[orderIdx]) {
+      orderIdx++;
+      while (stack.length && stack[stack.length - 1] === order[orderIdx]) {
+        stack.pop();
+        orderIdx++;
+      }
+    } else {
+      stack.push(i);
+    }
+  }
+  return orderIdx;
+}
+// console.log(solution20([4, 3, 1, 2, 5]));
+
+// 부대복귀
+function solution21(n, roads, sources, destination) {
+  const list = roads.reduce((prev, curr) => {
+    const [node1, node2] = curr;
+    if (!prev[node1]) prev[node1] = [];
+    if (!prev[node2]) prev[node2] = [];
+    prev[node1].push(node2);
+    prev[node2].push(node1);
+    return prev;
+  }, {});
+
+  const BFS = (start) => {
+    const previous = { [start]: start };
+    const distances = { [start]: 0 };
+    const queue = [start];
+
+    let curNode;
+    let curDistance;
+
+    while (queue.length) {
+      curNode = queue.shift();
+      curDistance = distances[curNode];
+      // 현재노드에서 갈수 있는방향
+      list[curNode].forEach((node) => {
+        // bfs 특성상 현재온 노드가 최단거리
+        if (!previous[node]) {
+          previous[node] = curNode;
+          distances[node] = curDistance + 1;
+          queue.push(node);
+        }
+      });
+    }
+    return distances;
+  };
+
+  const distances = BFS(destination);
+  let answer = [];
+  for (const curLocation of sources) {
+    answer.push(distances[curLocation] ?? -1);
+  }
+  return answer;
+}
+console.log(
+  solution21(
+    5,
+    [
+      [1, 2],
+      [1, 4],
+      [2, 4],
+      [2, 5],
+      [4, 5],
+    ],
+    [1, 3, 5],
+    5,
+  ),
+);
