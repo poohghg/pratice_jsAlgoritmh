@@ -697,7 +697,6 @@ function solution21(n, roads, sources, destination) {
 
     let curNode;
     let curDistance;
-
     while (queue.length) {
       curNode = queue.shift();
       curDistance = distances[curNode];
@@ -721,17 +720,18 @@ function solution21(n, roads, sources, destination) {
   }
   return answer;
 }
-console.log(
-  solution21(
-    5,
-    [
-      [1, 2],
-      [1, 4],
-      [2, 4],
-      [2, 5],
-      [4, 5],
-    ],
-    [1, 3, 5],
-    5,
-  ),
-);
+
+// console.log(
+//   solution21(
+//     5,
+//     [
+//       [1, 2],
+//       [1, 4],
+//       [2, 4],
+//       [2, 5],
+//       [4, 5],
+//     ],
+//     [1, 3, 5],
+//     5,
+//   ),
+// );
