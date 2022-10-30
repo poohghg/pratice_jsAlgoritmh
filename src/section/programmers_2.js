@@ -186,6 +186,26 @@ function solution4(board, moves) {
 
 function solution5(N, stages) {
   stages.sort((a, b) => a - b);
-  var answer = [];
-  return answer;
+  const answer = [];
+  let cnt = 0;
+  let total = stages.length;
+  let stageIdx = 0;
+  for (let i = 1; i <= N; i++) {
+    while (i === stages[stageIdx]) {
+      cnt++;
+      stageIdx++;
+    }
+    answer[i - 1] = [i, cnt / total];
+    total -= cnt;
+    cnt = 0;
+  }
+
+  answer
+    .sort((a, b) => {
+      if (a[1] === b[1]) return a[0] - b[0];
+      return b[1] - a[1];
+    })
+    .map((sorted) => sorted[0]);
 }
+
+console.log(solution5(5, [2, 1, 2, 6, 2, 4, 3, 3]));
