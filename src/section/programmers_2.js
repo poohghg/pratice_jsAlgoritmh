@@ -134,7 +134,6 @@ function solution3(n, lighthouse) {
 // );
 
 // 크레인 인형뽑기 게임
-
 function solution4(board, moves) {
   const stack = [];
   let cnt = 0;
@@ -155,16 +154,38 @@ function solution4(board, moves) {
   }
   return cnt;
 }
+// console.log(
+//   solution4(
+//     [
+//       [0, 0, 0, 0, 0],
+//       [0, 0, 1, 0, 3],
+//       [0, 2, 5, 0, 1],
+//       [4, 2, 4, 4, 2],
+//       [3, 5, 1, 3, 1],
+//     ],
+//     [1, 5, 3, 5, 1, 2, 1, 4],
+//   ),
+// );
 
-console.log(
-  solution4(
-    [
-      [0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 3],
-      [0, 2, 5, 0, 1],
-      [4, 2, 4, 4, 2],
-      [3, 5, 1, 3, 1],
-    ],
-    [1, 5, 3, 5, 1, 2, 1, 4],
-  ),
-);
+// 신규 아이디 추천
+// function solution5(new_id) {
+//   // if (!new_id) return 'a';
+//   let answer = '';
+//   const reg = /[\{\}\[\]\/?,;:|\)*~`!^\+<>@\#$%&\\\=\(\'\"]/gi;
+//   for (let i = 0; i < new_id.length; i++) {
+//     let newStr = new_id[i].toUpperCase();
+//     if (answer.length === 15) break;
+//     else if (reg.test(newStr)) continue;
+//     else if (answer[answer.length - 1] === '.' && newStr === '.') continue;
+//     else if (answer.length === 14 && newStr === '.') break;
+//   }
+// }
+// console.log('bat.y.abcdefghi');
+
+// 실패율
+
+function solution5(N, stages) {
+  stages.sort((a, b) => a - b);
+  var answer = [];
+  return answer;
+}
