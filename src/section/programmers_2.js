@@ -183,7 +183,6 @@ function solution4(board, moves) {
 // console.log('bat.y.abcdefghi');
 
 // 실패율
-
 function solution5(N, stages) {
   stages.sort((a, b) => a - b);
   const answer = [];
@@ -199,13 +198,59 @@ function solution5(N, stages) {
     total -= cnt;
     cnt = 0;
   }
-
-  answer
+  return answer
     .sort((a, b) => {
       if (a[1] === b[1]) return a[0] - b[0];
       return b[1] - a[1];
     })
     .map((sorted) => sorted[0]);
 }
+// console.log(solution5(5, [2, 1, 2, 6, 2, 4, 3, 3]));
 
-console.log(solution5(5, [2, 1, 2, 6, 2, 4, 3, 3]));
+// 오픈채팅방
+function solution6(record) {
+  const userInfo = {};
+  const result = [];
+
+  for (const info of record) {
+    const [status, userId, nickName] = info.split(' ');
+    if (status !== 'Leave') userInfo[userId] = nickName;
+    if (status === 'Change') continue;
+    const msg = `님이 ${status === 'Enter' ? '들어왔습니다.' : '나갔습니다.'}`;
+    result.push([userId, msg]);
+  }
+  return result.map((msgArr) => userInfo[msgArr[0]] + msgArr[1]);
+}
+// console.log(
+//   solution6([
+//     'Enter uid1234 Muzi',
+//     'Enter uid4567 Prodo',
+//     'Leave uid1234',
+//     'Enter uid1234 Prodo',
+//     'Change uid4567 Ryan',
+//   ]),
+// );
+
+// 큰 수 만들기
+// 첫자리를 제일큰 수로.
+// 두번째자리도 큰수로.
+function solutio7(number, k) {
+  number = number.split('');
+  let curIdx = 0;
+
+  while (k > 0) {
+    let maxIdx = curIdx;
+    for (let i = curIdx + 1; i <= k + curIdx; i++) {
+      if (number[i] > number[maxIdx]) maxIdx = i;
+      if (number[maxIdx] === '9') break;
+    }
+    for (let i = curIdx; i < maxIdx; i++) number[i] = '';
+    k -= maxIdx - curIdx;
+    curIdx = maxIdx + 1;
+    console.log(curIdx);
+    break;
+  }
+  return number.join('');
+}
+
+console.log(solutio7('654321', 5));
