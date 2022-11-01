@@ -232,25 +232,80 @@ function solution6(record) {
 // );
 
 // 큰 수 만들기
-// 첫자리를 제일큰 수로.
-// 두번째자리도 큰수로.
 function solutio7(number, k) {
-  number = number.split('');
-  let curIdx = 0;
-
-  while (k > 0) {
-    let maxIdx = curIdx;
-    for (let i = curIdx + 1; i <= k + curIdx; i++) {
-      if (number[i] > number[maxIdx]) maxIdx = i;
-      if (number[maxIdx] === '9') break;
+  const stack = [];
+  for (let i = 0; i < number.length; i++) {
+    // 스택의 쌍인수보다 큰수가 들어오면 앞에쌍인수들을 교체한다.
+    while (number[i] > stack[stack.length - 1] && k > 0) {
+      k--;
+      stack.pop();
     }
-    for (let i = curIdx; i < maxIdx; i++) number[i] = '';
-    k -= maxIdx - curIdx;
-    curIdx = maxIdx + 1;
-    console.log(curIdx);
-    break;
+    // 스택에 숫자를 쌓는다.
+    stack.push(number[i]);
   }
-  return number.join('');
+  if (k) return stack.slice(0, stack.length - k).join('');
+  return stack.join('');
 }
+// console.log(solutio7('1541234', 3));
+function solutio8(routes) {
+  routes.sort((a, b) => a[1] - b[1]);
+  let cnt = 0;
+  for (let i = 0; i < routes.length; i++) {
+    const [entry, out] = routes[i];
+    let j = i + 1;
+    while (j < routes.length && routes[j][0] <= out) {
+      j++;
+      i++;
+    }
+    cnt++;
+  }
+  return cnt;
+}
+// console.log(
+//   solutio8([
+//     [0, 5],
+//     [1, 5],
+//     [2, 5],
+//     [5, 5],
+//   ]),
+// );
 
-console.log(solutio7('654321', 5));
+//여행걍로
+function solutio9(tickets) {
+  const list = tickets.reduce((prev, curr) => {
+    const [node1, node2] = curr;
+    prev[node1] = prev[node1]?.concat(node2) ?? [node2];
+    // prev[node2] = prev[node2]?.concat(node1) ?? [node1];
+    return prev;
+  }, {});
+
+  const maxLevel = Object.keys(list).length;
+  // console.log(maxLevel);
+
+  // const visited = {};
+  function DFS(s, path) {
+    // console.log('l', l);
+    // visited[s] = true;
+    tickets.filter((v) => v[0] === s);
+    if (tickets.length + 1 === path.length) {
+      console.log(path, 'path');
+      return path;
+    }
+    return;
+    // list[s].sort().forEach((next) => {
+    //   if (!visited[next]) DFS(next, path.concat(next));
+    // });
+  }
+  console.log(list);
+  return DFS('ICN', ['ICN']);
+  // console.log(list);
+}
+console.log(
+  solutio9([
+    ['ICN', 'SFO'],
+    ['ICN', 'ATL'],
+    ['SFO', 'ATL'],
+    ['ATL', 'ICN'],
+    ['ATL', 'SFO'],
+  ]),
+);
