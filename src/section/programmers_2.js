@@ -272,40 +272,82 @@ function solutio8(routes) {
 
 //여행걍로
 function solutio9(tickets) {
-  const list = tickets.reduce((prev, curr) => {
-    const [node1, node2] = curr;
-    prev[node1] = prev[node1]?.concat(node2) ?? [node2];
-    // prev[node2] = prev[node2]?.concat(node1) ?? [node1];
-    return prev;
-  }, {});
-
-  const maxLevel = Object.keys(list).length;
-  // console.log(maxLevel);
-
-  // const visited = {};
-  function DFS(s, path) {
-    // console.log('l', l);
-    // visited[s] = true;
-    tickets.filter((v) => v[0] === s);
-    if (tickets.length + 1 === path.length) {
-      console.log(path, 'path');
-      return path;
+  // tickets.sort((a, b) => a[1].charCodeAt() - b[1].charCodeAt());
+  const answer = [];
+  function DFS(list, s, path) {
+    if (!list.length) {
+      answer.push(path);
     }
-    return;
-    // list[s].sort().forEach((next) => {
-    //   if (!visited[next]) DFS(next, path.concat(next));
-    // });
+    list.forEach(([curr, next], idx) => {
+      if (curr === s) {
+        const newList = [...list];
+        newList.splice(idx, 1);
+        DFS(newList, next, path.concat(next));
+      }
+    });
   }
-  console.log(list);
-  return DFS('ICN', ['ICN']);
-  // console.log(list);
+  DFS(tickets, 'ICN', ['ICN']);
+  // console.log(answer);
+  // console.log(answer.sort());
+  return answer.sort()[0];
 }
-console.log(
-  solutio9([
-    ['ICN', 'SFO'],
-    ['ICN', 'ATL'],
-    ['SFO', 'ATL'],
-    ['ATL', 'ICN'],
-    ['ATL', 'SFO'],
-  ]),
-);
+// console.log(
+//   solutio9([
+//     ['ICN', 'SFO'],
+//     ['ICN', 'ATL'],
+//     ['SFO', 'ATL'],
+//     ['ATL', 'ICN'],
+//     ['ATL', 'SFO'],
+//   ]),
+// );
+
+// 타겟 넘버
+function solutio10(numbers, target) {
+  let answer = 0;
+  function DFS(i, sum) {
+    if (i === numbers.length) {
+      if (sum === target) answer++;
+      return;
+    }
+    DFS(i + 1, sum + numbers[i]);
+    DFS(i + 1, sum - numbers[i]);
+  }
+  DFS(0, 0);
+  return answer;
+}
+// console.log(solutio10([1, 1, 1, 1, 1], 3));
+// function solutio11(relation) {
+//   const ch = [0, 0, 0, 0];
+//   const combination = [];
+//   function DFS(l) {
+//     if (l === 4) {
+//       combination.push([...ch]);
+//       return;
+//     }
+//     if (ch[l] === 0) {
+//       ch[l] = 1;
+//       DFS(l + 1);
+//       ch[l] = 0;
+//       DFS(l + 1);
+//     }
+//   }
+//   DFS(0);
+//   // 부분집합이 있으면 유일성을 충족하지 못함.
+//   // ex 같은
+//   for (const x of combination) {
+//     // console.log(x);
+//   }
+
+//   console.log(combination.length);
+// }
+
+// console.log(
+//   solutio11([
+//     ['100', 'ryan', 'music', '2'],
+//     ['200', 'apeach', 'math', '2'],
+//     ['300', 'tube', 'computer', '3'],
+//     ['400', 'con', 'computer', '4'],
+//     ['500', 'muzi', 'music', '3'],
+//     ['600', 'apeach', 'music', '2'],
+//   ]),
+// );
