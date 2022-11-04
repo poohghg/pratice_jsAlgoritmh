@@ -444,13 +444,72 @@ function solution13(babbling) {
 // console.log(solution13(['ayaye', 'uuuma', 'ye', 'yemawoo', 'ayaa']));
 
 // N-Queen
-function solutio14(n) {
-  for (let i = 0; i < n; i++) {
-    const ch = Array.from(Array(n), () => Array(n).fill(0));
-    ch[0][i] = 1;
-    console.log(ch);
-    break;
-  }
-}
+// function solutio14(n) {
+//   for (let i = 0; i < n; i++) {
+//     const ch = Array.from(Array(n), () => Array(n).fill(0));
+//     ch[0][i] = 1;
+//     console.log(ch);
+//     break;
+//   }
+// }
+// console.log(solutio14(4));
 
-console.log(solutio14(4));
+function solutio15(food) {
+  const answer = [];
+  for (let i = 1; i < food.length; i++) {
+    if (food[i] >= 2) {
+      const m = Math.floor(food[i] / 2);
+      answer.push(...Array(m).fill(i));
+    }
+  }
+  return [...answer, 0, ...answer.reverse()].join('');
+}
+// console.log(solutio15([1, 3, 4, 6]));
+
+// 문자열 압축
+// 문자열을 압축하였을때 가장 짧은 길이의 문자의 길이를 출력해라
+// 전체
+function solutio16(s) {
+  const getIdxSplitCount = (idx) => {
+    let str = '';
+    let tmp = s.substring(0, idx);
+    let cnt = 1;
+    for (let i = idx; i <= s.length; i = i + idx) {
+      if (tmp === s.substring(i, i + idx)) {
+        cnt++;
+      } else {
+        str += cnt > 1 ? cnt + tmp : tmp;
+        tmp = s.substring(i, i + idx);
+        cnt = 1;
+      }
+    }
+    if (cnt > 1) str += cnt + tmp;
+    if (s.length % idx !== 0) str += s.substring(s.length - (s.length % idx));
+    return str.length;
+  };
+
+  let min = Number.MAX_SAFE_INTEGER;
+  for (let i = 1; i <= Math.floor(s.length); i++) {
+    min = Math.min(min, getIdxSplitCount(i));
+  }
+  return min;
+}
+// console.log(solutio16('ababcdcdababcdcd'));
+
+// 배열의 유사도
+// function solutio17(s1, s2) {
+//   const obj = s1.reduce((prev, curr) => {
+//     prev[curr] = (prev[curr] || 0) + 1;
+//     return prev;
+//   }, {});
+
+//   let cnt = 0;
+//   for (const s of s2) {
+//     if (obj[s]) {
+//       --obj[s];
+//       cnt++;
+//     }
+//   }
+//   return cnt;
+// }
+// console.log(solutio17(['a', 'b', 'c'], ['com', 'b', 'd', 'p', 'c']));
