@@ -351,3 +351,106 @@ function solutio10(numbers, target) {
 //     ['600', 'apeach', 'music', '2'],
 //   ]),
 // );
+
+// replaceAll
+// str = str.replace(new RegExp(b, 'gi'), '#');
+// 옹알이 (2)
+function solutio11(babbling) {
+  const init = ['aya', 'ye', 'woo', 'ma'];
+  let answer = 0;
+  for (let str of babbling) {
+    let cnt = 4;
+    let isBreak = false;
+    while (true) {
+      for (const x of init) {
+        cnt--;
+        if (str.startsWith(x)) {
+          str = str.replace(x, '');
+          cnt = 3;
+        }
+        if (!str || cnt === 0) {
+          if (!str) answer++;
+          isBreak = true;
+          break;
+        }
+      }
+      if (isBreak) break;
+    }
+  }
+  return answer;
+}
+// console.log(solutio11(['ayaye', 'uuu', 'yeye', 'yemawoo', 'ayaayaa']));
+function solution11_1(babbling) {
+  let result = 0;
+  const babblings = ['aya', 'ye', 'woo', 'ma'];
+
+  const division = (babble) => {
+    console.log('babble', babble);
+    let newBabble = babble;
+    babblings.forEach((el, index) => {
+      newBabble = newBabble.replaceAll(el, index + 1);
+    });
+
+    console.log(newBabble);
+    for (let i = 0; i < newBabble.length; i++) {
+      // 숫잩타입이 아니라면
+      if (!+newBabble[i]) return 0;
+      if (newBabble[i] === newBabble[i + 1]) return 0;
+    }
+    return 1;
+  };
+
+  babbling.forEach((el) => {
+    result += division(el);
+    return false;
+  });
+
+  return result;
+}
+// console.log(solution11_1(['ayayeayayeaya', 'yemawoo', 'yee', 'u', 'maa']));
+function solution12(num, total) {
+  let r = 0;
+  for (let i = 0; i < num; i++) {
+    r += i;
+  }
+  const m = (total - r) / num;
+  return Array.from({ length: num }).map((_, idx) => idx + m);
+}
+// console.log(solution12(5, 5));
+// 다음에 올 숫자
+function solution13(common) {
+  let nextNum;
+  if (common[0] - common[1] === common[1] - common[2])
+    nextNum = common[common.length - 1] + common[1] - common[0];
+  else nextNum = common[common.length - 1] * (common[1] / common[0]);
+  return nextNum;
+}
+// console.log(solution13([1, 2, 3, 4]));
+
+// 옹알이 (1)
+function solution13(babbling) {
+  const init = ['aya', 'ye', 'woo', 'ma'];
+  const checkCnt = (str) => {
+    init.forEach((v, idx) => {
+      str = str.replaceAll(v, idx + 1);
+    });
+    return isNaN(str) ? 0 : 1;
+  };
+
+  let cnt = 0;
+  for (const str of babbling) cnt += checkCnt(str);
+  return cnt;
+}
+// console.log(solution13(['ayaye', 'uuuma', 'ye', 'yemawoo', 'ayaa']));
+
+// N-Queen
+function solutio14(n) {
+  for (let i = 0; i < n; i++) {
+    const ch = Array.from(Array(n), () => Array(n).fill(0));
+    ch[0][i] = 1;
+    console.log(ch);
+    break;
+  }
+}
+
+console.log(solutio14(4));
