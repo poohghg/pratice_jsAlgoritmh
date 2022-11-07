@@ -497,19 +497,78 @@ function solutio16(s) {
 // console.log(solutio16('ababcdcdababcdcd'));
 
 // 배열의 유사도
-// function solutio17(s1, s2) {
-//   const obj = s1.reduce((prev, curr) => {
-//     prev[curr] = (prev[curr] || 0) + 1;
-//     return prev;
-//   }, {});
+function solutio17(s1, s2) {
+  const obj = s1.reduce((prev, curr) => {
+    prev[curr] = (prev[curr] || 0) + 1;
+    return prev;
+  }, {});
 
-//   let cnt = 0;
-//   for (const s of s2) {
-//     if (obj[s]) {
-//       --obj[s];
-//       cnt++;
-//     }
-//   }
-//   return cnt;
-// }
+  let cnt = 0;
+  for (const s of s2) {
+    if (obj[s]) {
+      --obj[s];
+      cnt++;
+    }
+  }
+  return cnt;
+}
 // console.log(solutio17(['a', 'b', 'c'], ['com', 'b', 'd', 'p', 'c']));
+
+// 문자열밀기
+function solutio18(A, B) {
+  return (B + B).indexOf(A);
+}
+// console.log(solutio18('hello', 'ohell'));
+
+// OX퀴즈
+// eval을 사용하면 쉽게 풀이가능
+function solution19(quiz) {
+  const answer = [];
+  for (let x of quiz) {
+    x = x.split(' ').join('');
+    let [a, b] = x.split('=');
+    let lt = '';
+    for (let i = 0; i < a.length; i++) {
+      if (i === 0 && a[i] === '-') {
+        lt += a[i];
+        continue;
+      }
+      if (!isNaN(a[i])) lt += a[i];
+      else {
+        const rt = a.substring(i + 1);
+        if (a[i] === '+') answer.push(+lt + +rt === +b ? 'O' : 'X');
+        else answer.push(+lt - +rt === +b ? 'O' : 'X');
+        break;
+      }
+    }
+  }
+  return answer;
+}
+// console.log(solution19(['-4 - 1 = -5', '5 + 6 = 11']));
+
+// 평행
+function solution20(dots) {
+  const getInclination = ([[x1, y1], [x2, y2]]) =>
+    x2 !== x1 ? (y2 - y1) / (x2 - x1) : Infinity;
+  const isParallel = (line1, line2) =>
+    getInclination(line1) === getInclination(line2);
+
+  return dots.some((dot) => {
+    const line1 = [dots[0], dot];
+    // console.log(line1);
+    const line2 = dots.filter((dot) => !line1.includes(dot));
+    console.log('line1', line1, 'line2', line2);
+
+    // return isParallel(line1, line2);
+  })
+    ? 1
+    : 0;
+}
+console.log(
+  solution20([
+    [1, 4],
+    [9, 2],
+    [3, 8],
+    [11, 6],
+  ]),
+);
