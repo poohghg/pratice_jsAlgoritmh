@@ -60,8 +60,6 @@ function solution3(board) {
 
   const row = board.length;
   const col = board[0].length;
-
-  // console.log('?');
   let cnt = 0;
   for (let x = 0; x < row; x++) {
     for (let y = 0; y < col; y++) {
@@ -72,7 +70,7 @@ function solution3(board) {
           const moveY = y + move[1];
           if (moveX >= 0 && moveX < col && moveY >= 0 && moveY < row) {
             if (board[moveX][moveY] === 0) {
-              board[moveX][moveY] === 0;
+              board[moveX][moveY] = 2;
               cnt++;
             }
           }
@@ -128,4 +126,38 @@ function solution4_1(numbers) {
 }
 
 // console.log(solution4([555, 551, 550, 4]));
-console.log(solution4_1([110, 1110]));
+// console.log(solution4_1([110, 1110]));
+// 소수찾기
+function solution5(numbers) {
+  // const set = [];
+  const set = new Set();
+  const ch = Array(numbers.length).fill(0);
+
+  const isPrime = (n) => {
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+      if (n % i === 0) return false;
+    }
+    return n >= 2;
+  };
+
+  const DFS = (l, s) => {
+    if (!isNaN(s)) set.add(Number(s));
+    if (l === numbers.length) return;
+    for (let i = 0; i < numbers.length; i++) {
+      if (ch[i] === 0) {
+        ch[i] = 1;
+        DFS(l + 1, s + numbers[i]);
+        ch[i] = 0;
+      }
+    }
+  };
+
+  DFS(0, '');
+  let cnt = 0;
+
+  // for (const v of set) if (isPrime(v)) cnt++;
+  console.log(isPrime(2));
+  return cnt;
+}
+
+console.log(solution5('143'));
