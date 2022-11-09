@@ -155,9 +155,7 @@ function solution5(numbers) {
   DFS(0, '');
   let cnt = 0;
 
-  // for (const v of set) if (isPrime(v)) cnt++;
-  console.log(isPrime(2));
+  for (const v of set) if (isPrime(v)) cnt++;
   return cnt;
 }
-
 console.log(solution5('143'));
