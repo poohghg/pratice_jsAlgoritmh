@@ -158,4 +158,39 @@ function solution5(numbers) {
   for (const v of set) if (isPrime(v)) cnt++;
   return cnt;
 }
-console.log(solution5('143'));
+// console.log(solution5('143'));
+
+// 과일 장수
+function solution6(k, m, score) {
+  let answer = 0;
+  score.sort((a, b) => b - a);
+  for (let i = 0; i < score.length; i += m) {
+    const min = score[i + m - 1];
+    if (min) answer += min * m;
+  }
+  return answer;
+}
+// console.log(solution6(3, 4, [1, 2, 3, 1, 2, 3, 1]));
+
+//숫자 카드 나누기
+function solution7(arrayA, arrayB) {
+  // const arr =
+  const minA = Math.min(...arrayA);
+  const minB = Math.min(...arrayB);
+  const leastCommon = Math.max(minA, minB);
+
+  const comfrim = (a, b, num) => {
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] % num !== 0 || b[i] % num === 0) return false;
+    }
+    return true;
+  };
+
+  for (let i = leastCommon; 2 <= i; i--) {
+    if (minA % i === 0 && comfrim(arrayA, arrayB, i)) return i;
+    if (minB % i === 0 && comfrim(arrayB, arrayA, i)) return i;
+  }
+  return 0;
+}
+
+console.log(solution7([14, 35, 119], [18, 30, 102]));
