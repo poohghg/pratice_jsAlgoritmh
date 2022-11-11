@@ -192,5 +192,100 @@ function solution7(arrayA, arrayB) {
   }
   return 0;
 }
+// console.log(solution7([14, 35, 119], [18, 30, 102]));
 
-console.log(solution7([14, 35, 119], [18, 30, 102]));
+// 행렬의 덧셈
+function solution8(arr1, arr2) {
+  for (let i = 0; i < arr1.length; i++) {
+    for (let j = 0; j < arr1[i].length; j++) {
+      arr1[i][j] = arr1[i][j] + arr2[i][j];
+    }
+  }
+  return arr1;
+}
+
+// console.log(
+//   solution8(
+//     [
+//       [1, 2],
+//       [2, 3],
+//     ],
+//     [
+//       [3, 4],
+//       [5, 6],
+//     ],
+//   ),
+// );
+
+// bfs 시간초과
+// 게임 맵 최단거리
+// 최단거리 bfs를 사용
+function solution9(maps) {
+  let min = -1;
+  const end = [maps.length - 1, maps[0].length - 1];
+  const moves = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1],
+  ];
+
+  const DFS = (x, y, cnt) => {
+    if (min !== -1 && cnt + 1 > min) return;
+    if (x === 0 && y === 0) {
+      if (min === -1) min = cnt + 1;
+      else min = Math.min(min, cnt + 1);
+      return;
+    }
+    moves.forEach((move) => {
+      const newX = x + move[0];
+      const newY = y + move[1];
+      if (newX >= 0 && newX <= end[0] && newY >= 0 && newY <= end[1]) {
+        if (maps[newX][newY] === 1) {
+          maps[newX][newY] = 0;
+          DFS(newX, newY, cnt + 1);
+          maps[newX][newY] = 1;
+        }
+      }
+    });
+  };
+  DFS(end[0], end[1], 0);
+  return min;
+}
+
+function solution9_1(maps) {
+  const end = [maps.length - 1, maps[0].length - 1];
+  const moves = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1],
+  ];
+  // x,y,cnt
+  const queue = [[0, 0, 0]];
+  while (queue.length) {
+    let [x, y, cnt] = queue.shift();
+    if (x === end[0] && y === end[1]) return cnt + 1;
+    moves.forEach((move) => {
+      const newX = x + move[0];
+      const newY = y + move[1];
+      if (newX >= 0 && newX <= end[0] && newY >= 0 && newY <= end[1]) {
+        if (maps[newX][newY] === 1) {
+          maps[newX][newY] = 0;
+          queue.push([newX, newY, cnt + 1]);
+        }
+      }
+    });
+  }
+  return -1;
+}
+
+console.log(
+  solution9_1([
+    [1, 0, 1, 1, 1],
+    [1, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1],
+    [0, 0, 0, 0, 1],
+  ]),
+);
