@@ -280,12 +280,73 @@ function solution9_1(maps) {
   return -1;
 }
 
-console.log(
-  solution9_1([
-    [1, 0, 1, 1, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 0, 1],
-    [0, 0, 0, 0, 1],
-  ]),
-);
+// console.log(
+//   solution9_1([
+//     [1, 0, 1, 1, 1],
+//     [1, 0, 1, 0, 1],
+//     [1, 0, 1, 1, 1],
+//     [1, 1, 1, 0, 1],
+//     [0, 0, 0, 0, 1],
+//   ]),
+// );
+
+// 음양 더하기
+function solution10(absolutes, signs) {
+  let answer = 0;
+  for (let i = 0; i < absolutes.length; i++) {
+    signs[i] ? (answer += absolutes[i]) : (answer -= absolutes[i]);
+  }
+  return answer;
+}
+// console.log(solution10([4, 7, 12], [true, false, true]));
+
+// 로또의 최고 순위와 최저 순위
+function solution11(lottos, win_nums) {
+  const rank = {
+    0: 6,
+    1: 6,
+    2: 5,
+    3: 4,
+    4: 3,
+    5: 2,
+    6: 1,
+  };
+
+  // 현재 맞은갯수,0의갯수
+  const info = lottos.reduce(
+    (acc, num) => {
+      if (num === 0) acc[1]++;
+      else if (win_nums.indexOf(num) !== -1) acc[0]++;
+      return acc;
+    },
+    [0, 0],
+  );
+  const [hits, zeros] = info;
+  return [rank[hits + zeros], rank[hits]];
+}
+// console.log(solution11([0, 0, 0, 0, 0, 0], [38, 19, 20, 40, 15, 25]));
+
+// https://mine-it-record.tistory.com/522
+// 약수의 개수와 덧셈
+
+function solution12(left, right) {
+  // 제곱근이 정수면 약수의 개수가 홀수다.
+  const getDivisors = (num) => {
+    let cnt = 0;
+    for (let i = 1; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) {
+        cnt++;
+        if (num / i !== i) cnt++;
+      }
+    }
+    return cnt % 2 === 0 ? '+' : '-';
+  };
+
+  let answer = 0;
+  for (left; left <= right; left++) {
+    answer += getDivisors(left) === '+' ? +left : -left;
+  }
+  return answer;
+}
+
+console.log(solution12(13, 17));
