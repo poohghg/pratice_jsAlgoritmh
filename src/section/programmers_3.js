@@ -348,5 +348,45 @@ function solution12(left, right) {
   }
   return answer;
 }
+// console.log(solution12(13, 17));
 
-console.log(solution12(13, 17));
+// 프린터
+function solution13(priorities, location) {
+  const stack = [];
+  priorities = priorities.map((v, idx) => ({
+    idx,
+    v,
+  }));
+
+  while (priorities.length) {
+    const curValue = priorities.shift();
+    if (priorities.find((ele) => ele.v > curValue.v)) priorities.push(curValue);
+    else {
+      stack.push(curValue);
+      if (curValue.idx === location) return stack.length;
+    }
+  }
+}
+// console.log(solution13([2, 1, 3, 2], 2));
+
+// 스킬트리
+function solution14(skill, skill_trees) {
+  const skillArr = skill.split('');
+  let cnt = 0;
+  for (const tree of skill_trees) {
+    let lastIdx = 0;
+    let isBreak = false;
+    for (let i = 0; i < tree.length; i++) {
+      const idx = skillArr.indexOf(tree[i]);
+      if (idx === -1) continue;
+      if (lastIdx !== idx) {
+        isBreak = true;
+        break;
+      }
+      lastIdx++;
+    }
+    if (!isBreak) cnt++;
+  }
+  return cnt;
+}
+console.log(solution14('CBD', ['BACDE', 'CBADF', 'AECB', 'BDA']));
