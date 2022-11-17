@@ -133,6 +133,7 @@ function solution5(numbers) {
   const set = new Set();
   const ch = Array(numbers.length).fill(0);
 
+  // 소수
   const isPrime = (n) => {
     for (let i = 2; i <= Math.sqrt(n); i++) {
       if (n % i === 0) return false;
@@ -328,9 +329,9 @@ function solution11(lottos, win_nums) {
 
 // https://mine-it-record.tistory.com/522
 // 약수의 개수와 덧셈
-
 function solution12(left, right) {
   // 제곱근이 정수면 약수의 개수가 홀수다.
+  // 약수
   const getDivisors = (num) => {
     let cnt = 0;
     for (let i = 1; i <= Math.sqrt(num); i++) {
@@ -389,4 +390,93 @@ function solution14(skill, skill_trees) {
   }
   return cnt;
 }
-console.log(solution14('CBD', ['BACDE', 'CBADF', 'AECB', 'BDA']));
+// console.log(solution14('CBD', ['BACDE', 'CBADF', 'AECB', 'BDA']));
+
+function solution15(v) {
+  const calVector = (v1, v2, v3) => {
+    if (v1[1] === v3[1]) return [v3[0], v2[1]];
+    if (v2[1] === v3[1]) return [v3[0], v1[1]];
+  };
+
+  const [initX, initY] = v[0];
+  let sameIDx;
+  let anotherIdx;
+
+  for (let i = 1; i < v.length; i++) {
+    const [x, y] = v[i];
+    if (x === initX) sameIDx = i;
+    else anotherIdx = i;
+  }
+
+  if (sameIDx) return calVector(v[0], v[sameIDx], v[anotherIdx]);
+  else return calVector(v[1], v[2], v[0]);
+}
+// console.log(
+//   solution15([
+//     [3, 4],
+//     [1, 4],
+//     [3, 10],
+//   ]),
+// );
+
+function solution16(number, limit, power) {
+  const getMaxNum = (num) => {
+    let cnt = 0;
+    for (let i = 1; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) {
+        cnt++;
+        if (num / i !== i) cnt++;
+        if (cnt > limit) return power;
+      }
+    }
+    return cnt;
+  };
+
+  let answer = 0;
+  for (let i = 1; i <= number; i++) answer += getMaxNum(i);
+  return answer;
+}
+// console.log(solution16(5, 3, 2));
+
+// 줄 서는 방법
+function solution17(n, k) {
+  let cnt = 0;
+  let answer;
+  const ch = Array(n).fill(0);
+  const DFS = (l, arr) => {
+    if (l === n) {
+      if (++cnt === k) answer = arr;
+      return;
+    }
+
+    for (let i = 1; i <= n; i++) {
+      if (ch[i - 1] === 0 && !answer) {
+        ch[i - 1] = 1;
+        DFS(l + 1, arr.concat(i));
+        ch[i - 1] = 0;
+      }
+    }
+  };
+  DFS(0, []);
+  return answer;
+}
+// console.log(solution17(5, 23));
+function solution17_1(n, k) {
+  const factorial = (num) => {
+    if (num <= 1) return 1;
+    return num * factorial(num - 1);
+  };
+  const answer = [];
+  let searchArr = Array.from({ length: n }).map((_, idx) => idx + 1);
+
+  while (n > 0) {
+    const f = factorial(--n);
+    const idx = k % f === 0 ? k / f - 1 : Math.floor(k / f);
+    answer.push(searchArr[idx]);
+    k = k - idx * f;
+    searchArr = searchArr.filter((v) => v !== searchArr[idx]);
+  }
+  return answer;
+}
+// console.log(solution17_1(5, 23));
+// console.log(24 / 24);
