@@ -235,8 +235,12 @@ function solution_6(n, m, arr) {
 function solution_7(n, m) {
   const answer = [];
   const oriArr = Array.from({ length: n }).map((_, i) => i + 1);
-  //  1   2   3
-  // 123 123 123
+  // 123   2   3 5
+  // 123 123 123 5
+  // 123         5
+  // 5
+  // 5
+  // 65
   function travers(L, arr) {
     if (L === m) return answer.push(arr);
     for (let i = 0; i < oriArr.length; i++) {

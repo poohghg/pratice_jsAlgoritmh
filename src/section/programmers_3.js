@@ -441,26 +441,30 @@ function solution16(number, limit, power) {
 // 줄 서는 방법
 function solution17(n, k) {
   let cnt = 0;
-  let answer;
+  let answer = [];
   const ch = Array(n).fill(0);
   const DFS = (l, arr) => {
-    if (l === n) {
-      if (++cnt === k) answer = arr;
-      return;
-    }
+    if (arr.length) answer.push(arr);
+    if (l === n) return;
 
+    // 3 + 9 + 27
+    // 무;
     for (let i = 1; i <= n; i++) {
-      if (ch[i - 1] === 0 && !answer) {
-        ch[i - 1] = 1;
-        DFS(l + 1, arr.concat(i));
-        ch[i - 1] = 0;
-      }
+      // if (ch[i - 1] === 0 && !answer) {
+      // ch[i - 1] = 1;
+      DFS(l + 1, arr.concat(i));
+      // ch[i - 1] = 0;
+      // }
     }
   };
   DFS(0, []);
+  console.log(answer.length);
+  // console.log(Math.);
+  // console.log(1562 / 2);
   return answer;
 }
-// console.log(solution17(5, 23));
+// console.log(solution17(3));
+
 function solution17_1(n, k) {
   const factorial = (num) => {
     if (num <= 1) return 1;
@@ -473,10 +477,119 @@ function solution17_1(n, k) {
     const f = factorial(--n);
     const idx = k % f === 0 ? k / f - 1 : Math.floor(k / f);
     answer.push(searchArr[idx]);
-    k = k - idx * f;
     searchArr = searchArr.filter((v) => v !== searchArr[idx]);
+    k = k - idx * f;
   }
   return answer;
 }
 // console.log(solution17_1(5, 23));
-// console.log(24 / 24);
+
+function solution18(word) {
+  const transferCnt = Array.from({ length: 5 })
+    .map((_, idx) => {
+      let total = 0;
+      for (let i = 1; i <= idx + 1; i++) total += 5 ** i;
+      return total / 5;
+    })
+    .reverse();
+
+  word = word.split('');
+  const dictionaryWord = ['A', 'E', 'I', 'O', 'U'];
+  let result = 0;
+  let cnt = 0;
+  while (word.length) {
+    const s = word.shift();
+    result += transferCnt[cnt++] * dictionaryWord.indexOf(s) + 1;
+  }
+  return result;
+}
+// console.log(solution18('EIO'));
+
+//튜플
+function solution19(s) {
+  // tupleObj = s
+  //   .slice(2, -2)
+  //   .split('},{')
+  //   .map((s) => s.split(','))
+  //   .flat()
+  //   .reduce((acc, curr) => {
+  //     acc[curr] = (acc[curr] || 0) + 1;
+  //     return acc;
+  //   }, {});
+  // return Object.entries(tupleObj)
+  //   .sort((a, b) => b[1] - a[1])
+  //   .map((entry) => Number(entry[0]));
+
+  s = JSON.parse(s.replaceAll('{', '[').replaceAll('}', ']'));
+  const tupleObj = s.flat().reduce((acc, curr) => {
+    acc[curr] = (acc[curr] || 0) + 1;
+    return acc;
+  }, {});
+  return Object.entries(tupleObj)
+    .sort((a, b) => b[1] - a[1])
+    .map((entry) => Number(entry[0]));
+}
+// console.log(solution19('{{20,111},{111}}'));
+
+// 문자 숫자 정규식
+// https://dori-coding.tistory.com/entry/Algorithm-%ED%8C%8C%EC%9D%BC%EB%AA%85-%EC%A0%95%EB%A0%AC-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-Level2-%EB%AC%B8%EC%A0%9C-JavaScript
+function solution20(files) {
+  return files
+    .map((file) => {
+      console.log(file.match(/\d+/));
+      return [
+        // ^: 문자열의 시작
+        // ＼D : 숫자가 아닌 문자
+        file.match(/^\D+/)[0].toLowerCase(),
+        // ＼d : 숫자
+        file.match(/\d+/)[0].replace(/^0+/, ''),
+        file,
+      ];
+    })
+    .sort((a, b) => {
+      const aHead = a[0];
+      const bHead = b[0];
+      if (aHead === bHead) return a[1] - b[1];
+      if (aHead > bHead) return 1;
+      if (bHead > aHead) return -1;
+      return 0;
+    })
+    .map((info) => info[2]);
+}
+
+// console.log(solution20(['ABC12211211111aaaaa31231', 'AbC123111aa', 'aBc12']));
+// console.log(isNaN('"));
+
+function solution21(orders, course) {
+  const DFS = (l, s, str, arr) => {
+    if (str.length >= 2) menus[str] = (menus[str] || 0) + 1;
+    for (let i = s; i < arr.length; i++) {
+      DFS(l + 1, i + 1, str + arr[i], arr);
+    }
+  };
+
+  const menus = {};
+  const answer = [];
+  for (const order of orders) {
+    console.log();
+    DFS(0, 0, '', order.split('').sort());
+  }
+  console.log(menus);
+
+  const menuInfo = Object.entries(menus);
+  for (const cours of course) {
+    let max;
+    menuInfo
+      .filter(([menu, cnt]) => menu.length === cours && cnt >= 2)
+      .sort((a, b) => b[1] - a[1])
+      .forEach((v, idx) => {
+        if (max > v[1]) return false;
+        if (idx === 0 || max === v[1]) {
+          max = v[1];
+          answer.push(v[0]);
+        }
+      });
+  }
+  return answer.sort();
+}
+console.log(solution21(['XYZ', 'XWY', 'WXA'], [2, 3, 4]));
