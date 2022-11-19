@@ -385,7 +385,6 @@ function solution11_1(babbling) {
   const babblings = ['aya', 'ye', 'woo', 'ma'];
 
   const division = (babble) => {
-    console.log('babble', babble);
     let newBabble = babble;
     babblings.forEach((el, index) => {
       newBabble = newBabble.replaceAll(el, index + 1);

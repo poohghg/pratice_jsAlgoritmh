@@ -571,10 +571,8 @@ function solution21(orders, course) {
   const menus = {};
   const answer = [];
   for (const order of orders) {
-    console.log();
     DFS(0, 0, '', order.split('').sort());
   }
-  console.log(menus);
 
   const menuInfo = Object.entries(menus);
   for (const cours of course) {
@@ -592,4 +590,142 @@ function solution21(orders, course) {
   }
   return answer.sort();
 }
-console.log(solution21(['XYZ', 'XWY', 'WXA'], [2, 3, 4]));
+// console.log(solution21(['XYZ', 'XWY', 'WXA'], [2, 3, 4]));
+
+// 괄호 회전하기
+function solution22(s) {
+  // const checkString = (str, stack) => {
+  //   if (str === '[') stack[0].push(str);
+  //   else if (str === '{') stack[1].push(str);
+  //   else if (str === '(') stack[2].push(str);
+  //   else if (str === ']') {
+  //     if (!stack[0].length) return false;
+  //     stack[0].pop();
+  //   } else if (str === '}') {
+  //     if (!stack[1].length) return false;
+  //     stack[1].pop();
+  //   } else if (str === ')') {
+  //     if (!stack[2].length) return false;
+  //     stack[2].pop();
+  //   }
+  //   return true;
+  // };
+
+  const checkString = (str, stack) => {
+    if (str === '[' || str === '{' || str === '(') stack.push(str);
+    else if (str === ']') {
+      if (!stack.length || stack[stack.length - 1] !== '[') return false;
+      stack.pop();
+    } else if (str === '}') {
+      if (!stack.length || stack[stack.length - 1] !== '{') return false;
+      stack.pop();
+    } else if (str === ')') {
+      if (!stack.length || stack[stack.length - 1] !== '(') return false;
+      stack.pop();
+    }
+    return true;
+  };
+
+  if (s.length % 2 !== 0) return;
+  let answer = 0;
+  for (let i = 0; i < s.length; i++) {
+    // 대,중,소
+    // const stack = [[], [], []];
+    const stack = [];
+    const tmp = [...s.slice(i), ...s.slice(0, i)];
+    let isRight = true;
+    for (const str of tmp) {
+      isRight = checkString(str, stack);
+      if (!isRight) break;
+    }
+    if (isRight && stack.length === 0) answer++;
+  }
+  return answer;
+}
+
+// console.log(solution22('[{]}'));
+// 최대 부분 증가수열
+function solution23(arr = [5, 3, 7, 8, 6, 2, 9, 4]) {
+  const dy = [...arr].fill(0);
+  dy[0] = 1;
+  for (let i = 1; i < arr.length; i++) {
+    let max = 0;
+    for (let j = i - 1; j >= 0; j--) {
+      if (arr[j] < arr[i] && dy[j] > max) {
+        max = dy[j];
+      }
+    }
+    dy[i] = max + 1;
+  }
+  console.log(dy);
+}
+// console.log(solution23());
+
+function solution24(m, coin) {
+  let answer = 0;
+  const dy = Array.from({ length: m + 1 }, () => 100);
+  dy[0] = 0;
+  for (let i = 0; i < coin.length; i++) {
+    for (let j = coin[i]; j <= m; j++) {
+      // 마지막 플러스1은 현재 사용하는 코인이다
+      dy[j] = Math.min(dy[j], dy[j - coin[i]] + 1);
+    }
+  }
+}
+// console.log(solution24(15, [1, 2, 5]));
+
+/**
+이번 정보올림피아드대회에서 좋은 성적을 내기 위하여 현수는 선생님이 주신 N개의 문제를 풀려고 합니다. 
+각 문제는 그것을 풀었을 때 얻는 점수와 푸는데 걸리는 시간이 주어지게 됩 니다. 
+제한시간 M안에 N개의 문제 중 최대점수를 얻을 수 있도록 해야 합니다. 
+(해당문제는 해당시간이 걸리면 푸는 걸로 간주한다, 한 유형당 한개만 풀 수 있습니다.)
+ */
+function solution25(n, m, arr) {
+  const dy = Array(m + 1).fill(0);
+  for (const [s, t] of arr) {
+    for (let i = 20; i >= t; i--) {
+      //  i는 현재시간 t는현재소요되는 시간
+      dy[i] = Math.max(dy[i - t] + s, dy[i]);
+    }
+  }
+  return dy[20];
+}
+
+// console.log(
+//   solution25(5, 20, [
+//     [10, 5],
+//     [25, 12],
+//     [15, 8],
+//     [6, 3],
+//     [7, 4],
+//   ]),
+// );
+
+//야근지수
+function solution26(works, n) {
+  if (works.reduce((a, b) => a + b) <= n) return 0;
+  works.sort((a, b) => b - a);
+  let result = 0;
+
+  while (n) {
+    const max = works[0];
+    for (let i = 0; i < works.length; i++) {
+      if (works[i] >= max) {
+        works[i]--;
+        n--;
+      }
+      if (!n) break;
+    }
+  }
+
+  for (const x of works) {
+    if (x >= 1) result += x ** 2;
+  }
+  return result;
+}
+// console.log(solution26([5, 4, 5], 5));
+function solution27(x) {
+  let sum = 0;
+  for (const s of String(x)) sum += Number(s);
+  return x % sum === 0;
+}
