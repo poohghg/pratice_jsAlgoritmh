@@ -34,11 +34,12 @@ function solution2(name) {
     );
 
   for (let i = 0; i < len; i++) {
-    count += getStrDistance(name[i]);
+    // count += getStrDistance(name[i]);
     let endAIdx = i + 1;
     while (endAIdx < len && name[endAIdx] === 'A') endAIdx++;
     const forwordSearch = i * 2 + (len - endAIdx);
     const backwardSearch = i + (len - endAIdx) * 2;
+    console.log(forwordSearch, i, endAIdx);
     minMove = Math.min(minMove, forwordSearch, backwardSearch);
   }
   return count + minMove;
@@ -724,8 +725,106 @@ function solution26(works, n) {
   return result;
 }
 // console.log(solution26([5, 4, 5], 5));
+
 function solution27(x) {
   let sum = 0;
   for (const s of String(x)) sum += Number(s);
   return x % sum === 0;
 }
+
+function solution28(answers) {
+  const cnt = [
+    [1, 0],
+    [2, 0],
+    [3, 0],
+  ];
+  const a = [1, 2, 3, 4, 5];
+  const b = [2, 1, 2, 3, 2, 4, 2, 5];
+  const c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
+
+  // 인덱스 초과 인덱스 찾기
+  for (let i = 0; i < answers.length; i++) {
+    const answer = answers[i];
+    if (answer === a[i % a.length]) cnt[0][1]++;
+    if (answer === b[i % b.length]) cnt[1][1]++;
+    if (answer === c[i % c.length]) cnt[2][1]++;
+  }
+
+  const answer = [];
+  let max;
+  const sorted = cnt
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([idx, s]) => {
+      if (!max) max = s;
+      if (s < max) return false;
+      answer.push(idx);
+    });
+  return answer;
+}
+
+// console.log(solution28([1, 2, 3, 4, 5]));
+
+function solution29(s1, s2) {
+  const makeStr = (s1, s2) => {
+    let tmp = '';
+    let j = 0;
+    for (let i = s1.length - 1; i >= 0; i--) {
+      if (s1.slice(i) === s2.slice(0, ++j)) tmp = s1.slice(i);
+    }
+    return s1 + s2.slice(tmp.length);
+  };
+
+  const sub1 = makeStr(s1, s2);
+  const sub2 = makeStr(s2, s1);
+  if (sub1.length > sub2.length) return sub2;
+  if (sub2.length > sub1.length) return sub1;
+  else return [sub1, sub2].sort()[0];
+}
+// console.log(solution29('xyZA', 'ABCxy'));
+
+function solution30(n, trees) {
+  let cnt = 0;
+  const ch = Array.from(Array(n), () => Array(n).fill(0));
+  const moves = [
+    [1, 0],
+    [0, 1],
+  ];
+  for (const [a, b] of trees) {
+    ch[a][b] = 1;
+  }
+  console.log(ch);
+  const queue = [[0, 0]];
+  while (queue.length) {
+    let [x1, y1] = queue.shift();
+    moves.forEach(([tx, ty]) => {
+      const newX = x1 + tx;
+      const newY = y1 + ty;
+      if (newX >= 0 && newX < n && newY >= 0 && newY < n) {
+        if (ch[newX][newY] === 0) {
+          queue.push([newX, newY]);
+          ch[newX][newY] = 2;
+        }
+        if (ch[newX][newY] === 1) {
+          cnt++;
+          ch[newX][newY] = 2;
+          for (let i = newX; i < n; i++) ch[i][newY] = 2;
+          for (let i = newY; i < n; i++) ch[newX][i] = 2;
+          console.log(ch);
+        }
+      }
+    });
+  }
+  return cnt;
+}
+console.log(
+  solution30(6, [
+    [4, 0],
+    [3, 5],
+    [2, 2],
+    [1, 5],
+  ]),
+);
+// function solution31(params) {}
+// console.log(solution31());
+// function solution32(params) {}
+// console.log(solution32());
