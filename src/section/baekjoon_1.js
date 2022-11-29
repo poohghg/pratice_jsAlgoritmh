@@ -135,6 +135,6 @@ function solution6(n) {
       dy[i - 1][0] + dy[i - 1][1],
     ];
   }
-  console.log(dy);
+  // console.log(dy);
 }
 // console.log(solution6(4));
