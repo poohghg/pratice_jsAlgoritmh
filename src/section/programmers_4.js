@@ -161,19 +161,58 @@ function solution4_1(n, costs) {
     if (!isSameParent(parent, cost[0], cost[1])) {
       answer += cost[2];
       unionParent(parent, cost[0], cost[1]);
-      console.log(cost);
-      console.log(parent);
     }
   }
   return answer;
 }
+// console.log(
+//   solution4_1(4, [
+//     [0, 1, 5],
+//     [1, 2, 3],
+//     [2, 3, 3],
+//     [1, 3, 2],
+//     [0, 3, 4],
+//   ]),
+// );
 
-console.log(
-  solution4_1(4, [
-    [0, 1, 5],
-    [1, 2, 3],
-    [2, 3, 3],
-    [1, 3, 2],
-    [0, 3, 4],
-  ]),
-);
+// 베스트앨범
+function solution5(genres, plays) {
+  const info = {};
+  for (let i = 0; i < genres.length; i++) {
+    info[genres[i]] = info[genres[i]]?.concat([[plays[i], i]]) || [
+      [plays[i], i],
+    ];
+  }
+  return Object.values(info)
+    .sort(
+      (a, b) =>
+        b.reduce((accu, curr) => (accu += curr[0]), 0) -
+        a.reduce((accu, curr) => (accu += curr[0]), 0),
+    )
+    .map((genreArr) =>
+      genreArr
+        .sort((a, b) => b[0] - a[0])
+        .slice(0, 2)
+        .map((v) => v[1]),
+    )
+    .flat();
+}
+
+// console.log(
+//   solution5(
+//     ['classic', 'pop', 'classic', 'classic', 'pop'],
+//     [500, 600, 150, 800, 2500],
+//   ),
+// );
+
+// 문자열 내 p와 y의 개수
+function solution6(s) {
+  let cnt = [0, 0];
+  for (const str of s) {
+    if (str.toLowerCase() === 'p') cnt[0]++;
+    else if (str.toLowerCase() === 'y') cnt[1]++;
+  }
+  return cnt[0] === cnt[1];
+}
+
+console.log(solution6('pPoooyY'));
