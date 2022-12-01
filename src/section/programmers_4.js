@@ -214,5 +214,49 @@ function solution6(s) {
   }
   return cnt[0] === cnt[1];
 }
+// console.log(solution6('pPoooyY'));
 
-console.log(solution6('pPoooyY'));
+// 문자열 나기
+function solution7(s) {
+  const divive = (s, answer) => {
+    if (!s.length) return answer;
+
+    let cnt = 1;
+    for (let i = 1; i < s.length; i++) {
+      if (s[0] !== s[i]) cnt--;
+      else cnt++;
+      if (cnt == 0) return divive(s.slice(i + 1), answer + 1);
+    }
+    return answer + 1;
+  };
+  return divive(s, 0);
+}
+// console.log(solution7('bananaa'));
+
+function solution8(k, d) {
+  const moves = [
+    [0, k],
+    [k, 0],
+    [k, k],
+  ];
+  const visited = { [[0, 0].join(',')]: 1 };
+  const queue = [[0, 0]];
+
+  while (queue.length) {
+    const curLoc = queue.shift();
+
+    for (const move of moves) {
+      const row = curLoc[0] + move[0];
+      const loc = curLoc[1] + move[1];
+      const newLoc = [row, loc];
+      if (row ** 2 + loc ** 2 > d ** 2 || visited[newLoc.join('')]) continue;
+      visited[newLoc.join(',')] = 1;
+      queue.push(newLoc);
+    }
+  }
+  console.log(visited);
+  return Object.keys(visited).length;
+}
+
+function solution8_1(k, d) {}
+console.log(solution8(2, 10));
