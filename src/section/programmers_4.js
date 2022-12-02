@@ -258,5 +258,52 @@ function solution8(k, d) {
   return Object.keys(visited).length;
 }
 
-function solution8_1(k, d) {}
-console.log(solution8(2, 10));
+// 점 찍기
+function solution8_1(k, d) {
+  let answer = 0;
+  const limit = d ** 2;
+  for (let i = 0; i <= d; i += k) {
+    const max = Math.floor(Math.sqrt(limit - i ** 2));
+    answer += Math.floor(max / k) + 1;
+  }
+  return answer;
+}
+// console.log(solution8_1(3, 5));
+
+function solution9(e, starts) {
+  const memo = {};
+  const getDivisors = (num) => {
+    let cnt = 0;
+    for (let i = 1; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) {
+        cnt++;
+        if (num / i !== i) cnt++;
+      }
+    }
+    return cnt;
+  };
+
+  // for (let i = e; i < Math.min(...starts); i--) {
+  //   const element = array[i];
+  // }
+  //2부터 e까지의 숫자에 대한 약수 정보 삽입
+  const dp = Array(e + 1).fill(0);
+  for (let i = 2; i <= e; i++) {
+    for (let k = 1; k <= e / i; k++) {
+      dp[i * k]++;
+    }
+  }
+
+  console.log(dp);
+
+  // let max = [e, 0];
+  // const ch = Array(e + 1).fill(0);
+  // for (e; Math.min(...starts) <= e; e--) {
+  //   const cnt = getDivisors(e);
+  //   if (cnt >= max[1]) max = [e, cnt];
+  //   ch[e] = max[0];
+  // }
+  // return starts.map((start) => ch[start]);
+}
+
+console.log(solution9(8, [1, 3, 7]));
