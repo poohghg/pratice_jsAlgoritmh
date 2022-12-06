@@ -287,6 +287,7 @@ function solution9(e, starts) {
   //   const element = array[i];
   // }
   //2부터 e까지의 숫자에 대한 약수 정보 삽입
+  // https://velog.io/@infinite1305/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%96%B5%EC%96%B5%EB%8B%A8%EC%9D%84-%EC%99%B8%EC%9A%B0%EC%9E%90
   const dp = Array(e + 1).fill(0);
   for (let i = 2; i <= e; i++) {
     for (let k = 1; k <= e / i; k++) {
@@ -305,5 +306,25 @@ function solution9(e, starts) {
   // }
   // return starts.map((start) => ch[start]);
 }
-
-console.log(solution9(8, [1, 3, 7]));
+// console.log(solution9(8, [1, 3, 7]));
+function solution10(n) {
+  const s = '수박';
+  return n % 2 === 0 ? s.repeat(n / 2) : s.repeat(Math.floor(n / 2)) + '수';
+}
+// console.log(solution10(3));
+function solution11(n, cores) {
+  if (n < cores.length) return n;
+  const bs = () => {
+    let ls = 0;
+    let rs = n / cores.length;
+    let middle = (ls + rs) / 2;
+    console.log(middle);
+    console.log(rs);
+    while (ls <= rs) {
+      // if()
+      break;
+    }
+  };
+  bs();
+}
+console.log('solution11', solution11(6, [1, 2, 3]));
