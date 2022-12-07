@@ -315,7 +315,9 @@ function solution10(n) {
 function solution11(n, cores) {
   if (n < cores.length) return n;
   const bs = () => {
-    let ls = 0;
+    // low = n // len(cores) * min(cores)
+    // high = n * min(cores)
+    let ls = 1;
     let rs = n / cores.length;
     let middle = (ls + rs) / 2;
     console.log(middle);
@@ -327,4 +329,28 @@ function solution11(n, cores) {
   };
   bs();
 }
-console.log('solution11', solution11(6, [1, 2, 3]));
+// console.log('solution11', solution11(6, [1, 2, 3]));
+// 최빈값
+function solution12(array) {
+  if (array.length === 1) return array[0];
+
+  const ch = {};
+  let max = [];
+  for (const x of array) ch[x] = (ch[x] || 0) + 1;
+  for (const key in ch) {
+    if (ch[key] > ch[max[0]] || !max.length) max = [key];
+    else if (ch[key] === ch[max[0]]) max.push(key);
+  }
+  return max.length > 1 ? -1 : Number(max[0]);
+}
+// console.log(solution12([3, 3, 1, 2, 4, 4, 4, 3, 3]));
+
+// 2 x n 타일링
+function solution13(n) {
+  const dy = Array(n + 1).fill(0);
+  dy[1] = 1;
+  dy[2] = 2;
+  dy[3] = 3;
+  for (let i = 4; i <= n; i++) dy[i] = (dy[i - 2] + dy[i - 1]) % 1000000007;
+  return dy[n];
+}
