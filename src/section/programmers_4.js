@@ -354,3 +354,65 @@ function solution13(n) {
   for (let i = 4; i <= n; i++) dy[i] = (dy[i - 2] + dy[i - 1]) % 1000000007;
   return dy[n];
 }
+
+function solution14(begin, target, words) {
+  const queue = [[begin, [...words]]];
+  // 한번에 하나의 알파벳을 변경할 수 있다.
+  while (queue.length) {
+    console.log(queue);
+    const [el, array] = queue.shift();
+    if (el === target) return words.length - array.length;
+
+    for (let i = 0; i < array.length; i++) {
+      let cnt = target.length - 1;
+      for (let j = 0; j < el.length; j++) {
+        if (el[j] === array[i][j]) cnt--;
+        else array[i][j] = el[j];
+      }
+      if (cnt === 0)
+        queue.push([array[i], [...array.filter((_, idx) => idx !== i)]]);
+    }
+  }
+  return 0;
+}
+
+// console.log(
+//   solution14('hit', 'cog', ['hot', 'dot', 'dog', 'lot', 'log', 'cog']),
+// );
+function solution15(s) {
+  const obj = {};
+  const answer = [];
+  for (let i = 0; i < s.length; i++) {
+    if (obj[s[i]] != null) answer[i] = i - obj[s[i]];
+    else answer[i] = -1;
+    obj[s[i]] = i;
+  }
+  return answer;
+}
+// console.log(solution15('bananab'));
+
+function solution16(n, k, enemy) {
+  const maxK = [];
+  let maxSum = 0;
+  // let sum = 0;
+  for (let i = 0; i < enemy.length; i++) {
+    n -= enemy[i];
+    if (maxK.length < k) {
+      maxK.push(enemy[i]);
+      maxSum += enemy[i];
+    } else if (maxK.length === k) {
+      maxK.sort((a, b) => b - a);
+      maxSum += enemy[i];
+      maxK.push(0);
+    } else if (enemy[i] > maxK[maxK.length - 2]) {
+      console.log('n', enemy[i], maxK[maxK.length - 2]);
+      maxSum -= maxK[maxK.length - 2];
+      maxSum += enemy[i];
+      maxK[maxK.length - 2] = enemy[i];
+    }
+    if (0 > n + maxSum) return i + 1;
+  }
+}
+// dy 0은 현재 k를썻다면 k로 최대한 막을수 있는수
+// dy 1은 현재 k를안썻다면 k로 최대한 막을수 있는수
+console.log(solution16(7, 3, [4, 2, 4, 5, 3, 3, 1]));
