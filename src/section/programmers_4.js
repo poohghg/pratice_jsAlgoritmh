@@ -391,28 +391,58 @@ function solution15(s) {
 }
 // console.log(solution15('bananab'));
 
+// 디팬스 게임
 function solution16(n, k, enemy) {
-  const maxK = [];
-  let maxSum = 0;
-  // let sum = 0;
-  for (let i = 0; i < enemy.length; i++) {
-    n -= enemy[i];
-    if (maxK.length < k) {
-      maxK.push(enemy[i]);
-      maxSum += enemy[i];
-    } else if (maxK.length === k) {
-      maxK.sort((a, b) => b - a);
-      maxSum += enemy[i];
-      maxK.push(0);
-    } else if (enemy[i] > maxK[maxK.length - 2]) {
-      console.log('n', enemy[i], maxK[maxK.length - 2]);
-      maxSum -= maxK[maxK.length - 2];
-      maxSum += enemy[i];
-      maxK[maxK.length - 2] = enemy[i];
+  if (k >= enemy.length) return enemy.length;
+
+  const getSumWithoutK = (mid) => {
+    return enemy
+      .slice(0, mid + 1)
+      .sort((a, b) => b - a)
+      .reduce((acc, curr, idx) => {
+        if (idx < k) return acc;
+        return acc + curr;
+      }, 0);
+  };
+
+  let answer = 0;
+  let min = k;
+  let max = enemy.length - 1;
+
+  while (min <= max) {
+    let mid = Math.floor((min + max) / 2);
+    if (getSumWithoutK(mid) > n) max = mid - 1;
+    else {
+      console.log(mid);
+      answer = Math.max(answer, mid);
+      min = mid + 1;
     }
-    if (0 > n + maxSum) return i + 1;
   }
+  return answer + 1;
 }
-// dy 0은 현재 k를썻다면 k로 최대한 막을수 있는수
-// dy 1은 현재 k를안썻다면 k로 최대한 막을수 있는수
-console.log(solution16(7, 3, [4, 2, 4, 5, 3, 3, 1]));
+
+console.log(solution16(5, 2, [1, 1, 1]));
+
+function solution16_1(n, k, enemy) {
+  if (k >= enemy.length) return enemy.length;
+
+  const maxArr = enemy.slice(0, k).sort((a, b) => b - a);
+  let sum = maxArr.reduce((a, b) => a + b, 0);
+  let kSum = maxArr.reduce((a, b) => a + b, 0);
+
+  for (let i = k; i < enemy.length; i++) {
+    if (maxArr.length === k && enemy[i] > maxArr[maxArr.length - 1]) {
+      // 교체 여부? 단순히 크다고 교체X
+      kSum -= maxArr[maxArr.length - 1];
+      if (sum - kSum > n) return i;
+      kSum += enemy[i];
+      maxArr[maxArr.length - 1] = enemy[i];
+      maxArr.sort((a, b) => b - a);
+    }
+    sum += enemy[i];
+    if (sum - kSum > n) return i;
+  }
+  return enemy.length;
+}
+
+// console.log(solution16(15, 1, [15, 17, 15, 15, 15]));
