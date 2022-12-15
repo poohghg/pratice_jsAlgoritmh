@@ -421,28 +421,113 @@ function solution16(n, k, enemy) {
   return answer + 1;
 }
 
-console.log(solution16(5, 2, [1, 1, 1]));
+// console.log(solution16(5, 2, [1, 1, 1]));
 
-function solution16_1(n, k, enemy) {
-  if (k >= enemy.length) return enemy.length;
-
-  const maxArr = enemy.slice(0, k).sort((a, b) => b - a);
-  let sum = maxArr.reduce((a, b) => a + b, 0);
-  let kSum = maxArr.reduce((a, b) => a + b, 0);
-
-  for (let i = k; i < enemy.length; i++) {
-    if (maxArr.length === k && enemy[i] > maxArr[maxArr.length - 1]) {
-      // 교체 여부? 단순히 크다고 교체X
-      kSum -= maxArr[maxArr.length - 1];
-      if (sum - kSum > n) return i;
-      kSum += enemy[i];
-      maxArr[maxArr.length - 1] = enemy[i];
-      maxArr.sort((a, b) => b - a);
-    }
-    sum += enemy[i];
-    if (sum - kSum > n) return i;
+// 완주하지 못한 선수
+function solution17(participant, completion) {
+  const completionObj = completion.reduce((acc, cur) => {
+    acc[cur] = (acc[cur] || 0) + 1;
+    return acc;
+  }, {});
+  for (const v of participant) {
+    if (!completionObj[v]) return v;
+    completionObj[v]--;
   }
-  return enemy.length;
 }
 
-// console.log(solution16(15, 1, [15, 17, 15, 15, 15]));
+// console.log(
+//   solution17(
+//     ['mislav', 'stanko', 'mislav', 'ana'],
+//     ['stanko', 'ana', 'mislav'],
+//   ),
+// );
+
+// 숫자 블록
+function solution18(begin, end) {
+  const getDivisors = (num) => {
+    if (num === 1) return 0;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0 && num / i <= 10000000) return Math.max(i, num / i);
+    }
+    return 1;
+  };
+  const answer = [];
+  for (let i = begin; i <= end; i++) {
+    answer.push(getDivisors(i));
+  }
+  return answer;
+}
+// console.log(solution18(1, 10));
+
+// 특이한 정렬
+function solution19(numlist, n) {
+  return numlist.sort((a, b) => {
+    const calA = n - a;
+    const calB = n - b;
+    if (Math.abs(calA) === Math.abs(calB)) return b - a;
+    return Math.abs(calA) - Math.abs(calB);
+  });
+}
+// console.log(solution19([1, 2, 3, 4, 5, 6], 4));
+
+// 평행
+function solution20(dots) {
+  const obj = {};
+  for (let i = 0; i < dots.length - 1; i++) {
+    const [x, y] = dots[i];
+    for (let j = i + 1; j < dots.length; j++) {
+      const calX = Math.abs(x - dots[j][0]);
+      const calY = Math.abs(y - dots[j][1]);
+      // y좌표의 차이 / x좌표의 차이 = 기울기
+      if (obj[calY / calX]) return 1;
+      obj[calY / calX] = true;
+    }
+  }
+  return 0;
+}
+
+// console.log(
+//   solution20([
+//     [3, 5],
+//     [4, 1],
+//     [2, 4],
+//     [5, 10],
+//   ]),
+// );
+
+// 겹치는 선분의 길이
+function solution21(lines) {
+  const arr = lines.reduce((acc, cur) => {
+    acc.push(['s', cur[0]]);
+    acc.push(['e', cur[1]]);
+    return acc;
+  }, []);
+  arr.sort((a, b) => {
+    if (a[1] === b[1]) return a[0].charCodeAt() - b[0].charCodeAt();
+    return a[1] - b[1];
+  });
+
+  let answer = 0;
+  let lastEnd = Number.MIN_SAFE_INTEGER;
+  const queue = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][0] === 's') queue.push(arr[i]);
+    else {
+      queue.shift();
+      if (queue.length) {
+        answer +=
+          lastEnd > queue[0][1] ? arr[i][1] - lastEnd : arr[i][1] - queue[0][1];
+        lastEnd = arr[i][1];
+      }
+    }
+  }
+  return answer;
+}
+
+console.log(
+  solution21([
+    [0, 5],
+    [3, 9],
+    [1, 10],
+  ]),
+);
