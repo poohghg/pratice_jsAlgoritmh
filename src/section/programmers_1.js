@@ -441,46 +441,6 @@ function solution_14(places) {
 //   ]),
 // );
 
-//모두 0으로 만들기
-function solution_15(a, edges) {
-  if (a.reduce((a, b) => a + b) % 2 !== 0) return -1;
-  const list = {};
-  const [max, maxIdx] = a.reduce(
-    (prev, curr, idx) => {
-      const prevValue = Math.abs(prev[0]);
-      curr = Math.abs(curr);
-      return curr > prevValue ? [curr, idx] : prev;
-    },
-    [0, -1],
-  );
-
-  for (const [vertex1, vertex2] of edges) {
-    if (!list[vertex1]) list[vertex1] = [];
-    if (!list[vertex2]) list[vertex2] = [];
-    list[vertex1].push(vertex2);
-    list[vertex2].push(vertex1);
-  }
-
-  const visited = { [maxIdx]: true };
-  let cnt = -list[maxIdx].reduce(
-    (prev, curr) => Math.abs(a[prev]) + Math.abs(a[curr]),
-  );
-  let sum = 0;
-  function DFS(root) {
-    list[root].forEach((next) => {
-      if (!visited[next]) {
-        visited[next] = true;
-        DFS(next);
-        cnt += Math.abs(a[next]);
-        sum += a[next];
-      }
-    });
-  }
-  DFS(maxIdx);
-  cnt += Math.abs(max);
-  return cnt;
-}
-
 // console.log(
 //   solution_15(
 //     [-5, 0, 4, 0, 1],

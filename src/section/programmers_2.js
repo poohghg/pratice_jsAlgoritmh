@@ -544,30 +544,3 @@ function solution19(quiz) {
   return answer;
 }
 // console.log(solution19(['-4 - 1 = -5', '5 + 6 = 11']));
-
-// 평행
-function solution20(dots) {
-  const getInclination = ([[x1, y1], [x2, y2]]) =>
-    x2 !== x1 ? (y2 - y1) / (x2 - x1) : Infinity;
-  const isParallel = (line1, line2) =>
-    getInclination(line1) === getInclination(line2);
-
-  return dots.some((dot) => {
-    const line1 = [dots[0], dot];
-    // console.log(line1);
-    const line2 = dots.filter((dot) => !line1.includes(dot));
-    console.log('line1', line1, 'line2', line2);
-
-    // return isParallel(line1, line2);
-  })
-    ? 1
-    : 0;
-}
-// console.log(
-//   solution20([
-//     [1, 4],
-//     [9, 2],
-//     [3, 8],
-//     [11, 6],
-//   ]),
-// );

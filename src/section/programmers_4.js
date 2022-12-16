@@ -82,7 +82,6 @@ function solution4(n, costs) {
 
   const BFS = (start) => {
     // console.log(start);
-    // 방문해야할 리스트를 우선순위큐로 만들어 다음에 방문해야할 노드를 탐색
     const queue = [[start, 0]];
     // 시작점부터의 각노드의 거리를 표기한다.
     const distances = {};
@@ -478,7 +477,7 @@ function solution20(dots) {
     for (let j = i + 1; j < dots.length; j++) {
       const calX = Math.abs(x - dots[j][0]);
       const calY = Math.abs(y - dots[j][1]);
-      // y좌표의 차이 / x좌표의 차이 = 기울기
+      // 기울기 = y좌표의 차이 / x좌표의 차이
       if (obj[calY / calX]) return 1;
       obj[calY / calX] = true;
     }
@@ -524,10 +523,54 @@ function solution21(lines) {
   return answer;
 }
 
+// console.log(
+//   solution21([
+//     [0, 5],
+//     [3, 9],
+//     [1, 10],
+//   ]),
+// );
+
+//모두 0으로 만들기
+function solution22(a, edges) {
+  // 임의의 연결된 두 점을 골라서 한쪽은 1 증가시키고, 다른 한쪽은 1 감소시킵니다.
+  if (a.reduce((a, b) => a + b) !== 0) return -1;
+  const list = Array(a.length)
+    .fill()
+    .map(() => []);
+  for (const [node1, node2] of edges) {
+    list[node1].push(node2);
+    list[node2].push(node1);
+  }
+
+  let answer = 0n;
+  // 현재노드 부모노드
+  // root노드에 값을 합산한다.
+  const stack = [[0, 0]];
+  const visited = {};
+  while (stack.length) {
+    const [node, parent] = stack.pop();
+    // for문을 돌지 않고온 마지막 노드!
+    if (visited[node]) {
+      a[parent] += a[node];
+      answer += BigInt(Math.abs(a[node]));
+      continue;
+    }
+    stack.push([node, parent]);
+    visited[node] = true;
+    for (const next of list[node]) if (!visited[next]) stack.push([next, node]);
+  }
+  return answer;
+}
+
 console.log(
-  solution21([
-    [0, 5],
-    [3, 9],
-    [1, 10],
-  ]),
+  solution22(
+    [-5, 0, 2, 1, 2],
+    [
+      [0, 1],
+      [3, 4],
+      [2, 3],
+      [0, 3],
+    ],
+  ),
 );
