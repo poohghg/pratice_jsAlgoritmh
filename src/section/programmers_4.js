@@ -531,6 +531,7 @@ function solution21(lines) {
 //   ]),
 // );
 
+// 다시
 //모두 0으로 만들기
 function solution22(a, edges) {
   // 임의의 연결된 두 점을 골라서 한쪽은 1 증가시키고, 다른 한쪽은 1 감소시킵니다.
@@ -563,14 +564,94 @@ function solution22(a, edges) {
   return answer;
 }
 
-console.log(
-  solution22(
-    [-5, 0, 2, 1, 2],
-    [
-      [0, 1],
-      [3, 4],
-      [2, 3],
-      [0, 3],
-    ],
-  ),
-);
+// console.log(
+//   solution22(
+//     [-5, 0, 2, 1, 2],
+//     [
+//       [0, 1],
+//       [3, 4],
+//       [2, 3],
+//       [0, 3],
+//     ],
+//   ),
+// );
+function solution23(phone_number) {
+  const answer = [];
+  for (let i = 0; i < phone_number.length; i++) {
+    if (i > phone_number.length - 5) answer.push(phone_number[i]);
+    else answer.push('*');
+  }
+  return answer.join('');
+}
+// console.log(solution23('01033334444'));
+
+function solution24(answers) {
+  const a = [1, 2, 3, 4, 5];
+  const b = [2, 1, 2, 3, 2, 4, 2, 5];
+  const c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
+  const answer = [
+    [0, 1],
+    [0, 2],
+    [0, 3],
+  ];
+
+  // 11 5
+  //  i = a.
+  //  i / a.length
+  for (let i = 0; i < answers.length; i++) {
+    if (a[i % a.length] === answers[i]) answer[0][0]++;
+    if (b[i % b.length] === answers[i]) answer[1][0]++;
+    if (c[i % c.length] === answers[i]) answer[2][0]++;
+  }
+  answer.sort((a, b) => b[0] - a[0]);
+  if (answer[0][0] !== answer[1][0]) return answer[0][1];
+  if (answer[0][0] === answer[2][0]) return answer.map((v) => v[1]);
+  return [answer[0][1], answer[1][1]];
+}
+// console.log(solution24([1, 3, 2, 4, 2, 1, 3, 2, 4, 5, 6]));
+
+function solution25(participant, completion) {
+  const completed = completion.reduce((acc, cur) => {
+    acc[cur] = (acc[cur] || 0) + 1;
+    return acc;
+  }, {});
+
+  for (const name of participant) {
+    if (!completed[name]) return name;
+    completed[name]--;
+  }
+}
+// console.log(solution(['leo', 'kiki', 'eden'], ['eden', 'kiki']));
+
+function solution26(numbers) {
+  const set = new Set();
+  const ch = Array(numbers.length).fill(0);
+
+  const isPrime = (n) => {
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+      if (n % i === 0) return false;
+    }
+    return n >= 2;
+  };
+
+  const dfs = (l, num) => {
+    if (num) set.add(Number(num));
+    if (l === numbers.length) return;
+    for (let i = 0; i < numbers.length; i++) {
+      if (ch[i] === 0) {
+        ch[i] = 1;
+        dfs(l + 1, num + numbers[i]);
+        ch[i] = 0;
+      }
+    }
+  };
+  dfs(0, '');
+
+  let answer = 0;
+  for (const num of set) {
+    if (isPrime(Number(num))) answer++;
+  }
+  return answer;
+}
+
+console.log(solution26('123'));
