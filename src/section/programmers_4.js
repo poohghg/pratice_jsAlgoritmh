@@ -595,9 +595,6 @@ function solution24(answers) {
     [0, 3],
   ];
 
-  // 11 5
-  //  i = a.
-  //  i / a.length
   for (let i = 0; i < answers.length; i++) {
     if (a[i % a.length] === answers[i]) answer[0][0]++;
     if (b[i % b.length] === answers[i]) answer[1][0]++;
@@ -628,9 +625,7 @@ function solution26(numbers) {
   const ch = Array(numbers.length).fill(0);
 
   const isPrime = (n) => {
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-      if (n % i === 0) return false;
-    }
+    for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
     return n >= 2;
   };
 
@@ -653,5 +648,21 @@ function solution26(numbers) {
   }
   return answer;
 }
+// console.log(solution26('123'));
 
-console.log(solution26('123'));
+// 숫자 카드 나누기
+function solution27(arrayA, arrayB) {
+  arrayA.sort((a, b) => a - b);
+  arrayB.sort((a, b) => a - b);
+  const confirm = (a, b) => {
+    const min = Math.min(...a);
+    for (let i = min; i > 1; i--) {
+      if (a.every((num) => num % i === 0) && !b.some((num) => num % i === 0))
+        return i;
+    }
+    return 0;
+  };
+  return Math.max(confirm(arrayA, arrayB), confirm(arrayB, arrayA));
+}
+
+console.log(solution27([10, 17], [5, 20]));

@@ -176,23 +176,16 @@ function solution6(k, m, score) {
 
 //숫자 카드 나누기
 function solution7(arrayA, arrayB) {
-  // const arr =
-  const minA = Math.min(...arrayA);
-  const minB = Math.min(...arrayB);
-  const leastCommon = Math.max(minA, minB);
-
-  const comfrim = (a, b, num) => {
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] % num !== 0 || b[i] % num === 0) return false;
+  const confirm = (a, b, num) => {
+    const min = Math.min(...a);
+    for (let i = min; i > 1; i--) {
+      for (const num of a) if (num % a !== 0) continue;
+      for (const num of b) if (num % b === 0) continue;
+      return i;
     }
-    return true;
+    return 0;
   };
-
-  for (let i = leastCommon; 2 <= i; i--) {
-    if (minA % i === 0 && comfrim(arrayA, arrayB, i)) return i;
-    if (minB % i === 0 && comfrim(arrayB, arrayA, i)) return i;
-  }
-  return 0;
+  return Math.max(confirm(arrayA, arrayA), confirm(arrayB, arrayA));
 }
 // console.log(solution7([14, 35, 119], [18, 30, 102]));
 
