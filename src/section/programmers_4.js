@@ -665,4 +665,41 @@ function solution27(arrayA, arrayB) {
   return Math.max(confirm(arrayA, arrayB), confirm(arrayB, arrayA));
 }
 
-console.log(solution27([10, 17], [5, 20]));
+// 크기가 작은 부분문자열
+function solution28(t, p) {
+  const pLen = p.length;
+  let answer = 0;
+  for (let i = 0; i <= t.length - pLen; i++) {
+    if (+p >= +t.substring(i, pLen + i)) answer++;
+  }
+  return answer;
+}
+// console.log(solution28('3141592', '271'));
+
+// 테이블 해시 함수
+function solution29(data, col, row_begin, row_end) {
+  data.sort((a, b) => {
+    if (a[col - 1] === b[col - 1]) return b[0] - a[0];
+    return a[col - 1] - b[col - 1];
+  });
+
+  let answer = 0;
+  for (let i = row_begin - 1; i <= row_end - 1; i++) {
+    answer ^= data[i].reduce((a, b) => (a += b % (i + 1)), 0);
+  }
+  return answer;
+}
+
+console.log(
+  solution29(
+    [
+      [2, 2, 6],
+      [1, 5, 10],
+      [4, 2, 9],
+      [3, 8, 3],
+    ],
+    2,
+    2,
+    3,
+  ),
+);
