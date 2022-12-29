@@ -690,16 +690,44 @@ function solution29(data, col, row_begin, row_end) {
   return answer;
 }
 
-console.log(
-  solution29(
-    [
-      [2, 2, 6],
-      [1, 5, 10],
-      [4, 2, 9],
-      [3, 8, 3],
-    ],
-    2,
-    2,
-    3,
-  ),
-);
+// console.log(
+//   solution29(
+//     [
+//       [2, 2, 6],
+//       [1, 5, 10],
+//       [4, 2, 9],
+//       [3, 8, 3],
+//     ],
+//     2,
+//     2,
+//     3,
+//   ),
+// );
+
+// 마법의 엘리베이터
+function solution30(storey) {
+  storey = storey.toString();
+  const len = storey.length;
+  const dy = Array(len)
+    .fill()
+    .map(() => []);
+  const toZero = (n) => [n, 10 - n];
+
+  dy[len - 1] = toZero(+storey[len - 1]);
+  for (let i = len - 2; 0 <= i; i--) {
+    let n = +storey[i];
+    const min = Math.min(...dy[i + 1]);
+
+    // dy 0인덱스는 -
+    // dy 1인덱스는 + 현재수에 +1을한다.
+    if (dy[i + 1][0] > dy[i + 1][1]) n++;
+    console.log(' n', n);
+    const r = toZero(n);
+    // 이전회차에서 최수한의 움직임 + 현재수에서 +- count합치가
+    dy[i] = [min + r[0], min + r[1]];
+  }
+  console.log(dy);
+  return Math.min(...dy[0]);
+}
+
+console.log(solution30(5));
