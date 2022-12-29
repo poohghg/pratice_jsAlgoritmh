@@ -720,14 +720,16 @@ function solution30(storey) {
 
     // dy 0인덱스는 -
     // dy 1인덱스는 + 현재수에 +1을한다.
-    if (dy[i + 1][0] > dy[i + 1][1]) n++;
-    console.log(' n', n);
+
+    if (dy[i + 1][0] === dy[i + 1][1] && n > 5) n++;
+    else if (dy[i + 1][0] > dy[i + 1][1]) n++;
+
+    // 이전회차에서 최소한의 움직임 + 현재수에서 +- count합치가
     const r = toZero(n);
-    // 이전회차에서 최수한의 움직임 + 현재수에서 +- count합치가
     dy[i] = [min + r[0], min + r[1]];
+    if (i === 0 && n === 10) return min + 1;
   }
-  console.log(dy);
   return Math.min(...dy[0]);
 }
 
-console.log(solution30(5));
+console.log(solution30(155));
