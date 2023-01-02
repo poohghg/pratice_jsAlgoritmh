@@ -106,12 +106,12 @@ function solution5(n, arr) {
   console.log(dy);
   return Math.max(...dy[n]);
 }
-console.log(
-  solution5(7, [
-    [10, 30, 10, 50, 100, 20, 40],
-    [20, 40, 30, 50, 60, 20, 80],
-  ]),
-);
+// console.log(
+//   solution5(7, [
+//     [10, 30, 10, 50, 100, 20, 40],
+//     [20, 40, 30, 50, 60, 20, 80],
+//   ]),
+// );
 
 /**
  * 어떤 동물원에 가로로 두칸 세로로 N칸인 아래와 같은 우리가 있다.
@@ -138,3 +138,23 @@ function solution6(n) {
   // console.log(dy);
 }
 // console.log(solution6(4));
+
+// 계단오르기 백트레깅
+// https://www.acmicpc.net/problem/2579
+function solution7(n, arr) {
+  // dy[idx][0] = 이전계단을 밝고온 값
+  // dy[idx][1] = 이전 계단을 밝지 않고온 값
+  const dy = Array.from({ length: n }, () => []);
+  const come = Array.from({ length: n }, () => []);
+  const back = [];
+  dy[0] = [10, 0];
+  dy[1] = [30, 20];
+  come[0] = [10, 0];
+  come[1] = [20, 20];
+  for (let i = 2; i < arr.length; i++) {
+    dy[i][0] = dy[i - 1][1] + arr[i];
+    dy[i][1] = Math.max(...dy[i - 2]) + arr[i];
+  }
+  console.log(dy);
+}
+console.log(solution7(6, [10, 20, 15, 25, 10, 20]));

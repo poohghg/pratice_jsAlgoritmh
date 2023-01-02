@@ -707,29 +707,25 @@ function solution29(data, col, row_begin, row_end) {
 // 마법의 엘리베이터
 function solution30(storey) {
   storey = storey.toString();
-  const len = storey.length;
-  const dy = Array(len)
-    .fill()
-    .map(() => []);
-  const toZero = (n) => [n, 10 - n];
-
-  dy[len - 1] = toZero(+storey[len - 1]);
-  for (let i = len - 2; 0 <= i; i--) {
-    let n = +storey[i];
-    const min = Math.min(...dy[i + 1]);
-
-    // dy 0인덱스는 -
-    // dy 1인덱스는 + 현재수에 +1을한다.
-
-    if (dy[i + 1][0] === dy[i + 1][1] && n > 5) n++;
-    else if (dy[i + 1][0] > dy[i + 1][1]) n++;
-
-    // 이전회차에서 최소한의 움직임 + 현재수에서 +- count합치가
-    const r = toZero(n);
-    dy[i] = [min + r[0], min + r[1]];
-    if (i === 0 && n === 10) return min + 1;
+  let answer = 0;
+  let nextPlus = 0;
+  for (let i = storey.length - 1; 0 <= i; i--) {
+    let n = +storey[i] + nextPlus;
+    if (n < 5) {
+      answer += n;
+      nextPlus = 0;
+    } else if (n > 5) {
+      answer += 10 - n;
+      nextPlus = 1;
+    } else {
+      if (storey[i - 1] >= 5) nextPlus = 1;
+      else nextPlus = 0;
+      answer += 5;
+    }
   }
-  return Math.min(...dy[0]);
+  if (nextPlus) answer++;
+  return answer;
 }
+console.log(solution30(45));
 
-console.log(solution30(155));
+// console.log('1101111011000001101111011'.length);
