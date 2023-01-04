@@ -201,7 +201,6 @@ function solution_5(n, arr) {
   }
   travers(0, 0);
   return answer;
-  // return travers(0, 0) ? ;
 }
 // console.log(solution_5(6, [1, 3, 5, 6, 7, 10]));
 function solution_6(n, m, arr) {

@@ -726,6 +726,6 @@ function solution30(storey) {
   if (nextPlus) answer++;
   return answer;
 }
-console.log(solution30(45));
+// console.log(solution30(45));
 
 // console.log('1101111011000001101111011'.length);

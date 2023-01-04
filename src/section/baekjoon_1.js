@@ -144,17 +144,24 @@ function solution6(n) {
 function solution7(n, arr) {
   // dy[idx][0] = 이전계단을 밝고온 값
   // dy[idx][1] = 이전 계단을 밝지 않고온 값
-  const dy = Array.from({ length: n }, () => []);
+  const dy = Array.from({ length: n + 1 }, () => []);
   const come = Array.from({ length: n }, () => []);
-  const back = [];
-  dy[0] = [10, 0];
-  dy[1] = [30, 20];
-  come[0] = [10, 0];
-  come[1] = [20, 20];
-  for (let i = 2; i < arr.length; i++) {
-    dy[i][0] = dy[i - 1][1] + arr[i];
-    dy[i][1] = Math.max(...dy[i - 2]) + arr[i];
+  dy[0] = [0, 0];
+  dy[1] = [0, 10];
+  dy[2] = [20, 30];
+
+  come[0] = [0, 0, 0];
+  come[1] = [[-2, 0], -1, 10];
+  come[2] = [[-2, 0], -1, 20];
+
+  for (let i = 3; i <= arr.length; i++) {
+    dy[i][0] = Math.max(...dy[i - 2]) + arr[i - 1];
+    dy[i][1] = dy[i - 1][0] + arr[i - 1];
+
+    const prev = dy[i - 2][0] > dy[i - 2][1] ? 0 : 1;
+    come[i] = [[-2, prev], -1, arr[i - 1]];
   }
-  console.log(dy);
+  console.log(come);
+  // console.log(dy);
 }
 console.log(solution7(6, [10, 20, 15, 25, 10, 20]));
