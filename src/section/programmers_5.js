@@ -58,18 +58,60 @@ function solution3(users, emoticons) {
 
   // 유저는 일정이상의 가격을 다소비하여야 이모티콘 플러스를 구매한다.
 }
+// console.log(
+//   solution3(
+//     [
+//       [40, 2900],
+//       [23, 10000],
+//       [11, 5200],
+//       [5, 5900],
+//       [40, 3100],
+//       [27, 9200],
+//       [32, 6900],
+//     ],
+//     [1300, 1500, 1600, 4900],
+//   ),
+// );
 
-console.log(
-  solution3(
-    [
-      [40, 2900],
-      [23, 10000],
-      [11, 5200],
-      [5, 5900],
-      [40, 3100],
-      [27, 9200],
-      [32, 6900],
-    ],
-    [1300, 1500, 1600, 4900],
-  ),
-);
+// 택배 배달과 수거하기
+function solution4(cap, n, deliveries, pickups) {
+  let answer = 0;
+  let i = n - 1;
+  let j = n - 1;
+  let box;
+
+  while (i >= 0 || j >= 0) {
+    if (deliveries[i] === 0 && pickups[j] === 0) {
+      i--;
+      j--;
+      continue;
+    }
+    answer += (Math.max(i, j) + 1) * 2;
+    box = 0;
+
+    while (i >= 0 && box <= cap) {
+      if (box + deliveries[i] <= cap) {
+        box += deliveries[i];
+        i--;
+      } else {
+        deliveries[i] -= cap - box;
+        break;
+      }
+    }
+
+    box = 0;
+    while (j >= 0 && box <= cap) {
+      if (box + pickups[j] <= cap) {
+        box += pickups[j];
+        j--;
+      } else {
+        pickups[j] -= cap - box;
+        break;
+      }
+    }
+  }
+  return answer;
+}
+// 3 - 3
+// 4 + 4
+console.log(solution4(2, 2, [0, 0], [0, 0]));
