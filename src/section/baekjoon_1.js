@@ -164,4 +164,32 @@ function solution7(n, arr) {
   console.log(come);
   // console.log(dy);
 }
-console.log(solution7(6, [10, 20, 15, 25, 10, 20]));
+// console.log(solution7(6, [10, 20, 15, 25, 10, 20]));
+
+/**
+ * https://www.acmicpc.net/problem/11057
+ * 첫째 줄에 길이가 N인 오르막 수의 개수를 10,007로 나눈 나머지를 출력한다.
+ * 오르막 수
+ * 오르막 수는 수의 자리가 오름차순을 이루는 수를 말한다. 이때, 인접한 수가 같아도 오름차순으로 친다.
+ * 예를 들어, 2234와 3678, 11119는 오르막 수이지만, 2232, 3676, 91111은 오르막 수가 아니다.
+ * 수의 길이 N이 주어졌을 때, 오르막 수의 개수를 구하는 프로그램을 작성하시오. 수는 0으로 시작할 수 있다.
+ */
+
+function solution8(n) {
+  // 길이가 i이면 last 수로 끝나는 갯수
+  const dy = Array.from({ length: n + 1 }, () => []);
+  dy[0] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  for (let i = 1; i <= n; i++) {
+    for (let n = 1; n < 10; n++) {
+      let element = 0;
+      for (let prev = n; prev < 10; prev++) {
+        element += dy[i - 1][prev];
+      }
+      dy[i][n] = element;
+    }
+  }
+  console.log(dy);
+  console.log(dy[2].reduce((a, b) => a + b));
+}
+
+console.log(solution8(2));

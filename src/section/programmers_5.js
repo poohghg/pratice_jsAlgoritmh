@@ -54,24 +54,47 @@ function solution2(today, terms, privacies) {
 
 // 이모티콘 할인행사
 function solution3(users, emoticons) {
-  const discountRate = [40, 30, 20, 10];
+  const discountRates = [40, 30, 20, 10];
+  const rates = [];
 
-  // 유저는 일정이상의 가격을 다소비하여야 이모티콘 플러스를 구매한다.
+  (function dfs(l, arr) {
+    if (l === emoticons.length) return rates.push(arr);
+    for (let i = 0; i < discountRates.length; i++)
+      dfs(l + 1, arr.concat(discountRates[i]));
+  })(0, []);
+
+  // 유저는 일정이상의 할인율이 되면 이모티콘을 구매한다.
+  let answer = [0, 0];
+  for (const rate of rates) {
+    const purchaseInfo = [0, 0];
+
+    for (const user of users) {
+      const [userRate, d] = user;
+      const ratedPrices = emoticons.reduce((acc, curr, idx) => {
+        if (rate[idx] >= userRate) return acc + curr * (1 - rate[idx] * 0.01);
+        return acc;
+      }, 0);
+
+      if (ratedPrices >= d) purchaseInfo[0]++;
+      else purchaseInfo[1] += ratedPrices;
+    }
+
+    if (purchaseInfo[0] > answer[0]) answer = purchaseInfo;
+    else if (purchaseInfo[0] === answer[0] && purchaseInfo[1] >= answer[1])
+      answer = purchaseInfo;
+  }
+  return answer;
 }
-// console.log(
-//   solution3(
-//     [
-//       [40, 2900],
-//       [23, 10000],
-//       [11, 5200],
-//       [5, 5900],
-//       [40, 3100],
-//       [27, 9200],
-//       [32, 6900],
-//     ],
-//     [1300, 1500, 1600, 4900],
-//   ),
-// );
+// console.log(4 ** 7);
+console.log(
+  solution3(
+    [
+      [40, 10000],
+      [25, 10000],
+    ],
+    [7000, 9000],
+  ),
+);
 
 // 택배 배달과 수거하기
 function solution4(cap, n, deliveries, pickups) {
@@ -114,4 +137,4 @@ function solution4(cap, n, deliveries, pickups) {
 }
 // 3 - 3
 // 4 + 4
-console.log(solution4(2, 2, [0, 0], [0, 0]));
+// console.log(solution4(2, 2, [0, 0], [0, 0]));
