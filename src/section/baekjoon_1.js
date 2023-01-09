@@ -178,18 +178,27 @@ function solution7(n, arr) {
 function solution8(n) {
   // 길이가 i이면 last 수로 끝나는 갯수
   const dy = Array.from({ length: n + 1 }, () => []);
-  dy[0] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-  for (let i = 1; i <= n; i++) {
-    for (let n = 1; n < 10; n++) {
-      let element = 0;
-      for (let prev = n; prev < 10; prev++) {
-        element += dy[i - 1][prev];
-      }
-      dy[i][n] = element;
+  dy[1] = Array(10).fill(1);
+  for (let i = 2; i <= n; i++) {
+    let sum = 0;
+    for (let j = 0; j <= 9; j++) {
+      sum += dy[i - 1][j];
+      dy[i][j] = sum % 10007;
     }
   }
-  console.log(dy);
-  console.log(dy[2].reduce((a, b) => a + b));
+
+  return dy[n].reduce((a, b) => a + b);
 }
 
-console.log(solution8(2));
+// console.log(solution8(12));
+function solution(n) {
+  let answer = 0;
+  for (let i = 1; i <= Math.sqrt(n); i++) {
+    if (n % i === 0) {
+      answer += i;
+      if (i !== n / i) answer += n / i;
+    }
+  }
+  return answer;
+}
+console.log(solution(16));
