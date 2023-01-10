@@ -85,16 +85,15 @@ function solution3(users, emoticons) {
   }
   return answer;
 }
-// console.log(4 ** 7);
-console.log(
-  solution3(
-    [
-      [40, 10000],
-      [25, 10000],
-    ],
-    [7000, 9000],
-  ),
-);
+// console.log(
+//   solution3(
+//     [
+//       [40, 10000],
+//       [25, 10000],
+//     ],
+//     [7000, 9000],
+//   ),
+// );
 
 // 택배 배달과 수거하기
 function solution4(cap, n, deliveries, pickups) {
@@ -138,3 +137,62 @@ function solution4(cap, n, deliveries, pickups) {
 // 3 - 3
 // 4 + 4
 // console.log(solution4(2, 2, [0, 0], [0, 0]));
+
+// 3진법 뒤집기
+function solution5(n) {
+  n = n.toString(3);
+  let answer = 0;
+  for (let i = n.length - 1; 0 <= i; i--) answer += n[i] * 3 ** i;
+  return answer;
+}
+// console.log(solution5(45));
+
+// 배달
+function solution6(N, road, K) {
+  let answer = 0;
+  const list = {};
+
+  for (const [vertex1, vertex2, w] of road) {
+    list[vertex1] = list[vertex1]?.concat([[vertex2, w]]) || [[vertex2, w]];
+    list[vertex2] = list[vertex2]?.concat([[vertex1, w]]) || [[vertex1, w]];
+  }
+
+  const dfs = (s) => {
+    const distances = {};
+    const nodes = [[s, 0]];
+
+    for (const node in list) {
+      if (node === s) distances[node] = 0;
+      else distances[node] = Infinity;
+    }
+
+    while (nodes.length) {
+      const [currNode, currW] = nodes.shift();
+      list[currNode].forEach(([next, w]) => {
+        if (distances[next] > currW + w) {
+          distances[next] = currW + w;
+          nodes.push([next, currW + w]);
+        }
+      });
+    }
+    for (const key in distances) if (distances[key] <= K) answer++;
+  };
+
+  dfs('1');
+  return answer;
+}
+
+console.log(
+  solution6(
+    5,
+    [
+      [1, 2, 1],
+      [2, 3, 3],
+      [5, 2, 2],
+      [1, 4, 2],
+      [5, 3, 1],
+      [5, 4, 2],
+    ],
+    3,
+  ),
+);
