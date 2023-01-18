@@ -182,17 +182,52 @@ function solution6(N, road, K) {
   return answer;
 }
 
-console.log(
-  solution6(
-    5,
-    [
-      [1, 2, 1],
-      [2, 3, 3],
-      [5, 2, 2],
-      [1, 4, 2],
-      [5, 3, 1],
-      [5, 4, 2],
-    ],
-    3,
-  ),
-);
+// console.log(
+//   solution6(
+//     5,
+//     [
+//       [1, 2, 1],
+//       [2, 3, 3],
+//       [5, 2, 2],
+//       [1, 4, 2],
+//       [5, 3, 1],
+//       [5, 4, 2],
+//     ],
+//     3,
+//   ),
+// );
+
+//정수 제곱근 판별
+function solution7(n) {
+  const sqrt = Math.sqrt(n);
+  if (sqrt % 1 === 0) return (sqrt + 1) ** 2;
+  return -1;
+}
+// console.log(solution7(121));
+
+function solution8(s) {
+  return parseInt(s, 10);
+}
+// console.log(solution8(-1234));
+
+// 표현 가능한 이진트리
+function solution9(numbers) {
+  const num = 58;
+  console.log('0' + num.toString(2));
+}
+
+console.log(solution9([5]));
+
+// // 후위 우선탐색
+// // 후위 순회는 왼쪽자식->오른쪽 자식-> 뿌리
+// DFSpostORder() {
+//   if (!this.root) return [];
+//   const data = [];
+//   const travers = (node) => {
+//     if (node.left) travers(node.left);
+//     if (node.rigth) travers(node.rigth);
+//     return data.push(node.val);
+//   };
+//   travers(this.root);
+//   return data;
+// }
