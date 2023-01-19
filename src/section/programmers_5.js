@@ -216,7 +216,7 @@ function solution9(numbers) {
   console.log('0' + num.toString(2));
 }
 
-console.log(solution9([5]));
+// console.log(solution9([5]));
 
 // // 후위 우선탐색
 // // 후위 순회는 왼쪽자식->오른쪽 자식-> 뿌리
@@ -231,3 +231,26 @@ console.log(solution9([5]));
 //   travers(this.root);
 //   return data;
 // }
+
+// 시소 짝꿍
+function solution10(weights) {
+  const ch = {};
+  for (let i = 0; i < weights.length; i++) {
+    for (let n = 1; n <= 4; n++) {
+      const w = weights[i] * n;
+      if (!ch[w]) ch[w] = [i];
+      else ch[w].push(i);
+    }
+  }
+
+  const answer = new Set();
+  for (const key in ch) {
+    if (ch[key].length > 1) {
+      console.log(ch[key]);
+    }
+  }
+
+  return answer;
+}
+
+console.log(solution10([100, 180, 360, 100, 200, 270]));
