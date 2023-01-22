@@ -8,7 +8,7 @@ function bubbleSort(arr) {
   for (let i = 0; i < arr.length; i++) {
     let isSwap = false;
     // 소를 비교할 index를 뽑을 반복문입니다. j는 현재 원소를 가리키고, j-1은 이전 원소를 가리키게 되므로, j는 1부터 시작하게 됩니다.
-    for (let j = 1; j < arr.length - 1; j++) {
+    for (let j = 1; j < arr.length - i; j++) {
       if (arr[j - 1] > arr[j]) {
         [arr[j - 1], arr[j]] = [arr[j], arr[j - 1]];
         isSwap = true;
@@ -19,6 +19,21 @@ function bubbleSort(arr) {
   return arr;
 }
 // console.log(bubbleSort(arr));
+
+// 선택정렬
+function selectionSort(arr) {
+  // 현재 최소값의 자리
+  for (let i = 0; i < arr.length - 1; i++) {
+    let minIdx = i;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[minIdx]) minIdx = j;
+    }
+    [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+  }
+  return arr;
+}
+console.log(selectionSort(arr));
+
 // 합병정렬
 function mergeSort(arr) {
   const merge = (arr1, arr2) => {

@@ -234,23 +234,35 @@ function solution9(numbers) {
 
 // 시소 짝꿍
 function solution10(weights) {
+  // 각몸무게의 사람수
+  // 키[몸무게]:사람수
   const ch = {};
   for (let i = 0; i < weights.length; i++) {
-    for (let n = 1; n <= 4; n++) {
-      const w = weights[i] * n;
-      if (!ch[w]) ch[w] = [i];
-      else ch[w].push(i);
-    }
+    ch[weights[i]] = (ch[weights[i]] || 0) + 1;
   }
 
-  const answer = new Set();
+  let answer = 0;
   for (const key in ch) {
-    if (ch[key].length > 1) {
-      console.log(ch[key]);
-    }
-  }
+    const persons = ch[key];
+    let curW;
 
+    curW = +key * 2;
+    if (curW % 3 === 0) answer += (ch[curW / 3] ?? 0) * persons;
+    if (curW % 4 === 0) answer += (ch[curW / 4] ?? 0) * persons;
+
+    curW = +key * 3;
+    if (curW % 2 === 0) answer += (ch[curW / 2] ?? 0) * persons;
+    if (curW % 4 === 0) answer += (ch[curW / 4] ?? 0) * persons;
+
+    curW = +key * 4;
+    if (curW % 2 === 0) answer += (ch[curW / 2] ?? 0) * persons;
+    if (curW % 3 === 0) answer += (ch[curW / 3] ?? 0) * persons;
+
+    // nc2
+    if (persons > 1) answer += (persons * (persons - 1)) / 2;
+    // 중복을 제거한다
+    delete ch[key];
+  }
   return answer;
 }
-
-console.log(solution10([100, 180, 360, 100, 200, 270]));
+console.log(solution10([100, 180, 360, 100, 270]));
