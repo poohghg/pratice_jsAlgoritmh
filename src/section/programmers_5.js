@@ -277,6 +277,7 @@ function solution11(numbers) {
       while (numbers[stack[stack.length - 1]] < numbers[i]) {
         answer[stack.pop()] = numbers[i];
       }
+
       stack.push(i);
     }
   }
