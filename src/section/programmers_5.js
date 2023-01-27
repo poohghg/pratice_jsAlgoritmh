@@ -265,4 +265,24 @@ function solution10(weights) {
   }
   return answer;
 }
-console.log(solution10([100, 180, 360, 100, 270]));
+// console.log(solution10([100, 180, 360, 100, 270]));
+
+function solution11(numbers) {
+  const stack = [];
+  const answer = [...numbers].fill(-1);
+
+  for (let i = 0; i < numbers.length; i++) {
+    if (stack.length === 0) stack.push(i);
+    else {
+      while (numbers[stack[stack.length - 1]] < numbers[i]) {
+        answer[stack.pop()] = numbers[i];
+      }
+      stack.push(i);
+    }
+  }
+
+  // console.log(stack);
+  return answer;
+}
+
+console.log(solution11([1, 1, 100, 100, 3, 3, 5]));
