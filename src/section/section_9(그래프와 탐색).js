@@ -346,9 +346,7 @@ function solution_4(s, e) {
     currValue = queue.shift();
     for (const x of moves) {
       newDistance = currValue + x;
-      if (newDistance === e) {
-        return distance[currValue] + 1;
-      }
+      if (newDistance === e) return distance[currValue] + 1;
       if (!visited[newDistance]) {
         visited[newDistance] = true;
         distance[newDistance] = distance[currValue] + 1;

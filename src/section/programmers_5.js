@@ -285,5 +285,69 @@ function solution11(numbers) {
   // console.log(stack);
   return answer;
 }
+// console.log(solution11([1, 1, 100, 100, 3, 3, 5]));
 
-console.log(solution11([1, 1, 100, 100, 3, 3, 5]));
+// bfs
+// 숫자 변환하기
+function solution12(x, y, n) {
+  if (x === y) return 0;
+  const q = [x];
+  const visited = Array(1000001);
+  visited[x] = 0;
+  while (q.length) {
+    const d = q.shift();
+    for (const newD of [d + n, d * 2, d * 3]) {
+      if (newD === y) return visited[d] + 1;
+      if (!visited[newD] && newD < y) {
+        visited[newD] = visited[d] + 1;
+        q.push(newD);
+      }
+    }
+  }
+  return -1;
+}
+// csonsole.log(solution12(10, 40, 5));
+
+function solution13(maps) {
+  maps = maps.map((str) => str.split(''));
+  const answer = [];
+  const yLen = maps[0].length;
+  const xLen = maps.length;
+  const moves = [
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+  ];
+
+  const isValidLoc = (px, py) => {
+    if (px >= 0 && px < xLen && py >= 0 && py < yLen && maps[px][py] !== 'X')
+      return true;
+    return false;
+  };
+
+  for (let x = 0; x < xLen; x++) {
+    for (let y = 0; y < yLen; y++) {
+      if (maps[x][y] === 'X') continue;
+      const q = [[x, y]];
+      let currFood = +maps[x][y];
+      maps[x][y] = 'X';
+      while (q.length) {
+        const [currX, currY] = q.shift();
+        for (const [moveX, moveY] of moves) {
+          const [newX, newY] = [currX + moveX, currY + moveY];
+          if (!isValidLoc(newX, newY)) continue;
+          currFood += +maps[newX][newY];
+          maps[newX][newY] = 'X';
+          q.push([newX, newY]);
+        }
+      }
+      answer.push(currFood);
+    }
+  }
+
+  if (answer.length) return answer.sort((a, b) => a - b);
+  return -1;
+}
+
+console.log(solution13(['X591X', 'X1X5X', 'X231X', '1XXX1']));
