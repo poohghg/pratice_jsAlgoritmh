@@ -350,4 +350,24 @@ function solution13(maps) {
   return -1;
 }
 
-console.log(solution13(['X591X', 'X1X5X', 'X231X', '1XXX1']));
+// console.log(solution13(['X591X', 'X1X5X', 'X231X', '1XXX1']));
+
+function solution14(n, l, r) {
+  const count_bit_1 = (num) => {
+    if (num <= 5) return [1, 2, 2, 3, 4][num];
+
+    let base = 1;
+    while (5 ** (base + 1) < num) base += 1;
+
+    let section = num / 5 ** base;
+    let remainder = num % 5 ** base;
+    let answer = section * 4 ** base;
+
+    if (section >= 3) answer -= 4 ** base;
+    if (section === 2) return answer;
+    return answer + count_bit_1(remainder);
+  };
+  return count_bit_1(r) - count_bit_1(l - 1);
+}
+
+console.log(solution14(2, 4, 17));
