@@ -369,5 +369,58 @@ function solution14(n, l, r) {
   };
   return count_bit_1(r) - count_bit_1(l - 1);
 }
+// console.log(solution14(2, 4, 17));
 
-console.log(solution14(2, 4, 17));
+// 둘만의 암호
+function solution15(s, skip, index) {
+  let answer = '';
+  const lastCharCode = 'z'.charCodeAt();
+  for (const x of s) {
+    let charCode = x.charCodeAt();
+    let cnt = index;
+    while (cnt > 0) {
+      charCode++;
+      if (charCode > lastCharCode)
+        charCode = 'a'.charCodeAt() - 1 + (charCode % lastCharCode);
+      if (skip.indexOf(String.fromCharCode(charCode)) !== -1) continue;
+      cnt--;
+    }
+    answer += String.fromCharCode(charCode);
+  }
+  return answer;
+}
+// console.log(solution15('aukks', 'wbqd', 5));
+
+function solution16(book_time) {
+  const covertTime = (t, plusTime = 0) => {
+    const [h, m] = t.split(':');
+    return +h * 60 + +m + plusTime;
+  };
+
+  book_time = book_time
+    .reduce((prev, curTimes) => {
+      prev.push([covertTime(curTimes[0]), 'S']);
+      prev.push([covertTime(curTimes[1], 10), 'E']);
+      return prev;
+    }, [])
+    .sort((a, b) => {
+      if (a[0] === b[0]) return a[1].charCodeAt() - b[1].charCodeAt();
+      return a[0] - b[0];
+    });
+
+  let cnt = 0;
+  let answer = 0;
+  for (const [_, status] of book_time) {
+    if (status === 'S') cnt++;
+    else cnt--;
+    answer = Math.max(cnt, answer);
+  }
+  return answer;
+}
+// console.log(
+//   solution16([
+//     ['23:50', '23:59'],
+//     ['23:51', '23:59'],
+//     ['23:59', '23:59'],
+//   ]),
+// );
