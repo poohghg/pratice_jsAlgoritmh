@@ -391,6 +391,7 @@ function solution15(s, skip, index) {
 }
 // console.log(solution15('aukks', 'wbqd', 5));
 
+// 호텔 대실
 function solution16(book_time) {
   const covertTime = (t, plusTime = 0) => {
     const [h, m] = t.split(':');
@@ -424,3 +425,35 @@ function solution16(book_time) {
 //     ['23:59', '23:59'],
 //   ]),
 // );
+
+// 인사고과
+function solution17(scores) {
+  if (scores.length === 1) return 1;
+  const sum = (arr) => arr[0] + arr[1];
+  const my = scores[0];
+  const myScore = sum(my);
+  let curSum = 0;
+  let cnt = 0;
+  const list = [];
+  const max = [0, 0];
+
+  for (let i = 1; i < scores.length; i++) {
+    curSum = sum(scores[i]);
+    if (scores[i][0] > my[0] && scores[i][1] > my[1]) return -1;
+    if (curSum > myScore) list.push([...scores[i], curSum]);
+  }
+
+  for (let i = 0; i < list.length; i++) {}
+
+  console.log(list);
+  // return cnt + 1;
+}
+console.log(
+  solution17([
+    [4, 1],
+    [2, 4],
+    [4, 2],
+    [3, 5],
+    [0, 9],
+  ]),
+);
