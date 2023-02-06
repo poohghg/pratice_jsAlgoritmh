@@ -430,30 +430,32 @@ function solution16(book_time) {
 function solution17(scores) {
   if (scores.length === 1) return 1;
   const sum = (arr) => arr[0] + arr[1];
-  const my = scores[0];
-  const myScore = sum(my);
-  let curSum = 0;
-  let cnt = 0;
-  const list = [];
-  const max = [0, 0];
+  const wanHo = scores[0];
+  const wanHoScore = sum(wanHo);
 
-  for (let i = 1; i < scores.length; i++) {
-    curSum = sum(scores[i]);
-    if (scores[i][0] > my[0] && scores[i][1] > my[1]) return -1;
-    if (curSum > myScore) list.push([...scores[i], curSum]);
+  scores.sort((a, b) => {
+    if (a[0] === b[0]) return a[1] - b[1];
+    return b[0] - a[0];
+  });
+
+  let cnt = 1;
+  let max = 0;
+  for (let i = 0; i < scores.length; i++) {
+    if (scores[i][0] > wanHo[0] && scores[i][1] > wanHo[1]) return -1;
+    if (max > scores[i][1]) continue;
+    else max = Math.max(scores[i][1], max);
+    if (sum(scores[i]) > wanHoScore) cnt++;
   }
-
-  for (let i = 0; i < list.length; i++) {}
-
-  console.log(list);
-  // return cnt + 1;
+  return cnt;
 }
 console.log(
   solution17([
     [4, 1],
     [2, 4],
     [4, 2],
+    [3, 3],
     [3, 5],
+    [3, 4],
     [0, 9],
   ]),
 );
