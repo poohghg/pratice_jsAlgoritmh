@@ -448,14 +448,55 @@ function solution17(scores) {
   }
   return cnt;
 }
-console.log(
-  solution17([
-    [4, 1],
-    [2, 4],
-    [4, 2],
-    [3, 3],
-    [3, 5],
-    [3, 4],
-    [0, 9],
-  ]),
-);
+// console.log(
+//   solution17([
+//     [4, 1],
+//     [2, 4],
+//     [4, 2],
+//     [3, 3],
+//     [3, 5],
+//     [3, 4],
+//     [0, 9],
+//   ]),
+// );
+
+// 혼자 놀기의 달인
+function solution18(cards) {
+  const getNumOfArray = (arr, idx, cnt) => {
+    if (!arr[idx]) return [cnt, arr];
+    const nextIdx = arr[idx];
+    arr[idx] = 0;
+    return getNumOfArray(arr, nextIdx, ++cnt);
+  };
+
+  let answer = 0;
+  for (let i = 1; i < cards.length; i++) {
+    const copy = [0, ...cards];
+    const [firstNum, rest] = getNumOfArray(copy, i, 0);
+    for (let j = 1; j < rest.length; j++) {
+      if (!rest[j]) continue;
+      const [secondNum, _] = getNumOfArray([...rest], j, 0);
+      answer = Math.max(answer, firstNum * secondNum);
+    }
+  }
+  return answer;
+}
+// console.log(solution18([8, 6, 3, 7, 2, 5, 1, 4]));
+
+// n^2 배열 자르기
+function solution19(n, left, right) {
+  const answer = [];
+  for (let i = 1; i <= n; i++) {
+    const tmp = Array(i).fill(i);
+    answer.push(...tmp);
+    // const element = array[index];
+  }
+  // [1,2,3,4,5]
+  // [2,2,3.4,5]
+  // [3,3,3.4,5]
+  // [4,4,4.4,5]
+  // [5,5,5.5,5]
+  console.log(answer);
+}
+
+console.log(solution19(3, 2, 5));
