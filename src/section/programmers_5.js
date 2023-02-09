@@ -486,17 +486,81 @@ function solution18(cards) {
 // n^2 배열 자르기
 function solution19(n, left, right) {
   const answer = [];
-  for (let i = 1; i <= n; i++) {
-    const tmp = Array(i).fill(i);
-    answer.push(...tmp);
-    // const element = array[index];
+  const l = Math.floor(left / n);
+  const r = Math.floor(right / n);
+
+  for (let i = l; i <= r; i++) {
+    for (let j = 0; j <= n; j++) {
+      if (j === i + 1) continue;
+      if (j < i + 1) answer.push(i + 1);
+      else answer.push(j);
+    }
   }
-  // [1,2,3,4,5]
-  // [2,2,3.4,5]
-  // [3,3,3.4,5]
-  // [4,4,4.4,5]
-  // [5,5,5.5,5]
-  console.log(answer);
+
+  const s = left % n;
+  let e = n - ((right + 1) % n);
+  if (e === n) return answer.slice(s);
+  return answer.slice(s, -e);
 }
 
-console.log(solution19(3, 2, 5));
+// [1,2,3,]
+// [2,2,3,]
+// [3,3,3,]
+
+// 참고;
+// for (let i = left; i <= right; i++) {
+//   answer.push(Math.max(i % n, parseInt(i / n)) + 1)
+// }
+// console.log(solution19(3, 0, 3));
+
+// 쿼드압축 후 개수 세기
+
+function solution20(arr) {
+  const answer = [0, 0];
+  const split = (x1, x2, y1, y2, arr) => {
+    const r = [];
+    for (let x = x1; x < x2; x++) {
+      const tmp = [];
+      for (let y = y1; y < y2; y++) tmp.push(arr[x][y]);
+      r.push(tmp);
+    }
+    return r;
+  };
+
+  const dfs = (arr) => {
+    if (arr.length === 1) {
+      const f = arr.flat();
+      return f[0] === 0 ? ++answer[0] : ++answer[1];
+    }
+    if (arr.every((r) => r.every((v) => v === 0))) return dfs([0]);
+    if (arr.every((r) => r.every((v) => v === 1))) return dfs([1]);
+
+    const len = arr.length;
+    const half = arr.length / 2;
+    const r1 = split(0, half, 0, half, arr);
+    const r2 = split(0, half, half, len, arr);
+    const r3 = split(half, len, 0, half, arr);
+    const r4 = split(half, len, half, len, arr);
+    [r1, r2, r3, r4].map((r) => dfs(r));
+  };
+  dfs(arr);
+  return answer;
+}
+
+console.log(
+  solution20([
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1, 1, 1, 1],
+    [0, 1, 0, 0, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 1, 0, 0, 1],
+    [0, 0, 0, 0, 1, 1, 1, 1],
+  ]),
+);
+
+// const a = [0, 0];
+// console.log(a[0]++);
+// console.log(a[1]++);
+// console.log(a);
