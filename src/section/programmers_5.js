@@ -547,20 +547,40 @@ function solution20(arr) {
   return answer;
 }
 
-console.log(
-  solution20([
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 1, 1, 1, 1],
-    [0, 1, 0, 0, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 1, 0, 0, 1],
-    [0, 0, 0, 0, 1, 1, 1, 1],
-  ]),
-);
+// console.log(
+//   solution20([
+//     [1, 1, 1, 1, 1, 1, 1, 1],
+//     [0, 1, 1, 1, 1, 1, 1, 1],
+//     [0, 0, 0, 0, 1, 1, 1, 1],
+//     [0, 1, 0, 0, 1, 1, 1, 1],
+//     [0, 0, 0, 0, 0, 0, 1, 1],
+//     [0, 0, 0, 0, 0, 0, 0, 1],
+//     [0, 0, 0, 0, 1, 0, 0, 1],
+//     [0, 0, 0, 0, 1, 1, 1, 1],
+//   ]),
+// );
 
-// const a = [0, 0];
-// console.log(a[0]++);
-// console.log(a[1]++);
-// console.log(a);
+// 최댓값과 최솟값
+function solution21(s) {
+  s = s.split(' ');
+  return `${'' + Math.min(...s)} ${'' + Math.max(...s)}`;
+}
+// console.log(solution21('1 2 3 4'));
+
+// 숫자의 표현
+function solution22(n) {
+  let answer = 0;
+  let l = 1;
+  let sum = 0;
+  for (let i = 1; i <= n; i++) {
+    sum += i;
+    while (sum > n) {
+      sum -= l;
+      l++;
+    }
+    if (sum === n) answer++;
+  }
+  return answer;
+}
+
+console.log(solution22(15));
