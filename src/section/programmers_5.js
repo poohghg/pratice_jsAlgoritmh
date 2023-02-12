@@ -582,5 +582,37 @@ function solution22(n) {
   }
   return answer;
 }
+// console.log(solution22(15));
 
-console.log(solution22(15));
+// 멀리 뛰기
+function solution23(n) {
+  const dy = [];
+  dy[0] = 0;
+  dy[1] = 1;
+  dy[2] = 2;
+  for (let i = 3; i <= n; i++) {
+    dy[i] = dy[i - 1] + dy[i - 2];
+  }
+  return dy[n];
+}
+// console.log(solution23(3));
+
+// 땅따먹기
+function solution24(land) {
+  for (let i = 1; i < land.length; i++) {
+    const tmp = land[i - 1];
+    land[i][0] += Math.max(tmp[1], tmp[2], tmp[3]);
+    land[i][1] += Math.max(tmp[0], tmp[2], tmp[3]);
+    land[i][2] += Math.max(tmp[0], tmp[1], tmp[3]);
+    land[i][3] += Math.max(tmp[0], tmp[1], tmp[2]);
+  }
+  return Math.max(...land.at(-1));
+}
+
+console.log(
+  solution24([
+    [1, 2, 3, 5],
+    [5, 6, 7, 8],
+    [4, 3, 2, 1],
+  ]),
+);
