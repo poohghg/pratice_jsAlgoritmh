@@ -608,11 +608,45 @@ function solution24(land) {
   }
   return Math.max(...land.at(-1));
 }
+// console.log(
+//   solution24([
+//     [1, 2, 3, 5],
+//     [5, 6, 7, 8],
+//     [4, 3, 2, 1],
+//   ]),
+// );
 
-console.log(
-  solution24([
-    [1, 2, 3, 5],
-    [5, 6, 7, 8],
-    [4, 3, 2, 1],
-  ]),
-);
+// 최소합
+function solution25(A, B) {
+  A = A.sort((a, b) => a - b);
+  B = B.sort((a, b) => a - b);
+  let answer = 0;
+  for (let i = 0; i < A.length; i++) {
+    answer += A[i] * B.at(-1 + -i);
+  }
+  return answer;
+}
+// console.lㄴog(solution25([1, 2], [3, 4]));
+
+// 3 x n 타일링
+function solution26(n) {
+  if (n % 2 === 1) return 0;
+  const dy = [];
+  dy[0] = 0;
+  dy[2] = 3;
+  dy[4] = 11;
+  // dy[2] =
+}
+// console.log(solution26(3));
+
+// 최고의 집합
+function solution27(n, s) {
+  const max = Math.floor(s / n);
+  if (max < 0) return [-1];
+  const rest = s % n;
+  const answer = Array(n).fill(max);
+  for (let i = 0; i < rest; i++) answer[answer.length - 1 - i]++;
+  return answer;
+}
+
+console.log(solution27(5, 7));
