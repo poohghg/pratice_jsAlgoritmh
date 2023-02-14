@@ -648,5 +648,56 @@ function solution27(n, s) {
   for (let i = 0; i < rest; i++) answer[answer.length - 1 - i]++;
   return answer;
 }
+// console.log(solution27(5, 7));
 
-console.log(solution27(5, 7));
+function solution28(board) {
+  const rowLen = board.length;
+  const colLen = board[0].length;
+  // if (rowLen < 2 || colLen < 2) return 1;
+  let max = 0;
+  for (let i = 1; i < rowLen; i++) {
+    for (let j = 1; j < colLen; j++) {
+      if (board[i][j] === 0) continue;
+      const min = Math.min(
+        board[i - 1][j - 1],
+        board[i][j - 1],
+        board[i - 1][j],
+      );
+      board[i][j] = min + 1;
+      max = Math.max(max, min + 1);
+    }
+  }
+  return max ** 2;
+}
+// console.log(
+//   solution28([
+//     [0, 1, 1, 1],
+//     [1, 0, 0, 0],
+//     [1, 0, 0, 0],
+//     [1, 0, 0, 0],
+//   ]),
+// );
+
+// 소수찾기
+/**
+1보다 큰 모든 자연수는 소수의 곱으로 이루어져 있다.
+따라서 100이 소수인지 확인하기 위해서는 100보다 작은 소수를 이용하면 된다.
+자연수 n이 있을 때 √n 보다 작은 수로 나눠 떨어지지 않으면 n은 소수이다.
+2보다 큰 모든 짝수는 2로 나누어 떨어지는 소수가 아닌 수이다.
+ */
+function solution29(n) {
+  let decimalS = [2];
+  const isDecimal = (pn) => {
+    for (const n of decimalS) {
+      if (n > Math.sqrt(pn)) return true;
+      if (pn % n === 0) return false;
+    }
+    return true;
+  };
+  for (let i = 3; i <= n; i = i + 2) {
+    if (isDecimal(i)) decimalS.push(i);
+  }
+  return decimalS.length;
+}
+
+console.log(solution29(10));
