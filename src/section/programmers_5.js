@@ -700,4 +700,12 @@ function solution29(n) {
   return decimalS.length;
 }
 
-console.log(solution29(10));
+// 2016년
+function solution30(a, b) {
+  const weeks = ['FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED', 'THU'];
+  const month = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const diffDay =
+    month.slice(0, a - 1).reduce((acc, curr) => acc + curr, 0) + b - 1;
+  return weeks[diffDay % 7];
+}
+// console.log(solution30(5, 24));
