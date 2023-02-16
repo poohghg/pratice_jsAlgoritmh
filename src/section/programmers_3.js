@@ -225,7 +225,7 @@ function solution9(maps) {
     [0, -1],
   ];
 
-  const DFS = (x, y, cnt) => {
+  const BFS = (x, y, cnt) => {
     if (min !== -1 && cnt + 1 > min) return;
     if (x === 0 && y === 0) {
       if (min === -1) min = cnt + 1;
@@ -238,13 +238,13 @@ function solution9(maps) {
       if (newX >= 0 && newX <= end[0] && newY >= 0 && newY <= end[1]) {
         if (maps[newX][newY] === 1) {
           maps[newX][newY] = 0;
-          DFS(newX, newY, cnt + 1);
+          BFS(newX, newY, cnt + 1);
           maps[newX][newY] = 1;
         }
       }
     });
   };
-  DFS(end[0], end[1], 0);
+  BFS(end[0], end[1], 0);
   return min;
 }
 
