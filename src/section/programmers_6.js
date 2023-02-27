@@ -87,4 +87,53 @@ function solution3(maps) {
   return toL[1] + toE[1];
 }
 
-console.log(solution3(['SOOOL', 'XXXXO', 'OOOOO', 'OXXXX', 'OOOOE']));
+// console.log(solution3(['SOOOL', 'XXXXO', 'OOOOO', 'OXXXX', '2OOOOE']));
+
+function solution4(nums) {
+  let answer = 0;
+  const sums = [];
+
+  const dfs = (s, l, sum) => {
+    if (l === 3) return sums.push(sum);
+    for (let i = s; i < nums.length; i++) dfs(i + 1, l + 1, sum + nums[i]);
+  };
+
+  const isDecimal = (n) => {
+    for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
+    return true;
+  };
+
+  dfs(0, 0, 0);
+  for (const n of sums) if (isDecimal(n)) answer++;
+  return answer;
+}
+
+// console.log(solution4([1, 2, 3, 4]));
+// 대충 만든 자판
+function solution5(keymap, targets) {
+  const keyObj = {};
+  const answer = [];
+  for (let i = 0; i < keymap.length; i++) {
+    const keys = keymap[i].split('');
+    for (let j = 0; j < keys.length; j++) {
+      if (!keyObj[keys[j]]) keyObj[keys[j]] = j + 1;
+      else if (keyObj[keys[j]] > j + 1) keyObj[keys[j]] = j + 1;
+    }
+  }
+
+  for (const target of targets) {
+    let cnt = 0;
+    let isStop = false;
+    for (const s of target.split('')) {
+      if (!keyObj[s]) {
+        isStop = true;
+        break;
+      }
+      cnt += keyObj[s];
+    }
+    answer.push(isStop ? -1 : cnt);
+  }
+  return answer;
+}
+
+console.log(solution5(['ABACD', 'BCEFD'], ['ABCD', 'AABB']));
