@@ -136,4 +136,43 @@ function solution5(keymap, targets) {
   return answer;
 }
 
-console.log(solution5(['ABACD', 'BCEFD'], ['ABCD', 'AABB']));
+// console.log(solution5(['ABACD', 'BCEFD'], ['ABCD', 'AABB']));
+
+function solution6(board) {
+  board = board.map((v) => v.split(''));
+
+  let oCnt = 0;
+  let xCnt = 0;
+  for (const s of board.flat()) {
+    if (s === 'O') oCnt++;
+    else if (s === 'X') xCnt++;
+  }
+  if (xCnt > oCnt || oCnt > xCnt + 1) return 0;
+
+  // 가로 세로 대각선의 데이터를 모은다
+  const total = [];
+  for (let i = 0; i < board.length; i++) {
+    total.push(board[i]);
+    const tmp = [];
+    for (let j = 0; j < board.length; j++) tmp.push(board[j][i]);
+    total.push(tmp);
+  }
+  total.push([board[0][0], board[1][1], board[2][2]]);
+  total.push([board[0][2], board[1][1], board[2][0]]);
+
+  let doneO = 0;
+  let doneX = 0;
+  for (const arr of total) {
+    if (arr.filter((v) => v === 'O').length === 3) doneO++;
+    if (arr.filter((v) => v === 'X').length === 3) doneX++;
+  }
+  // 둘다 승리한경우
+  if (doneO && doneX) return 0;
+  // O가 이겼는데 x가 패를 놓는경우
+  if (doneO && xCnt === oCnt) return 0;
+  // X가 이겼는데 O가 패를 놓는경우
+  if (doneX && oCnt > xCnt) return 0;
+
+  return 1;
+}
+// console.log(solution6(['O.X', '.O.', '..X']));
