@@ -200,10 +200,11 @@ function solution7(n, m, section) {
 }
 // console.log(solution7(8, 4, [2, 3, 5, 6]));
 
-function solution_12(n, arr) {
-  // dy는 자기자신이 우항이되는 최대증가수열
+function solution8(n, arr) {
+  // dy는 자기자신이 우항이되는 최대증가수열의 길이
   const dy = Array(n).fill(0);
   dy[0] = 1;
+
   for (let i = 1; i < arr.length; i++) {
     let max = 0;
     for (let j = i - 1; 0 <= j; j--) {
@@ -214,4 +215,4 @@ function solution_12(n, arr) {
   console.log(dy);
   // return Math.max(...dy);
 }
-console.log(solution_12(9, [2, 7, 5, 15, 6, 4, 7, 12, 3]));
+console.log(solution8(9, [2, 7, 5, 15, 6, 4, 7, 12, 3]));
