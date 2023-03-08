@@ -176,3 +176,42 @@ function solution6(board) {
   return 1;
 }
 // console.log(solution6(['O.X', '.O.', '..X']));
+
+const arr = [3, 5, 123, 321, 44, 1];
+// function bSort(arr) {
+//   for (let i = 0; i < arr.length; i++) {
+//     for (let j = 1; j < arr.length - i; j++) {
+//       if (arr[j - 1] > arr[j]) [arr[j - 1], arr[j]] = [arr[j], arr[j - 1]];
+//     }
+//   }
+//   return arr;
+// }
+
+// 덧칠하기
+function solution7(n, m, section) {
+  let answer = 0;
+  let s;
+  for (const n of section) {
+    if (n < s) continue;
+    s = n + m;
+    answer++;
+  }
+  return answer;
+}
+// console.log(solution7(8, 4, [2, 3, 5, 6]));
+
+function solution_12(n, arr) {
+  // dy는 자기자신이 우항이되는 최대증가수열
+  const dy = Array(n).fill(0);
+  dy[0] = 1;
+  for (let i = 1; i < arr.length; i++) {
+    let max = 0;
+    for (let j = i - 1; 0 <= j; j--) {
+      if (arr[j] < arr[i] && max < dy[j]) max = dy[j];
+    }
+    dy[i] = max + 1;
+  }
+  console.log(dy);
+  // return Math.max(...dy);
+}
+console.log(solution_12(9, [2, 7, 5, 15, 6, 4, 7, 12, 3]));
