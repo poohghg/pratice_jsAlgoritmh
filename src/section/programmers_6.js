@@ -215,4 +215,25 @@ function solution8(n, arr) {
   console.log(dy);
   // return Math.max(...dy);
 }
-console.log(solution8(9, [2, 7, 5, 15, 6, 4, 7, 12, 3]));
+// console.log(solution8(9, [2, 7, 5, 15, 6, 4, 7, 12, 3]));
+function solution9(sequence) {
+  const dy1 = Array(sequence.length).fill(0);
+  const dy2 = Array(sequence.length).fill(0);
+  dy1[0] = sequence[0];
+  dy2[0] = sequence[0] * -1;
+  let answer = Math.max(dy1[0], dy2[0]);
+
+  for (let i = 1; i < sequence.length; i++) {
+    if (i % 2 === 0) {
+      dy1[i] = Math.max(0, dy1[i - 1]) + sequence[i];
+      dy2[i] = Math.max(0, dy2[i - 1]) + sequence[i] * -1;
+    } else {
+      dy1[i] = Math.max(0, dy1[i - 1]) + sequence[i] * -1;
+      dy2[i] = Math.max(0, dy2[i - 1]) + sequence[i];
+    }
+    answer = Math.max(answer, dy1[i], dy2[i]);
+  }
+  return answer;
+}
+
+console.log(solution9([2, 3, -6, 1, 3, -1, 2, 4]));
